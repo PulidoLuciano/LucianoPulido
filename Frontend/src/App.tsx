@@ -1,7 +1,9 @@
+import Header from "./components/header";
+
 function App() {
   return (
     <>
-      <h1>Luciano Pulido</h1>
+      <Header onPortfolio={true}/>
     </>
   )
 }
