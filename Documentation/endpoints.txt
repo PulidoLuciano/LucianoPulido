@@ -1,0 +1,116 @@
+------------------
+
+GET /articles
+Get all articles.
+
+------------------
+
+GET /articles/:id
+Get a complete article with id
+
+-------------------
+
+GET /article/:id/show
+Get the article's information and its comments to show on frontend
+
+--------------------
+
+GET /articles/popular?limit=N
+Get the N most popular article's title, preview image, description according to visits. Default five articles.
+
+---------------------
+
+GET /articles/recent?limit=N
+Get the N most recent article's title, preview image, description. Default five articles.
+
+---------------------
+
+GET /:serie
+Get all serie's articles.
+
+--------------------
+
+GET /:category
+Get all category's articles.
+
+--------------------
+
+POST /articles
+Create a new article.
+
+-------------------
+
+PUT /articles/:id
+Update existing article.
+
+--------------------
+
+DELETE /articles/:id
+Delete an article by id.
+
+-------------------
+
+PUT /articles/:id/view
+Add the new view stats.
+
+--------------------
+
+GET /articles/:id/comments
+Get all article's comments order by score.
+
+--------------------
+
+POST /articles/:id/comments
+Create a new commentary on and article.
+
+--------------------
+
+GET /comments/:id/responses
+Get all responses to a commentary.
+
+--------------------
+
+POST /comments/:id/responses
+Create a new response to a commentary.
+
+--------------------
+
+PUT /comments/:id/up-vote
+Add +1 to the comment's score.
+
+--------------------
+
+PUT /comments/:id/down-vote
+Add -1 to the comment's score.
+
+--------------------
+
+DELETE /comments/:id
+Delete a commentary by id.
+
+--------------------
+
+GET /users/:id
+Get user's information.
+
+--------------------
+
+POST /users
+Create a new user
+
+--------------------
+
+PUT /users/:id
+Update a user's information.
+
+--------------------
+
+DELETE /users/:id
+Delete an user.
+
+--------------------
+
+POST /users/login
+Log in users with email and password.
+
+--------------------

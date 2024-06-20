@@ -1,0 +1,47 @@
+Portfolio y foro
+-----------------------------------------------
+Portfolio
+---------
+- Hero con nombre, foto, action call y redes sociales.
+- About me.
+- Proyectos.
+- Experiencia.
+- Contacto.
+- Action call.
+-----------------------------------------------
+Foro
+---------
+- Listar artículos de foro
+	- Dos secciones y agregados
+		- Mas populares 
+		- Mas recientes
+		- Series de artículos?
+	- Mostrar titulo
+	- Mostrar categoría
+	- Mostrar foto.
+	- Mostrar 5 y 5 inicialmente.
+	- Mostrar artículos según categorías y series.
+- Crear artículos
+	- Permitir la creación de nuevos artículos desde una vista de administrador.
+	- Contar con un editor de texto propio donde escribir el articulo.
+	- Contar con secciones de articulo con estilos predefinidos para reutilizar.
+	- Verificar que ningún articulo se llame igual.
+	- Pedir como necesario: titulo, foto y categoría.
+	- Permitir la creación de categorías desde la creación.
+- Modificar artículos
+	- Abrir ventana idéntica a la creación con cambios que indiquen que es modificación.
+	- Pedir confirmación
+- Eliminar artículos
+	- Pedir confirmación
+- Tomar valores estadísticos de visualización
+	- Tiempo de lectura
+	- Cantidad de visitas
+	- Hasta donde se scrolleo
+	- Clicks a otros enlaces
+- Todos los artículos deben contar con un espacio donde se vea nombre del autor y redes sociales
+- Sección comentarios*
+	- Sin logueo
+	- Permitir al admin eliminar comentarios
+	- Sistema de up-votes/down-votes para comentarios
+	- Ordenar comentarios según diferencia de votes
+	- Permitir comentar comentarios
