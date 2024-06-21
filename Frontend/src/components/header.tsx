@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
+import menuIcon from "../assets/menu.svg"
 
 export default function Header(){
     
@@ -21,7 +22,7 @@ export default function Header(){
                     <a href="/articles" className="hover:text-white">Articles</a>
                     <Link to="/articles" className="bg-secondary-light font-semibold hover:bg-secondary-dark py-1 px-3 rounded-2xl text-black">Log in</Link>
                 </nav>
-                <button className="laptop:hidden" onClick={openMobileNav}>Test</button>
+                <button className="laptop:hidden" onClick={openMobileNav}><img src={menuIcon} alt="Menu icon"/></button>
             </div>
             <div className={isOpenMobileNav ? "absolute w-screen h-full laptop:hidden transition-transform" : "absolute w-screen h-full laptop:hidden -translate-y-full"}>
                 <nav className="bg-primary-dark w-full h-full text-tertiary p-4" onClick={openMobileNav}>
