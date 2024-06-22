@@ -44,6 +44,21 @@ export default function Portfolio(){
                     <Project title="Hamming calculator" description="A web application to codify binary series with Hamming code" image="/hamming.webp" github="https://github.com/PulidoLuciano/Hamming" visit="https://hamming-five.vercel.app/" technologies="React.js"/>
                 </div>
             </section>
+            <section className="h-[75vh] flex flex-col justify-center p-2 select-none">
+                <div className="max-w-screen-mobileS laptop:max-w-screen-tablet m-auto w-full flex justify-between items-center">
+                    <div>
+                        <h1 className="text-4xl">I'm open to offers</h1>
+                        <h1 className="text-4xl text-secondary-dark"><strong>Contact me!</strong></h1>
+                        <h1 className="text-4xl text-primary-dark"><em>Visit my social medias</em></h1>  
+                        <div className="flex gap-4 mt-4">
+                            <a href="x.com"><img src={xIcon} alt="X's icon" className="size-8 invert hover:brightness-110"/></a>
+                            <a href="github.com"><img src={githubIcon} alt="GitHub's icon" className="size-8 invert hover:brightness-110"/></a>
+                            <a href="linkedIn.com"><img src={linkedInIcon} alt="LinkedIn's icon" className="size-8 invert hover:brightness-110"/></a>
+                        </div>
+                        <p className="select-text italic">lucianonicolaspulido@gmail.com</p>
+                    </div>
+                </div>
+            </section>
         </main>
     )
 }
