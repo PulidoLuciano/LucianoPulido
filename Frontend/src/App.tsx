@@ -6,9 +6,7 @@ function App() {
   return (
     <>
       <Header/>
-      <main className="max-w-screen-laptop mx-auto p-2">
-        <Outlet/>
-      </main>
+      <Outlet/>
       <Footer/>
     </>
   )
