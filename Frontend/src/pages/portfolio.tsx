@@ -44,19 +44,27 @@ export default function Portfolio(){
                     <Project title="Hamming calculator" description="A web application to codify binary series with Hamming code" image="/hamming.webp" github="https://github.com/PulidoLuciano/Hamming" visit="https://hamming-five.vercel.app/" technologies="React.js"/>
                 </div>
             </section>
-            <section className="h-[75vh] flex flex-col justify-center p-2 select-none">
-                <div className="max-w-screen-mobileS laptop:max-w-screen-tablet m-auto w-full flex justify-between items-center">
+            <section className="flex flex-col justify-center px-2 py-16 select-none">
+                <div className="max-w-screen-mobileS laptop:max-w-screen-tablet m-auto w-full flex flex-col laptop:flex-row justify-between items-center gap-5">
                     <div>
-                        <h1 className="text-4xl">I'm open to offers</h1>
-                        <h1 className="text-4xl text-secondary-dark"><strong>Contact me!</strong></h1>
-                        <h1 className="text-4xl text-primary-dark"><em>Visit my social medias</em></h1>  
-                        <div className="flex gap-4 mt-4">
+                        <h1 className="text-4xl text-secondary-dark"><strong>Contact me!</strong></h1> 
+                        <div className="flex gap-4 mt-4 justify-center laptop:justify-normal">
                             <a href="https://x.com/luciano_pulido" target="_blank" referrerPolicy="no-referrer"><img src={xIcon} alt="X's icon" className="size-8 invert hover:brightness-110"/></a>
                             <a href="https://github.com/PulidoLuciano" target="_blank" referrerPolicy="no-referrer"><img src={githubIcon} alt="GitHub's icon" className="size-8 invert hover:brightness-110"/></a>
                             <a href="https://www.linkedin.com/in/lucianopulido/" target="_blank" referrerPolicy="no-referrer"><img src={linkedInIcon} alt="LinkedIn's icon" className="size-8 invert hover:brightness-110"/></a>
                         </div>
-                        <p className="select-text italic">lucianonicolaspulido@gmail.com</p>
                     </div>
+                    <form action="" className="w-full laptop:w-3/5 flex flex-col">
+                        <label htmlFor="name" className="font-semibold pb-1 pt-2">Your name</label>
+                        <input type="text" placeholder="Luciano Pulido" name="name" id="name" maxLength={30} required={true} className="bg-transparent border-b-2 border-primary-light rounded-sm outline-none"/>
+                        <label htmlFor="email" className="font-semibold pb-1 pt-2">Your e-mail address</label>
+                        <input type="email" placeholder="example@example.com" maxLength={50} name="email" id="email" required={true} className="bg-transparent border-b-2 border-primary-light rounded-sm outline-none"/>
+                        <label htmlFor="subject" className="font-semibold pb-1 pt-2">Subject</label>
+                        <input type="text" placeholder="Just the subject of your message" name="subject" id="subject" maxLength={30} required={true} className="bg-transparent border-b-2 border-primary-light rounded-sm outline-none"/>
+                        <label htmlFor="body" className="font-semibold pb-1 pt-2">Message</label>
+                        <textarea name="body" id="body" placeholder="Write your message here!" required={true} className="bg-transparent border-b-2 border-primary-light rounded-sm outline-none resize-none scroll h-32" maxLength={300}></textarea>
+                        <input type="submit" value="Send" className="mt-4 py-2 w-full bg-primary-light rounded-md text-tertiary font-semibold cursor-pointer hover:bg-primary-dark"/>
+                    </form>
                 </div>
             </section>
         </main>
