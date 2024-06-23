@@ -15,7 +15,6 @@ export default function Footer(){
                 <nav className="bg-primary-dark text-tertiary pb-2 laptop:p-4">
                     <div className="flex gap-6">
                         <a href="" className="hover:text-white">About</a>
-                        <a href="" className="hover:text-white">Contact</a>
                         <a href="/articles" className="hover:text-white">Articles</a>
                     </div>
                 </nav>

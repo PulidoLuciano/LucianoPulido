@@ -21,7 +21,6 @@ export default function Header(){
                 </div>
                 <nav className="hidden laptop:flex gap-5 items-center">
                     <a href="/" className="hover:text-white">About</a>
-                    <a href="" className="hover:text-white">Contact</a>
                     <a href="/articles" className="hover:text-white">Articles</a>
                     <Link to="/articles" className="bg-secondary-light font-semibold hover:bg-secondary-dark py-1 px-3 rounded-2xl text-black">Log in</Link>
                 </nav>
@@ -32,7 +31,6 @@ export default function Header(){
                     <button className="text-3xl text-right mr-4 w-full" onClick={openMobileNav}>X</button>
                     <div className="flex flex-col text-center text-2xl gap-6 my-6">
                         <a href="/" className="hover:text-white">About</a>
-                        <a href="" className="hover:text-white">Contact</a>
                         <Link to="/articles" className="bg-secondary-light font-semibold hover:bg-secondary-dark py-1 px-3 rounded-2xl text-black">Log in</Link>
                     </div>
                     <div className="flex flex-col items-center gap-2">
