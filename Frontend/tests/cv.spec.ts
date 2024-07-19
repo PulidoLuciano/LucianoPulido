@@ -87,5 +87,23 @@ test.describe("Main page", () => {
                 await expect(profilePage).toHaveURL("https://www.linkedin.com/in/lucianopulido/");
             });
         })
+    });
+
+    test.describe("Content", () => {
+        test("Has title", async ({page}) => {
+            await expect(page).toHaveTitle("Luciano Pulido");
+        });
+
+        test("Has About me section", async ({page}) => {
+            await expect(page.getByRole("heading", {name: "About me"})).toBeVisible();
+        });
+
+        test("Has projects section", async ({page}) => {
+            await expect(page.getByRole("heading", {name: "Projects"})).toBeVisible();
+        });
+
+        test("Has contact section", async ({page}) => {
+            await expect(page.getByRole("heading", {name: "Contact me!"})).toBeVisible();
+        });
     })
 })
