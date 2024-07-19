@@ -22,7 +22,7 @@ export default function Header(){
                 <nav className="hidden laptop:flex gap-5 items-center">
                     <a href="/" className="hover:text-white">About</a>
                     <a href="/articles" className="hover:text-white">Articles</a>
-                    <Link to="/articles" className="bg-secondary-light font-semibold hover:bg-secondary-dark py-1 px-3 rounded-2xl text-black">Log in</Link>
+                    <Link to="/login" className="bg-secondary-light font-semibold hover:bg-secondary-dark py-1 px-3 rounded-2xl text-black">Log in</Link>
                 </nav>
                 <button className="laptop:hidden" onClick={openMobileNav}><img src={menuIcon} alt="Menu icon"/></button>
             </div>

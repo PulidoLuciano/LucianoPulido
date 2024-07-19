@@ -30,6 +30,13 @@ test.describe("Main page", () => {
                 //Expect to be on main page
                 await expect(page).toHaveURL(BASE_URL + "/articles");
             });
+
+            test("Login button", async ({page}) => {
+                //Click link
+                await page.locator("header").getByRole("link", {name: "Log in"}).click();
+                //Expect to be on main page
+                await expect(page).toHaveURL(BASE_URL + "/login");
+            })
         });
 
         test.describe("Footer", () => {
