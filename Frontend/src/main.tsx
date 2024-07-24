@@ -1,11 +1,11 @@
-import React from 'react'
+import React, { lazy } from 'react'
 import ReactDOM from 'react-dom/client'
 import './index.css'
-import Portfolio from './pages/portfolio.tsx'
-import Forum from './pages/forum.tsx'
 import { RouteObject } from 'luciano-react-router/types'
 import App from './App.tsx'
-import Login from './pages/login.tsx'
+const Login = lazy(() => import('./pages/login.tsx')); 
+const Forum = lazy(() => import('./pages/forum.tsx'));
+const Portfolio = lazy(() => import('./pages/portfolio.tsx'));
 
 const routes: Array<RouteObject> = [
   {
