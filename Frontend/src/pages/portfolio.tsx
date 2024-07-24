@@ -1,8 +1,8 @@
-import xIcon from "../assets/x.svg"
-import githubIcon from "../assets/github.svg"
-import linkedInIcon from "../assets/linkedIn.svg"
 import codeIcon from "../assets/code.svg"
 import Project from "../components/portfolio/project"
+import GithubLink from "../components/socialLinks/github"
+import LinkedInLink from "../components/socialLinks/linkedIn"
+import TwitterLink from "../components/socialLinks/twitter"
 
 export default function Portfolio(){
     return(
@@ -14,9 +14,9 @@ export default function Portfolio(){
                         <h1 className="text-4xl text-secondary-dark"><strong>Luciano Pulido</strong></h1>
                         <h1 className="text-4xl text-primary-dark"><em>software developer</em></h1>  
                         <div className="flex gap-4 mt-4">
-                            <a href="https://x.com/luciano_pulido" target="_blank" referrerPolicy="no-referrer"><img src={xIcon} alt="X's icon" className="size-8 invert hover:brightness-110"/></a>
-                            <a href="https://github.com/PulidoLuciano" target="_blank" referrerPolicy="no-referrer"><img src={githubIcon} alt="GitHub's icon" className="size-8 invert hover:brightness-110"/></a>
-                            <a href="https://www.linkedin.com/in/lucianopulido/" target="_blank" referrerPolicy="no-referrer"><img src={linkedInIcon} alt="LinkedIn's icon" className="size-8 invert hover:brightness-110"/></a>
+                            <TwitterLink className="size-8 invert hover:brightness-110"/>
+                            <GithubLink className="size-8 invert hover:brightness-110"/>
+                            <LinkedInLink className="size-8 invert hover:brightness-110"/>
                         </div>
                     </div>
                     <img src={codeIcon} alt="Code icon" className="hidden laptop:block laptop:size-60"/>
@@ -49,9 +49,9 @@ export default function Portfolio(){
                     <div>
                         <h1 className="text-4xl text-secondary-dark"><strong>Contact me!</strong></h1> 
                         <div className="flex gap-4 mt-4 justify-center laptop:justify-normal">
-                            <a href="https://x.com/luciano_pulido" target="_blank" referrerPolicy="no-referrer"><img src={xIcon} alt="X's icon" className="size-8 invert hover:brightness-110"/></a>
-                            <a href="https://github.com/PulidoLuciano" target="_blank" referrerPolicy="no-referrer"><img src={githubIcon} alt="GitHub's icon" className="size-8 invert hover:brightness-110"/></a>
-                            <a href="https://www.linkedin.com/in/lucianopulido/" target="_blank" referrerPolicy="no-referrer"><img src={linkedInIcon} alt="LinkedIn's icon" className="size-8 invert hover:brightness-110"/></a>
+                            <TwitterLink className="size-8 invert hover:brightness-110"/>
+                            <GithubLink className="size-8 invert hover:brightness-110"/>
+                            <LinkedInLink className="size-8 invert hover:brightness-110"/>
                         </div>
                     </div>
                     <form action="" className="w-full laptop:w-3/5 flex flex-col">

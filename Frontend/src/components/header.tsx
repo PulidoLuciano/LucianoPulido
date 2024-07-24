@@ -4,6 +4,9 @@ import xIcon from "../assets/x.svg"
 import githubIcon from "../assets/github.svg"
 import linkedInIcon from "../assets/linkedIn.svg"
 import { Link } from "luciano-react-router";
+import TwitterLink from "./socialLinks/twitter";
+import GithubLink from "./socialLinks/github";
+import LinkedInLink from "./socialLinks/linkedIn";
 
 export default function Header(){
     
@@ -37,9 +40,9 @@ export default function Header(){
                     <div className="flex flex-col items-center gap-2">
                         <h1 className="font-bold text-tertiary select-none pt-2">Luciano Pulido</h1>
                         <div className="flex gap-4">
-                            <a href="x.com"><img src={xIcon} alt="X's icon" className="size-8 hover:brightness-110"/></a>
-                            <a href="github.com"><img src={githubIcon} alt="GitHub's icon" className="size-8 hover:brightness-110"/></a>
-                            <a href="linkedIn.com"><img src={linkedInIcon} alt="LinkedIn's icon" className="size-8 hover:brightness-110"/></a>
+                            <TwitterLink className="size-8 hover:brightness-110"/>
+                            <GithubLink className="size-8 hover:brightness-110"/>
+                            <LinkedInLink className="size-8 hover:brightness-110"/>
                         </div>
                     </div>
                 </nav>

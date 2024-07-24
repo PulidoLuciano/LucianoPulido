@@ -1,5 +1,5 @@
 import { Link } from "luciano-react-router";
-
+console.log("test");
 export default function Login(){
     return (
         <section className="pt-24 text-center flex items-center flex-col justify-center">

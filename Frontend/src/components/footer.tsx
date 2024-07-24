@@ -1,7 +1,7 @@
-import xIcon from "../assets/x.svg"
-import githubIcon from "../assets/github.svg"
-import linkedInIcon from "../assets/linkedIn.svg"
 import { Link } from "luciano-react-router"
+import TwitterLink from "./socialLinks/twitter"
+import GithubLink from "./socialLinks/github"
+import LinkedInLink from "./socialLinks/linkedIn"
 
 export default function Footer(){
     return(
@@ -9,9 +9,9 @@ export default function Footer(){
             <div className="max-w-screen-laptopL mx-auto flex justify-between items-center flex-col gap-4 laptop:flex-row">
                 <h1 className="font-bold text-tertiary select-none pt-2 laptop:p-0 laptop:pl-4">Luciano Pulido</h1>
                 <div className="flex gap-4">
-                    <a href="https://x.com/luciano_pulido" target="_blank" referrerPolicy="no-referrer"><img src={xIcon} alt="X's icon" className="size-8 hover:brightness-110"/></a>
-                    <a href="https://github.com/PulidoLuciano" target="_blank" referrerPolicy="no-referrer"><img src={githubIcon} alt="GitHub's icon" className="size-8 hover:brightness-110"/></a>
-                    <a href="https://www.linkedin.com/in/lucianopulido/" target="_blank" referrerPolicy="no-referrer"><img src={linkedInIcon} alt="LinkedIn's icon" className="size-8 hover:brightness-110"/></a>
+                    <TwitterLink className="size-8 hover:brightness-110"/>
+                    <GithubLink className="size-8 hover:brightness-110"/>
+                    <LinkedInLink className="size-8 hover:brightness-110"/>
                 </div>
                 <nav className="bg-primary-dark text-tertiary pb-2 laptop:p-4">
                     <div className="flex gap-6">
