@@ -11,7 +11,7 @@
     "test": "playwright test"
   },
   "dependencies": {
-    "luciano-react-router": "^0.0.1",
+    "luciano-react-router": "^0.0.28",
     "react": "^18.2.0",
     "react-dom": "^18.2.0"
   },

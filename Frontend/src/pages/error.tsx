@@ -1,3 +1,4 @@
+import { Link } from "luciano-react-router";
 
 
 export default function ErrorPage(){
@@ -6,7 +7,7 @@ export default function ErrorPage(){
             <h1 className="text-4xl font-bold text-primary-dark">Oops...</h1>
             <h2 className="text-3xl font-bold text-primary-dark">That was <span className="text-secondary-dark">unexpected!</span></h2>
             <h3 className="text-xl font-bold text-primary-dark">An error has ocurred</h3>
-            <a href={"/"} className="text-secondary-dark underline">Back to main page</a>
+            <Link href={"/"} className="text-secondary-dark underline">Back to main page</Link>
         </section>
     )
 }

@@ -1,6 +1,7 @@
 import xIcon from "../assets/x.svg"
 import githubIcon from "../assets/github.svg"
 import linkedInIcon from "../assets/linkedIn.svg"
+import { Link } from "luciano-react-router"
 
 export default function Footer(){
     return(
@@ -14,8 +15,8 @@ export default function Footer(){
                 </div>
                 <nav className="bg-primary-dark text-tertiary pb-2 laptop:p-4">
                     <div className="flex gap-6">
-                        <a href="" className="hover:text-white">About</a>
-                        <a href="/articles" className="hover:text-white">Articles</a>
+                        <Link href="/" className="hover:text-white">About</Link>
+                        <Link href="/articles" className="hover:text-white">Articles</Link>
                     </div>
                 </nav>
             </div>
