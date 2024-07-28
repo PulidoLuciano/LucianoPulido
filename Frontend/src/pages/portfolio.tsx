@@ -1,4 +1,5 @@
 import codeIcon from "../assets/code.svg"
+import PortfolioForm from "../components/portfolio/form"
 import Project from "../components/portfolio/project"
 import GithubLink from "../components/socialLinks/github"
 import LinkedInLink from "../components/socialLinks/linkedIn"
@@ -54,17 +55,7 @@ export default function Portfolio(){
                             <LinkedInLink className="size-8 invert hover:brightness-110"/>
                         </div>
                     </div>
-                    <form action="" className="w-full laptop:w-3/5 flex flex-col">
-                        <label htmlFor="name" className="font-semibold pb-1 pt-2">Your name</label>
-                        <input type="text" placeholder="Luciano Pulido" name="name" id="name" maxLength={30} required={true} className="bg-transparent border-b-2 border-primary-light rounded-sm outline-none"/>
-                        <label htmlFor="email" className="font-semibold pb-1 pt-2">Your e-mail address</label>
-                        <input type="email" placeholder="example@example.com" maxLength={50} name="email" id="email" required={true} className="bg-transparent border-b-2 border-primary-light rounded-sm outline-none"/>
-                        <label htmlFor="subject" className="font-semibold pb-1 pt-2">Subject</label>
-                        <input type="text" placeholder="Just the subject of your message" name="subject" id="subject" maxLength={30} required={true} className="bg-transparent border-b-2 border-primary-light rounded-sm outline-none"/>
-                        <label htmlFor="body" className="font-semibold pb-1 pt-2">Message</label>
-                        <textarea name="body" id="body" placeholder="Write your message here!" required={true} className="bg-transparent border-b-2 border-primary-light rounded-sm outline-none resize-none scroll h-32" maxLength={300}></textarea>
-                        <input type="submit" value="Send" className="mt-4 py-2 w-full bg-primary-light rounded-md text-tertiary font-semibold cursor-pointer hover:bg-primary-dark"/>
-                    </form>
+                    <PortfolioForm/>
                 </div>
             </section>
         </main>
