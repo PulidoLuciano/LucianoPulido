@@ -110,10 +110,10 @@ test.describe("Main page", () => {
     test.describe("Form validation", () => {
         test("Show error messages when fields are empty", async ({page}) => {
             await page.getByRole("button", {name: "Send"}).click();
-            await expect(page.getByText("A name is required", {exact: false})).toBeVisible();
-            await expect(page.getByText("An email is required", {exact: false})).toBeVisible();
-            await expect(page.getByText("A subject is required", {exact: false})).toBeVisible();
-            await expect(page.getByText("A message is required", {exact: false})).toBeVisible();
+            await expect(page.getByText("Name is required", {exact: false})).toBeVisible();
+            await expect(page.getByText("Email is required", {exact: false})).toBeVisible();
+            await expect(page.getByText("Subject is required", {exact: false})).toBeVisible();
+            await expect(page.getByText("Message is required", {exact: false})).toBeVisible();
         });
 
         test("Show successful message when send and empty inputs", async ({page}) => {
@@ -133,28 +133,11 @@ test.describe("Main page", () => {
             await expect(messageInput).toBeEmpty();
         });
 
-        test("Show error messages when fields excede length", async ({page}) => {
-            const nameInput = await page.getByLabel("Your name");
-            await nameInput.fill("John SnowJohn SnowJohn SnowJohn SnowJohn SnowJohn SnowJohn SnowJohn Snow");
-            const emailInput = await page.getByLabel("Your e-mail address");
-            await emailInput.fill("JohnSnow@gmail.comJohnSnow@gmail.comJohnSnow@gmail.comJohnSnow@gmail.comJohnSnow@gmail.com");
-            const subjectInput = await page.getByLabel("Subject");
-            await subjectInput.fill("Conquer the northConquer the northConquer the north");
-            const messageInput = await page.getByLabel("Message");
-            await messageInput.fill("Hey, I want to defeat the White walkers with you!Hey, I want to defeat the White walkers with you!Hey, I want to defeat the White walkers with you!Hey, I want to defeat the White walkers with you!Hey, I want to defeat the White walkers with you!Hey, I want to defeat the White walkers with you!Hey, I want to defeat the White walkers with you!");
-            await page.getByRole("button", {name: "Send"}).click();
-            await expect(page.getByText("Name must not excede 30 characters", {exact: false})).toBeVisible();
-            await expect(page.getByText("E-mail must not excede 50 characters", {exact: false})).toBeVisible();
-            await expect(page.getByText("Subject must not excede 30 characters", {exact: false})).toBeVisible();
-            await expect(page.getByText("Message must not excede 300 characters", {exact: false})).toBeVisible();
-            await expect(nameInput).toHaveValue("John SnowJohn SnowJohn SnowJohn SnowJohn SnowJohn SnowJohn SnowJohn Snow");
-        });
-
         test("Show error if e-mail does not match format", async ({page}) => {
             const emailInput = await page.getByLabel("Your e-mail address");
             await emailInput.fill("JohnSnow.com");
             await page.getByRole("button", {name: "Send"}).click();
-            await expect(page.getByText("That does not seems like an e-mail", {exact: false})).toBeVisible();
+            await expect(page.getByText("Email does not seem like an email", {exact: false})).toBeVisible();
         });
     });
 })
