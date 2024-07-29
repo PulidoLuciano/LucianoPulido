@@ -126,7 +126,7 @@ test.describe("Main page", () => {
             const messageInput = await page.getByLabel("Message");
             await messageInput.fill("Hey, I want to defeat the White walkers with you!");
             await page.getByRole("button", {name: "Send"}).click();
-            await expect(page.getByText("Message sended successfully", {exact: false}));
+            await expect(page.getByText("Message sended successfully", {exact: false})).toBeVisible();
             await expect(nameInput).toBeEmpty();
             await expect(emailInput).toBeEmpty();
             await expect(subjectInput).toBeEmpty();
