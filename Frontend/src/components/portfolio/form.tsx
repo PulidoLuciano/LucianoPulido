@@ -1,4 +1,4 @@
-import {ErrorMessage, Form} from "pulido-react-form"
+import {ErrorMessage, Form, GeneralStatus} from "pulido-react-form"
 
 const messages = [
     {
@@ -34,11 +34,19 @@ const messages = [
 ]
 
 export default function PortfolioForm() {
+  
+  function handleSubmit(event : React.SyntheticEvent<HTMLFormElement>){
+    event.preventDefault();
+    (event.target as HTMLFormElement).reset();
+  }
+  
   return (
     <Form
       action=""
       className="w-full laptop:w-3/5 flex flex-col"
       customMessages={messages}
+      onSubmit={handleSubmit}
+      id="messageForm"
     >
       <label htmlFor="Name" className="font-semibold pb-1 pt-2">
         Your name
@@ -90,6 +98,7 @@ export default function PortfolioForm() {
       </label>
       <textarea
         name="Message"
+        id="Message"
         placeholder="Write your message here!"
         required={true}
         className="bg-transparent border-b-2 border-primary-light rounded-sm outline-none resize-none scroll h-32"
@@ -104,6 +113,7 @@ export default function PortfolioForm() {
         value="Send"
         className="mt-4 py-2 w-full bg-primary-light rounded-md text-tertiary font-semibold cursor-pointer hover:bg-primary-dark"
       />
+      <GeneralStatus successMessage={"Message sended successfully"} errorMessage={"Failed to send message"}/>
     </Form>
   );
 }
