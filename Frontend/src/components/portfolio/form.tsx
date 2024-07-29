@@ -113,7 +113,13 @@ export default function PortfolioForm() {
         value="Send"
         className="mt-4 py-2 w-full bg-primary-light rounded-md text-tertiary font-semibold cursor-pointer hover:bg-primary-dark"
       />
-      <GeneralStatus successMessage={"Message sended successfully"} errorMessage={"Failed to send message"}/>
+      <GeneralStatus successMessage={<SuccessMessage/>} errorMessage={null}/>
     </Form>
   );
+}
+
+function SuccessMessage(){
+  return(
+    <div className="bg-green-300 my-2 p-2 w-full rounded-md text-center border-2 border-green-600">✓ Message sended successfully</div>
+  )
 }
