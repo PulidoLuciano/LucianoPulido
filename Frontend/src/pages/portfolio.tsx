@@ -41,7 +41,7 @@ export default function Portfolio(){
                 <div className="max-w-screen-mobileS laptop:max-w-screen-tablet m-auto w-full">
                     <h1 className="text-tertiary font-bold text-2xl pb-2">Projects</h1>
                     <Project title={"SportsCalendar"} description={"Schedule your favorites football team's matches on google calendar with only few clicks"} image={"/sportsCalendar.webp"} github={"https://github.com/PulidoLuciano/sports-calendar"} visit="https://sportscalendar.vercel.app/" technologies="Next.js - TailwindCSS - PostgreSQL"/>
-                    <Project title="CVBuilder" description="A web to make great CVs easy" image="/cvBuilder.webp" github="https://github.com/PulidoLuciano/CVBuilder" visit="https://cvsbuilder.vercel.app/" technologies="React.js"/>
+                    <Project title="CVBuilder" description="A web to make great CVs easy" image="/cvBuilder.webp" github="https://github.com/PulidoLuciano/CVBuilder" visit="https://cvsbuilder.vercel.app/" technologies="React.js - TailwindCSS"/>
                     <Project title="Hamming calculator" description="A web application to codify binary series with Hamming code" image="/hamming.webp" github="https://github.com/PulidoLuciano/Hamming" visit="https://hamming-five.vercel.app/" technologies="React.js"/>
                 </div>
             </section>
