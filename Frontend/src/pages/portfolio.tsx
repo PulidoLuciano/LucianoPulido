@@ -7,7 +7,7 @@ import TwitterLink from "../components/socialLinks/twitter"
 
 export default function Portfolio(){
     return(
-        <main>
+        <main className="scroll-smooth">
             <section className="h-[75vh] flex flex-col justify-center p-2 select-none">
                 <div className="max-w-screen-mobileS laptop:max-w-screen-tablet m-auto w-full flex justify-between items-center">
                     <div>
@@ -18,6 +18,7 @@ export default function Portfolio(){
                             <TwitterLink className="size-8 invert hover:brightness-110"/>
                             <GithubLink className="size-8 invert hover:brightness-110"/>
                             <LinkedInLink className="size-8 invert hover:brightness-110"/>
+                            <a href="#contact" className="border-2 rounded-3xl px-3 bg-secondary-light border-none flex items-center font-semibold">Contact me!</a>
                         </div>
                     </div>
                     <img src={codeIcon} alt="Code icon" className="hidden laptop:block laptop:size-60"/>
@@ -45,7 +46,7 @@ export default function Portfolio(){
                     <Project title="Hamming calculator" description="A web application to codify binary series with Hamming code" image="/hamming.webp" github="https://github.com/PulidoLuciano/Hamming" visit="https://hamming-five.vercel.app/" technologies="React.js"/>
                 </div>
             </section>
-            <section className="flex flex-col justify-center px-2 py-16 select-none">
+            <section className="flex flex-col justify-center px-2 py-16 select-none" id="contact">
                 <div className="max-w-screen-mobileS laptop:max-w-screen-tablet m-auto w-full flex flex-col laptop:flex-row justify-between items-center gap-5">
                     <div>
                         <h1 className="text-4xl text-secondary-dark"><strong>Contact me!</strong></h1> 
