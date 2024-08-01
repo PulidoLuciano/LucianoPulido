@@ -26,7 +26,7 @@ export default function ArticlesCarrousel({title, articles, categoryRef} : Carro
     function scrollToNext(){
         if(!contentDiv.current) return;
         if(!leftVisible) setLeftVisible(true);
-        position.current++;
+        position.current += Math.floor((contentDiv.current as HTMLDivElement).clientWidth / 256);
         scrollTo(position.current);
         if((contentDiv.current as HTMLDivElement).scrollLeft + (contentDiv.current as HTMLDivElement).offsetWidth >= (contentDiv.current as HTMLDivElement).scrollWidth){
             setRightVisible(false);
@@ -37,7 +37,7 @@ export default function ArticlesCarrousel({title, articles, categoryRef} : Carro
     function scrollBehind(){
         if(!contentDiv.current) return;
         if(!rightVisible) setRightVisible(true);
-        position.current--;
+        position.current -= Math.floor((contentDiv.current as HTMLDivElement).clientWidth / 256);
         scrollTo(position.current);
         if((contentDiv.current as HTMLDivElement).scrollLeft <= 0){
             setLeftVisible(false);
