@@ -44,7 +44,7 @@ export default function Forum(){
                 </Form>
             </section>
             <section className="w-full py-6 laptopL:grid laptopL:grid-cols-2 laptopL:gap-8">
-                <ArticlesCarrousel title={"Recent articles"} articles={exampleArticles} categoryRef="/category/recent"/>
+                <ArticlesCarrousel title={"Recent articles"} articles={exampleArticles} categoryRef="recent"/>
                 <ArticlesCarrousel title={"Popular articles"} articles={exampleArticles} categoryRef="/category/popular"/>
             </section>
             <section>

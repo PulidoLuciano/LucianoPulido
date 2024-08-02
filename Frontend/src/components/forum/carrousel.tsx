@@ -2,17 +2,11 @@ import { Link } from "luciano-react-router";
 import ArticleLink from "./articleLink";
 import moreIcon from "../../assets/moreRight.svg"
 import { useRef, useState } from "react";
-
-export interface ArticlePreview{
-    title : string
-    image : string
-    date : string
-    url : string
-}
+import { ArticleShortPreview } from "../../types";
 
 interface CarrouselProps{
     title : string
-    articles : ArticlePreview[]
+    articles : ArticleShortPreview[]
     categoryRef : string
 }
 
@@ -66,7 +60,7 @@ export default function ArticlesCarrousel({title, articles, categoryRef} : Carro
                             return <ArticleLink article={article}/>
                         })
                     }
-                    <Link href={categoryRef} className="min-w-60 flex items-center justify-center flex-col my-auto">
+                    <Link href={`/categories/${categoryRef}`} className="min-w-60 flex items-center justify-center flex-col my-auto">
                         <img src={moreIcon} alt="Right arrow in a circle" className="aspect-square h-12"/>
                         <p className="text-lg font-semibold text-pretty">View more</p>
                     </Link>

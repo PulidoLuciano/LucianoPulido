@@ -1,7 +1,7 @@
 import { Link } from "luciano-react-router";
-import { ArticlePreview } from "./carrousel";
+import { ArticleShortPreview } from "../../types";
 
-export default function ArticleLink({article} : {article : ArticlePreview}){
+export default function ArticleLink({article} : {article : ArticleShortPreview}){
     return(
         <Link href={article.url} className="inline-block w-60 h-60">
             <img src={article.image} alt="" className="max-w-full min-w-60 aspect-video"/>
