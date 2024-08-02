@@ -1,5 +1,5 @@
 import { Form } from "pulido-react-form";
-import { useState } from "react";
+import { useRef, useState } from "react";
 
 interface searchBarProps{
   autoFocus? : boolean
@@ -9,12 +9,16 @@ interface searchBarProps{
 export default function SearchBar({autoFocus, value} : searchBarProps) {
   
   const [searchQuery, setQuery] = useState(value);
+  const debounceTimer = useRef<number | undefined>(undefined)
 
-  function changeHandler(event : React.SyntheticEvent<HTMLInputElement>){
+  function changeHandler(event : React.SyntheticEvent<HTMLInputElement>){    
+    clearTimeout(debounceTimer.current);
     setQuery((event.target as HTMLInputElement).value);
-    window.history.pushState({}, "", `/search?q=${(event.target as HTMLInputElement).value}`);
-    const navigationEvent = new Event("pushstate");
-    dispatchEvent(navigationEvent);
+    debounceTimer.current = setTimeout(() => {
+      window.history.pushState({}, "", `/search?q=${(event.target as HTMLInputElement).value}`);
+      const navigationEvent = new Event("pushstate");
+      dispatchEvent(navigationEvent);
+    }, 400);
   }
   
   return (
