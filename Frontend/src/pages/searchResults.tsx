@@ -60,7 +60,7 @@ export default function SearchResults(){
     return(
         <main className="max-w-screen-mobileS tablet:max-w-screen-tablet laptopL:max-w-screen-laptopL m-auto w-full px-8">
             <SearchBar autoFocus={true} value={query as string}/>
-            <h1 className="mt-8 text-3xl">Search results: <span className="text-base text-primary-light">{query}</span></h1>
+            <h1 className="mt-8 text-3xl max-w-screen-laptop mx-auto">Search results: <span className="text-base text-primary-light">{query}</span></h1>
             <ShowExtendedArticles articles={example}/>
         </main>
     )
