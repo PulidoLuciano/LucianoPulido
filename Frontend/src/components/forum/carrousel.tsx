@@ -28,7 +28,7 @@ export default function ArticlesCarrousel({title, articles, categoryRef} : Carro
         if(!leftVisible) setLeftVisible(true);
         position.current += Math.floor((contentDiv.current as HTMLDivElement).clientWidth / 256);
         scrollTo(position.current);
-        if((contentDiv.current as HTMLDivElement).scrollLeft + (contentDiv.current as HTMLDivElement).offsetWidth >= (contentDiv.current as HTMLDivElement).scrollWidth){
+        if(position.current >= articles.length - Math.floor((contentDiv.current as HTMLDivElement).clientWidth / 256)){
             setRightVisible(false);
             return;
         }
@@ -39,7 +39,7 @@ export default function ArticlesCarrousel({title, articles, categoryRef} : Carro
         if(!rightVisible) setRightVisible(true);
         position.current -= Math.floor((contentDiv.current as HTMLDivElement).clientWidth / 256);
         scrollTo(position.current);
-        if((contentDiv.current as HTMLDivElement).scrollLeft <= 0){
+        if(position.current <= 0){
             setLeftVisible(false);
             return;
         }
@@ -58,7 +58,7 @@ export default function ArticlesCarrousel({title, articles, categoryRef} : Carro
             </div>
             <div className="relative">
                 {
-                    (leftVisible) ? <button className="hidden absolute w-12 h-12 text-2xl justify-center items-center font-bold bg-secondary-light rounded-full -left-6 laptop:group-hover:flex top-1/3 shadow-md shadow-black" onClick={scrollBehind}>{"<"}</button> : null
+                    (leftVisible) ? <button className="hidden absolute w-12 h-12 text-2xl justify-center items-center font-bold bg-secondary-light rounded-full -left-6 tablet:flex laptop:group-hover:flex top-1/3 shadow-md shadow-black laptop:hidden" onClick={scrollBehind}>{"<"}</button> : null
                 }
                 <div className="flex flex-col overflow-x-hidden items-center tablet:flex-row tablet:items-start gap-4 py-4" ref={contentDiv}>
                     {
@@ -73,7 +73,7 @@ export default function ArticlesCarrousel({title, articles, categoryRef} : Carro
                 </div>
                 {
                     (rightVisible) ? 
-                    <button className="hidden absolute w-12 h-12 text-2xl justify-center items-center font-bold bg-secondary-light rounded-full -right-6 laptop:group-hover:flex top-1/3 shadow-md shadow-black" onClick={scrollToNext}>{">"}</button> : null
+                    <button className="hidden absolute w-12 h-12 text-2xl justify-center items-center font-bold bg-secondary-light rounded-full -right-6 laptop:group-hover:flex top-1/3 shadow-md shadow-black tablet:flex laptop:hidden" onClick={scrollToNext}>{">"}</button> : null
                 }
             </div>
         </article>
