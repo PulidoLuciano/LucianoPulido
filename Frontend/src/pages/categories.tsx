@@ -1,3 +1,4 @@
+import SearchBar from "../components/forum/searchBar"
 import ShowExtendedArticles from "../components/forum/showExtended"
 import { ArticleExtendedPreview } from "../types"
 
@@ -42,6 +43,7 @@ const example : ArticleExtendedPreview[] = [
 export default function Category({routeParams} : {routeParams : {categoryName : string}}){
     return(
         <main className="max-w-screen-mobileS tablet:max-w-screen-tablet laptopL:max-w-screen-laptopL m-auto w-full px-8">
+            <SearchBar/>
             <h1 className="mt-8 text-3xl">Articles of category: <span className="text-primary-light font-semibold">{routeParams.categoryName}</span></h1>
             <ShowExtendedArticles articles={example}/>
         </main>
