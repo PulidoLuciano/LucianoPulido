@@ -35,6 +35,7 @@ export default function SearchBar({autoFocus, value} : searchBarProps) {
           onChange={changeHandler}
           autoFocus={autoFocus}
           value={searchQuery}
+          autoComplete="off"
         />
       </Form>
     </section>
