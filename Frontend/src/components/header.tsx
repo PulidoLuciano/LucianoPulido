@@ -1,8 +1,5 @@
 import { useState } from "react";
 import menuIcon from "../assets/menu.svg"
-import xIcon from "../assets/x.svg"
-import githubIcon from "../assets/github.svg"
-import linkedInIcon from "../assets/linkedIn.svg"
 import { Link } from "luciano-react-router";
 import TwitterLink from "./socialLinks/twitter";
 import GithubLink from "./socialLinks/github";
