@@ -1,5 +1,4 @@
 import { Link } from "luciano-react-router";
-import SearchBar from "../components/forum/searchBar";
 
 export default function Dashboard(){
     return(
