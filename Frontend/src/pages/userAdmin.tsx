@@ -8,6 +8,7 @@ export default function UserAdmin({routeParams} : {routeParams : {username : str
                 <article className="tablet:flex w-full justify-between pb-2">
                     <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Eveniet accusantium quod eum illo commodi harum aliquid nisi, voluptate quos saepe dolorum minus, aspernatur nemo magnam fuga ullam, maxime expedita sed!</p>
                     <div className="flex gap-2">
+                        <Link href="/articles" className="bg-secondary-light px-1 rounded-lg">Go to article</Link>
                         <button className="bg-secondary-light px-1 rounded-lg">Delete</button>
                     </div>
                 </article>
