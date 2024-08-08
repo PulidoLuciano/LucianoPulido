@@ -90,7 +90,7 @@ export default function Dashboard(){
                     </section>
                     <section className="border-2 border-primary-light rounded-3xl h-96 scroll-auto px-4 py-4">
                         <article className="tablet:flex w-full justify-between">
-                            <Link className="font-semibold" href="/admin/user/:username">Username</Link>
+                            <Link className="font-semibold" href="/admin/user/test">Username</Link>
                             <div className="flex gap-2">
                                 <p>👁 225</p>
                                 <p>🗨 225</p>
