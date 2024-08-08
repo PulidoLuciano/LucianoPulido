@@ -83,14 +83,14 @@ export default function Dashboard(){
                         type="search"
                         name="search"
                         className="w-full rounded-3xl p-2 rounded-l-none border-2 border-primary-light border-l-0 focus:outline-none"
-                        placeholder="Search for an article"
+                        placeholder="Search for an user"
                         autoComplete="off"
                         />
                         <button className="px-2 py-1 bg-primary-dark text-white rounded-xl ml-2">Show actives</button>
                     </section>
                     <section className="border-2 border-primary-light rounded-3xl h-96 scroll-auto px-4 py-4">
                         <article className="tablet:flex w-full justify-between">
-                            <Link className="font-semibold" href="/articles">Username</Link>
+                            <Link className="font-semibold" href="/admin/user/:username">Username</Link>
                             <div className="flex gap-2">
                                 <p>👁 225</p>
                                 <p>🗨 225</p>
