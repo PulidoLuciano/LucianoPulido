@@ -3,6 +3,7 @@ import ReactDOM from 'react-dom/client'
 import './index.css'
 import { RouteObject } from 'luciano-react-router/types'
 import App from './App.tsx' 
+const EditUser = lazy(() => import('./pages/editProfile.tsx'));
 const UserAdmin = lazy(() => import('./pages/userAdmin.tsx'));
 const Dashboard = lazy(() => import('./pages/dashboard.tsx'));
 const Article = lazy(() => import('./pages/article.tsx'));
@@ -44,6 +45,10 @@ const routes: Array<RouteObject> = [
   {
     path: "/admin/user/:username",
     component: UserAdmin
+  },
+  {
+    path: "/user/edit",
+    component: EditUser
   }
 ];
 
