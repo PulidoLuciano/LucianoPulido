@@ -4,6 +4,7 @@ import { Link } from "luciano-react-router";
 import TwitterLink from "./socialLinks/twitter";
 import GithubLink from "./socialLinks/github";
 import LinkedInLink from "./socialLinks/linkedIn";
+import AuthHeader from "./authHeader";
 
 export default function Header(){
     
@@ -22,7 +23,7 @@ export default function Header(){
                 <nav className="hidden laptop:flex gap-5 items-center">
                     <Link href="/" className="hover:text-white">About</Link>
                     <Link href="/articles" className="hover:text-white">Articles</Link>
-                    <Link href="/login" className="bg-secondary-light font-semibold hover:bg-secondary-dark py-1 px-3 rounded-2xl text-black">Log in</Link>
+                    <AuthHeader isMobile={false}/>
                 </nav>
                 <button className="laptop:hidden" onClick={openMobileNav}><img src={menuIcon} alt="Menu icon"/></button>
             </div>
@@ -32,7 +33,7 @@ export default function Header(){
                     <div className="flex flex-col text-center text-2xl gap-6 my-6">
                         <Link href="/" className="hover:text-white">About</Link>
                         <Link href="/articles" className="hover:text-white">Articles</Link>
-                        <Link href="/login" className="bg-secondary-light font-semibold hover:bg-secondary-dark py-1 px-3 rounded-2xl text-black">Log in</Link>
+                        <AuthHeader isMobile={true}/>
                     </div>
                     <div className="flex flex-col items-center gap-2">
                         <h1 className="font-bold text-tertiary select-none pt-2">Luciano Pulido</h1>
