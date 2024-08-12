@@ -20,7 +20,7 @@ export default function Dashboard(){
                 <article>
                     <section className="flex justify-between">
                         <h2 className="text-2xl font-semibold">Articles</h2>
-                        <Link href="/admin/article/add" className="bg-secondary-light font-semibold px-4 py-1 rounded-md">⊕ Add new article</Link>
+                        <Link href="/admin/articles/add" className="bg-secondary-light font-semibold px-4 py-1 rounded-md">⊕ Add new article</Link>
                     </section>
                     <section className="flex justify-around py-4">
                         <span>
@@ -54,7 +54,7 @@ export default function Dashboard(){
                                 <p>👁 225</p>
                                 <p>🗨 225</p>
                                 <button className="bg-secondary-light px-1 rounded-lg">Delete</button>
-                                <Link href="articles/edit/:id" className="bg-secondary-light px-1 rounded-lg">Edit</Link>
+                                <Link href="/admin/articles/edit/:id" className="bg-secondary-light px-1 rounded-lg">Edit</Link>
                             </div>
                         </article>
                     </section>
