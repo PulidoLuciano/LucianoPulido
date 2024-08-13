@@ -1,0 +1,10 @@
+Title1#&{title}#&
+Title2#&{title}#&
+Title3#&{title}#&
+Danger#&{text}#&
+Warning#&{text}#&
+Info#&{text}#&
+Image#&{URL}#&{Description}#&{Alt}#&
+Ordered#&{item}#&{item}...#&
+Unordered#&{item}#&{item}...#&
+Code#&{Code}#&
