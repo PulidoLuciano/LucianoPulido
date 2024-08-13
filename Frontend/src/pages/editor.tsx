@@ -21,13 +21,13 @@ export default function Editor({routeParams} : {routeParams : {articleId : strin
                     <button className="bg-secondary-light p-1 rounded-md">Title 1</button>
                     <button className="bg-secondary-light p-1 rounded-md">Title 2</button>
                     <button className="bg-secondary-light p-1 rounded-md">Title 3</button>
+                    <button className="bg-secondary-light p-1 rounded-md">Paragraph</button>
                     <button className="bg-secondary-light p-1 rounded-md">Danger</button>
                     <button className="bg-secondary-light p-1 rounded-md">Warning</button>
-                    <button className="bg-secondary-light p-1 rounded-md">Quote</button>
+                    <button className="bg-secondary-light p-1 rounded-md">Info</button>
                     <button className="bg-secondary-light p-1 rounded-md">Image</button>
                     <button className="bg-secondary-light p-1 rounded-md">Ordered list</button>
                     <button className="bg-secondary-light p-1 rounded-md">Unordered list</button>
-                    <button className="bg-secondary-light p-1 rounded-md">Table</button>
                     <button className="bg-secondary-light p-1 rounded-md">Code</button>
                 </div>
                 <textarea name="Body" required={true} className="bg-transparent border-b-2 border-primary-light rounded-sm outline-none scroll h-32"/>
