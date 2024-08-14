@@ -8,3 +8,11 @@ export interface ArticleShortPreview{
 interface ArticleExtendedPreview extends ArticleShortPreview{
     description : string
 }
+
+interface Article{
+    title : string
+    description: string
+    image : string
+    date : string
+    body : string
+}
