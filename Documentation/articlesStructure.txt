@@ -5,6 +5,6 @@ Danger#&{text}#&
 Warning#&{text}#&
 Info#&{text}#&
 Image#&{URL}#&{Description}#&{Alt}#&
-Ordered#&{item}#&{item}...#&
-Unordered#&{item}#&{item}...#&
+Ordered#&{item}#&{item}...#&EndList#&
+Unordered#&{item}#&{item}...#&EndList#&
 Code#&{Code}#&
