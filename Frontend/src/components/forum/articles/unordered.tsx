@@ -1,3 +1,3 @@
 export default function Unordered({items} : {items : string[]}){
-    return <div>{items}</div>
+    return <ul className="list-disc list-inside pl-6">{items.map(item => <li>{item}</li>)}</ul>
 }
