@@ -1,3 +1,3 @@
 export default function Paragraph({text} : {text : string}){
-    return <p className="pb-1 indent-8">Lorem ipsum dolor sit, amet consectetur adipisicing elit. Est id officiis voluptas dolore optio quo molestias culpa minima sunt, placeat quod, dignissimos dolorem consectetur sint provident voluptate? Iusto, inventore iste. Lorem ipsum dolor sit amet, consectetur adipisicing elit. Voluptatum illo, omnis iusto commodi provident quo dolorum! Inventore eum mollitia doloribus consequatur pariatur neque, id, quidem qui voluptatem aliquid facilis placeat.</p>
+    return <p className="pb-1 indent-8">{text}</p>
 }
