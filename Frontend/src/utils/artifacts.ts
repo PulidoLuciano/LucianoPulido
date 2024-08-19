@@ -17,7 +17,7 @@ interface ArticleArtifact{
     component : ({} : any) => JSX.Element
 }
 
-enum ArtifactTypes{
+export enum ArtifactTypes{
     OnlyText = "onlyText",
     List = "List",
     Image = "Image",
