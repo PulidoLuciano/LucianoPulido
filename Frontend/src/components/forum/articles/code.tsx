@@ -6,7 +6,7 @@ export default function Code({text, language} : {text : string, language : strin
     
     useEffect(() => {
         Prism.highlightAll();
-    }, []);
+    }, [text, language]);
     
     return (
         <pre className='py-6'>
