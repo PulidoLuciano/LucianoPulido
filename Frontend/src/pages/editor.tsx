@@ -2,12 +2,13 @@ import { ErrorMessage, Form } from "pulido-react-form";
 import ArticleBody from "../components/forum/articleBody";
 import { useState } from "react";
 import { Article } from "../types";
+import ARTICLE_ARTIFACTS from "../utils/artifacts";
 
 export default function Editor({routeParams} : {routeParams : {articleId : string}}){
     
     const [article, setArticle] = useState<Article>({title: "", description:"", date:new Date().toJSON().slice(0, 10), body:"", image: ""});
     
-    function changeTitle(event : React.SyntheticEvent<HTMLInputElement | HTMLTextAreaElement>){
+    function changePreview(event : React.SyntheticEvent<HTMLInputElement | HTMLTextAreaElement>){
         let newArticle : Article = {...article};
         const fieldName = (event.target as HTMLInputElement).name.toLocaleLowerCase();
         if(fieldName === "image"){
@@ -26,35 +27,32 @@ export default function Editor({routeParams} : {routeParams : {articleId : strin
         }
     }
 
+    function handleArtefactClick(event : React.SyntheticEvent<HTMLButtonElement>){
+        event.preventDefault();
+        const artifact = (event.target as HTMLButtonElement).innerText;
+        let body = article.body + "\n" + ARTICLE_ARTIFACTS.filter(type => type.name === artifact)[0].structure;
+        setArticle({...article, body});
+    }
+
     return(
         <main className="laptop:max-w-screen-tablet laptopL:flex laptopL:max-w-none w-full px-2 gap-2 justify-center mx-auto">
             <Form className="w-full flex flex-col py-6 max-w-screen-tablet relative">
                 <label htmlFor="Id" className="font-semibold pb-1 pt-2">Article's id</label>
                 <input type="text" name="Id" readOnly={true} value={routeParams.articleId} className="bg-transparent border-b-2 border-primary-light rounded-sm outline-none text-gray-500"/>
                 <label htmlFor="Title" className="font-semibold pb-1 pt-2">Title</label>
-                <input type="text" name="Title" required={true} maxLength={70} className="bg-transparent border-b-2 border-primary-light rounded-sm outline-none" onChange={changeTitle}/>
+                <input type="text" name="Title" required={true} maxLength={70} className="bg-transparent border-b-2 border-primary-light rounded-sm outline-none" onChange={changePreview}/>
                 <ErrorMessage htmlFor="Title" className="text-red-500 before:content-['ⓘ_']"/>
                 <label htmlFor="Description" className="font-semibold pb-1 pt-2">Description</label>
-                <textarea name="Description" required={true} maxLength={200} className="bg-transparent border-b-2 border-primary-light rounded-sm outline-none" onChange={changeTitle}/>
+                <textarea name="Description" required={true} maxLength={200} className="bg-transparent border-b-2 border-primary-light rounded-sm outline-none" onChange={changePreview}/>
                 <ErrorMessage htmlFor="Description" className="text-red-500 before:content-['ⓘ_']"/>
                 <label htmlFor="Image" className="font-semibold pb-1 pt-2">Image</label>
-                <input type="file" name="Image" required={true} maxLength={70} accept="image/png, image/jpeg" className="bg-transparent border-b-2 border-primary-light rounded-sm outline-none" onChange={changeTitle}/>
+                <input type="file" name="Image" required={true} maxLength={70} accept="image/png, image/jpeg" className="bg-transparent border-b-2 border-primary-light rounded-sm outline-none" onChange={changePreview}/>
                 <ErrorMessage htmlFor="Image" className="text-red-500 before:content-['ⓘ_']"/>
                 <label htmlFor="Body" className="font-semibold pb-1 pt-2">Body</label>
                 <div className="w-full flex justify-between gap-2 py-3 sticky top-11 overflow-x-auto laptopL:min-h-20">
-                    <button className="bg-secondary-light p-1 rounded-md">Title 1</button>
-                    <button className="bg-secondary-light p-1 rounded-md">Title 2</button>
-                    <button className="bg-secondary-light p-1 rounded-md">Title 3</button>
-                    <button className="bg-secondary-light p-1 rounded-md">Paragraph</button>
-                    <button className="bg-secondary-light p-1 rounded-md">Danger</button>
-                    <button className="bg-secondary-light p-1 rounded-md">Warning</button>
-                    <button className="bg-secondary-light p-1 rounded-md">Info</button>
-                    <button className="bg-secondary-light p-1 rounded-md">Image</button>
-                    <button className="bg-secondary-light p-1 rounded-md">Ordered list</button>
-                    <button className="bg-secondary-light p-1 rounded-md">Unordered list</button>
-                    <button className="bg-secondary-light p-1 rounded-md">Code</button>
+                    {ARTICLE_ARTIFACTS.map(artifact => <button className="bg-secondary-light p-1 rounded-md" onClick={handleArtefactClick}>{artifact.name}</button>)}
                 </div>
-                <textarea name="Body" required={true} className="bg-transparent border-b-2 border-primary-light rounded-sm outline-none scroll h-32" onChange={changeTitle}/>
+                <textarea name="Body" required={true} className="bg-transparent border-b-2 border-primary-light rounded-sm outline-none scroll h-32" onChange={changePreview} value={article.body}/>
                 <ErrorMessage htmlFor="Body" className="text-red-500 before:content-['ⓘ_']" />
                 <div className="mt-2 pb-1 relative flex items-center gap-1">
                     <input type="checkbox" name="receiveEmail" id="receiveEmail" className="opacity-0 cursor-pointer size-6 peer z-10"/> 
