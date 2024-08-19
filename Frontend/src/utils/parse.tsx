@@ -1,59 +1,25 @@
-import Code from "../components/forum/articles/code";
-import Danger from "../components/forum/articles/danger";
-import Image from "../components/forum/articles/image";
-import Info from "../components/forum/articles/info";
-import Ordered from "../components/forum/articles/ordered";
-import Paragraph from "../components/forum/articles/paragraph";
-import Title1 from "../components/forum/articles/Title1";
-import Title2 from "../components/forum/articles/Title2";
-import Title3 from "../components/forum/articles/Title3";
-import Unordered from "../components/forum/articles/unordered";
-import Warning from "../components/forum/articles/warning";
-
-const RESERVED_WORDS = ["Title1", "Title2", "Title3", "Paragraph", "Danger", "Warning", "Info", "Image", "Ordered", "Unordered", "EndList", "Code"]
+import ARTICLE_ARTIFACTS, { ArtifactTypes } from "./artifacts";
 
 export default function parse(body : string){
     const components : JSX.Element[] = [];
-    //body = body.split("\n").join("");
     let bodyParts = body.split("#&");
-    console.log(bodyParts);
     while(bodyParts.length){
         let entry = bodyParts.shift();
-        switch(entry){
-            case "Title1":
-                onlyText(components, bodyParts, Title1);
-                break;
-            case "Title2":
-                onlyText(components, bodyParts, Title2);
-                break;
-            case "Title3":
-                onlyText(components, bodyParts, Title3);
-                break;
-            case "Paragraph":
-                onlyText(components, bodyParts, Paragraph);
-                break;
-            case "Danger":
-                onlyText(components, bodyParts, Danger);
-                break;
-            case "Warning":
-                onlyText(components, bodyParts, Warning);
-                break;
-            case "Info":
-                onlyText(components, bodyParts, Info);
-                break;
-            case "Ordered":
-                List(components, bodyParts, Ordered)
-                break;
-            case "Unordered":
-                List(components, bodyParts, Unordered)
-                break;
-            case "Image":
-                ImageWithDescription(components, bodyParts, Image)
-                break;
-            case "Code":
-                LanguageCode(components, bodyParts, Code)
-                break;
-        }
+        const artifact = ARTICLE_ARTIFACTS.filter(artifactType => artifactType.name === entry)[0];
+        if(artifact)
+            switch(artifact.type){
+                case ArtifactTypes.OnlyText:
+                    onlyText(components, bodyParts, artifact.component);
+                    break;
+                case ArtifactTypes.List:
+                    List(components, bodyParts, artifact.component);
+                    break;
+                case ArtifactTypes.Image:
+                    ImageWithDescription(components, bodyParts, artifact.component);
+                    break;
+                case ArtifactTypes.Code:
+                    LanguageCode(components, bodyParts, artifact.component);
+            }
     }
 
     return components;
