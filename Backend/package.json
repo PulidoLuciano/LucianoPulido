@@ -1,7 +1,7 @@
 {
   "name": "lucianopulidoapi",
   "version": "1.0.0",
-  "description": "Backend for Luciano Pulido´s page.",
+  "description": "Backend for Luciano Pulido's page.",
   "main": "index.ts",
   "scripts": {
     "test": "vitest"
