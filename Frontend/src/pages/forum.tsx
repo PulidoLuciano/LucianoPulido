@@ -40,13 +40,13 @@ export default function Forum(){
             <SearchBar/>
             <section className="w-full py-6 laptopL:grid laptopL:grid-cols-2 laptopL:gap-8">
                 <ArticlesCarrousel title={"Recent articles"} articles={exampleArticles} categoryRef="recent"/>
-                <ArticlesCarrousel title={"Popular articles"} articles={exampleArticles} categoryRef="/category/popular"/>
+                <ArticlesCarrousel title={"Popular articles"} articles={exampleArticles} categoryRef="popular"/>
             </section>
             <section>
-                <ArticlesCarrousel title={"React articles"} articles={exampleArticles} categoryRef="/category/recent"/>
-                <ArticlesCarrousel title={"Data base articles"} articles={exampleArticles} categoryRef="/category/recent"/>
-                <ArticlesCarrousel title={"Network articles"} articles={exampleArticles} categoryRef="/category/recent"/>
-                <ArticlesCarrousel title={"Management articles"} articles={exampleArticles} categoryRef="/category/recent"/>
+                <ArticlesCarrousel title={"React articles"} articles={exampleArticles} categoryRef="react"/>
+                <ArticlesCarrousel title={"Data base articles"} articles={exampleArticles} categoryRef="databases"/>
+                <ArticlesCarrousel title={"Network articles"} articles={exampleArticles} categoryRef="network"/>
+                <ArticlesCarrousel title={"Management articles"} articles={exampleArticles} categoryRef="management"/>
             </section>
         </main>
     )
