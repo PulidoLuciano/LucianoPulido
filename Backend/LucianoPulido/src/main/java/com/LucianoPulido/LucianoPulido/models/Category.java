@@ -24,4 +24,34 @@ public class Category {
 
     @ManyToMany(mappedBy = "categories")
     Set<Article> articles;
+
+    public Category(UUID id, String name, Set<Article> articles) {
+        this.id = id;
+        this.name = name;
+        this.articles = articles;
+    }
+
+    public UUID getId() {
+        return id;
+    }
+
+    public void setId(UUID id) {
+        this.id = id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public Set<Article> getArticles() {
+        return articles;
+    }
+
+    public void setArticles(Set<Article> articles) {
+        this.articles = articles;
+    }
 }

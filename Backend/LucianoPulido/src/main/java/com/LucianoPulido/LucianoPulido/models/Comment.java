@@ -42,4 +42,71 @@ public class Comment {
 
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "mainComment")
     private Set<Response> responses;
+
+    public Comment(UUID id, Date date, String message, Long score, Article article, User user,
+            Set<Response> responses) {
+        this.id = id;
+        this.date = date;
+        this.message = message;
+        this.score = score;
+        this.article = article;
+        this.user = user;
+        this.responses = responses;
+    }
+
+    public UUID getId() {
+        return id;
+    }
+
+    public void setId(UUID id) {
+        this.id = id;
+    }
+
+    public Date getDate() {
+        return date;
+    }
+
+    public void setDate(Date date) {
+        this.date = date;
+    }
+
+    public String getMessage() {
+        return message;
+    }
+
+    public void setMessage(String message) {
+        this.message = message;
+    }
+
+    public Long getScore() {
+        return score;
+    }
+
+    public void setScore(Long score) {
+        this.score = score;
+    }
+
+    public Article getArticle() {
+        return article;
+    }
+
+    public void setArticle(Article article) {
+        this.article = article;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
+
+    public Set<Response> getResponses() {
+        return responses;
+    }
+
+    public void setResponses(Set<Response> responses) {
+        this.responses = responses;
+    }
 }

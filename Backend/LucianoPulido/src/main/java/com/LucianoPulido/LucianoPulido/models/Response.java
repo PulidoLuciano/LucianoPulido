@@ -26,4 +26,34 @@ public class Response {
     @OneToOne
     @JoinColumn(name = "response_comment_id", nullable = false, updatable = false)
     private Comment responseComment;
+
+    public Response(UUID id, Comment mainComment, Comment responseComment) {
+        this.id = id;
+        this.mainComment = mainComment;
+        this.responseComment = responseComment;
+    }
+
+    public UUID getId() {
+        return id;
+    }
+
+    public void setId(UUID id) {
+        this.id = id;
+    }
+
+    public Comment getMainComment() {
+        return mainComment;
+    }
+
+    public void setMainComment(Comment mainComment) {
+        this.mainComment = mainComment;
+    }
+
+    public Comment getResponseComment() {
+        return responseComment;
+    }
+
+    public void setResponseComment(Comment responseComment) {
+        this.responseComment = responseComment;
+    }
 }
