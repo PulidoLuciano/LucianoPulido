@@ -1,6 +1,16 @@
 package com.LucianoPulido.LucianoPulido.persistence.base;
 
-import org.springframework.data.repository.CrudRepository;
+import java.util.Optional;
 
-public interface GenericRepository<T,ID> extends CrudRepository<T,ID>{
+public interface GenericRepository<T,ID>{
+
+    public T save(T entity);
+
+    public Optional<T> findById(ID id);
+
+    public boolean existsById(ID id);
+
+    public Iterable<T> findAll();
+
+    public void deleteById(ID id);
 }

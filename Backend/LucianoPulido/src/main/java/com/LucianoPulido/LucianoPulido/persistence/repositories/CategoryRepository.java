@@ -1,10 +1,12 @@
 package com.LucianoPulido.LucianoPulido.persistence.repositories;
 
-import java.util.UUID;
+import org.springframework.data.repository.CrudRepository;
+import org.springframework.stereotype.Repository;
 
 import com.LucianoPulido.LucianoPulido.models.Category;
 import com.LucianoPulido.LucianoPulido.persistence.base.GenericRepository;
 
-public interface CategoryRepository extends GenericRepository<Category, UUID>{
+@Repository
+public interface CategoryRepository extends GenericRepository<Category, String>, CrudRepository<Category, String>{
 
 }
