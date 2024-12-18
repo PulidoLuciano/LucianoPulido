@@ -1,7 +1,5 @@
 package com.LucianoPulido.LucianoPulido.services.implementations;
 
-import java.util.UUID;
-
 import org.springframework.stereotype.Service;
 
 import com.LucianoPulido.LucianoPulido.models.User;
@@ -10,6 +8,6 @@ import com.LucianoPulido.LucianoPulido.services.base.GenericServiceImpl;
 import com.LucianoPulido.LucianoPulido.services.interfaces.UserService;
 
 @Service
-public class UserServiceImpl extends GenericServiceImpl<User, UUID, UserRepository> implements UserService{
+public class UserServiceImpl extends GenericServiceImpl<User, String, UserRepository> implements UserService{
 
 }

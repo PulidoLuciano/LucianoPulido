@@ -1,13 +1,10 @@
 package com.LucianoPulido.LucianoPulido.models;
 
 import java.util.Set;
-import java.util.UUID;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
@@ -17,10 +14,6 @@ import jakarta.persistence.Table;
 public class User {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.UUID)
-    private UUID id;
-
-    @Column
     private String email;
 
     @Column
@@ -38,23 +31,14 @@ public class User {
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "user")
     private Set<Comment> comments;
 
-    public User(UUID id, String email, String password, String username, Boolean isAdmin, Boolean sendEmails,
+    public User(String email, String password, String username, Boolean isAdmin, Boolean sendEmails,
             Set<Comment> comments) {
-        this.id = id;
         this.email = email;
         this.password = password;
         this.username = username;
         this.isAdmin = isAdmin;
         this.sendEmails = sendEmails;
         this.comments = comments;
-    }
-
-    public UUID getId() {
-        return id;
-    }
-
-    public void setId(UUID id) {
-        this.id = id;
     }
 
     public String getEmail() {
