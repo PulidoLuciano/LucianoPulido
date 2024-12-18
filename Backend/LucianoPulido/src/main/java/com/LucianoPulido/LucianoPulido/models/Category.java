@@ -1,12 +1,9 @@
 package com.LucianoPulido.LucianoPulido.models;
 
 import java.util.Set;
-import java.util.UUID;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.ManyToMany;
 import jakarta.persistence.Table;
@@ -16,8 +13,7 @@ import jakarta.persistence.Table;
 public class Category {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.UUID)
-    private UUID id;
+    private String url;
 
     @Column
     private String name;
@@ -25,18 +21,18 @@ public class Category {
     @ManyToMany(mappedBy = "categories")
     Set<Article> articles;
 
-    public Category(UUID id, String name, Set<Article> articles) {
-        this.id = id;
+    public Category(String url, String name, Set<Article> articles) {
+        this.url = url;
         this.name = name;
         this.articles = articles;
     }
 
-    public UUID getId() {
-        return id;
+    public String getUrl() {
+        return url;
     }
 
-    public void setId(UUID id) {
-        this.id = id;
+    public void setUrl(String url) {
+        this.url = url;
     }
 
     public String getName() {
