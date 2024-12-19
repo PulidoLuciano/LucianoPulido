@@ -2,13 +2,10 @@ package com.LucianoPulido.LucianoPulido.models;
 
 import java.util.Date;
 import java.util.Set;
-import java.util.UUID;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.JoinTable;
@@ -21,8 +18,7 @@ import jakarta.persistence.Table;
 public class Article {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.UUID)
-    private UUID id;
+    private String url;
 
     @Column
     private Date date;
@@ -52,9 +48,9 @@ public class Article {
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "article")
     private Set<Comment> comments;
 
-    public Article(UUID id, Date date, boolean published, String title, String imageUrl, String description,
+    public Article(String url, Date date, boolean published, String title, String imageUrl, String description,
             String body, Long views, Set<Category> categories, Set<Comment> comments) {
-        this.id = id;
+        this.url = url;
         this.date = date;
         this.published = published;
         this.title = title;
@@ -66,12 +62,12 @@ public class Article {
         this.comments = comments;
     }
 
-    public UUID getId() {
-        return id;
+    public String getUrl() {
+        return url;
     }
 
-    public void setId(UUID id) {
-        this.id = id;
+    public void setUrl(String url) {
+        this.url = url;
     }
 
     public Date getDate() {
