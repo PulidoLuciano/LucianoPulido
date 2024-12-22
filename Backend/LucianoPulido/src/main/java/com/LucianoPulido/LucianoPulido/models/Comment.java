@@ -40,11 +40,12 @@ public class Comment {
     @JoinColumn(name = "user_id", nullable = false, updatable = false)
     private User user;
 
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "mainComment")
-    private Set<Response> responses;
+    @OneToMany(cascade = CascadeType.ALL)
+    @JoinColumn(name = "parent_id", nullable = true, updatable = false)
+    private Set<Comment> responses;
 
     public Comment(UUID id, Date date, String message, Long score, Article article, User user,
-            Set<Response> responses) {
+            Set<Comment> responses) {
         this.id = id;
         this.date = date;
         this.message = message;
@@ -102,11 +103,11 @@ public class Comment {
         this.user = user;
     }
 
-    public Set<Response> getResponses() {
+    public Set<Comment> getResponses() {
         return responses;
     }
 
-    public void setResponses(Set<Response> responses) {
+    public void setResponses(Set<Comment> responses) {
         this.responses = responses;
     }
 }
