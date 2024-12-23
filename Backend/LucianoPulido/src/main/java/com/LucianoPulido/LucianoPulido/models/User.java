@@ -74,7 +74,7 @@ public class User {
 
     public void setUsername(String username) {
         if(username.isBlank() || username == null) throw new IllegalArgumentException("Username must not be blank");
-        if(username.length() > 15) throw new IllegalArgumentException("Username must not be longer than 15 characters");
+        if(username.length() > 30) throw new IllegalArgumentException("Username must not be longer than 30 characters");
         if(!username.matches("^[a-zA-Z0-9._-]+$")) throw new IllegalArgumentException("Username must only contain letters, numbers, periods, underscores, and hyphens");
         this.username = username;
     }

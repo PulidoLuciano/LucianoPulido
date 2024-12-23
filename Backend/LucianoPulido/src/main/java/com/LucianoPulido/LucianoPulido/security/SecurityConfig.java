@@ -3,6 +3,7 @@ package com.LucianoPulido.LucianoPulido.security;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
@@ -46,13 +47,13 @@ public class SecurityConfig {
         http.cors(cors -> cors.configurationSource(customCorsConfiguration))
         .csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests((req) -> {
-                    /*req.requestMatchers("/login").permitAll();
+                    req.requestMatchers(HttpMethod.POST, "/user").permitAll();
+                    req.requestMatchers("/login").permitAll();
                     req.requestMatchers(HttpMethod.GET, "/**").hasAnyAuthority("ADMIN");
                     req.requestMatchers(HttpMethod.POST, "/**").hasAnyAuthority("ADMIN");
                     req.requestMatchers(HttpMethod.PUT, "/**").hasAnyAuthority("ADMIN");
                     req.requestMatchers(HttpMethod.DELETE, "/**").hasAnyAuthority("ADMIN");
-                    req.anyRequest().authenticated();*/
-                    req.anyRequest().anonymous();
+                    req.anyRequest().authenticated();
                 }).httpBasic(Customizer.withDefaults());
 
         http.exceptionHandling( exception -> exception.accessDeniedHandler(accessDeniedHandler)

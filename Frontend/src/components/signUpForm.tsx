@@ -12,6 +12,12 @@ const ErrorMessages = [
         messages: {
             equalize: "Passwords are different"
         }
+    },
+    {
+      name: "Username",
+      messages: {
+        pattern: "Only letters, numbers, and . _ - are allowed"
+      }
     }
 ]
 
@@ -37,7 +43,7 @@ export default function SignUpForm() {
       <input
         type="text"
         required={true}
-        maxLength={15}
+        maxLength={30}
         pattern="^[a-zA-Z0-9._-]+$"
         name="Username"
         className="bg-transparent border-b-2 border-primary-light rounded-sm outline-none"
