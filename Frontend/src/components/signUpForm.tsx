@@ -38,6 +38,7 @@ export default function SignUpForm() {
         type="text"
         required={true}
         maxLength={15}
+        pattern="^[a-zA-Z0-9._-]+$"
         name="Username"
         className="bg-transparent border-b-2 border-primary-light rounded-sm outline-none"
       />

@@ -1,13 +1,25 @@
 package com.LucianoPulido.LucianoPulido.controllers.data.dto;
 
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
+
 public class UserDTO {
 
+    @NotBlank
+    @Email
     private String email;
 
+    @NotBlank
+    @Size(min = 5, max = 255)
     private String password;
 
+    @NotBlank
+    @Size(max= 15)
     private String username;
 
+    @NotNull
     private Boolean sendEmails;
 
     public UserDTO() {
