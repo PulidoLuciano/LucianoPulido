@@ -49,6 +49,7 @@ public class SecurityConfig {
                 .authorizeHttpRequests((req) -> {
                     req.requestMatchers(HttpMethod.POST, "/user").permitAll();
                     req.requestMatchers("/login").permitAll();
+                    req.requestMatchers(HttpMethod.POST, "/contact").permitAll();
                     req.requestMatchers(HttpMethod.GET, "/**").hasAnyAuthority("ADMIN");
                     req.requestMatchers(HttpMethod.POST, "/**").hasAnyAuthority("ADMIN");
                     req.requestMatchers(HttpMethod.PUT, "/**").hasAnyAuthority("ADMIN");
