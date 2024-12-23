@@ -20,12 +20,6 @@ const messages = [
         }
     },
     {
-        name: "Name",
-        messages: {
-            maxLength: "Name must not excede 30 characters"
-        }
-    },
-    {
         name: "Message",
         messages: {
             maxLength: "Message must not excede 300 characters"
@@ -69,7 +63,6 @@ export default function PortfolioForm() {
       <input
         type="email"
         placeholder="example@example.com"
-        maxLength={50}
         name="Email"
         required={true}
         className="bg-transparent border-b-2 border-primary-light rounded-sm outline-none"

@@ -1,13 +1,25 @@
 package com.LucianoPulido.LucianoPulido.controllers.data.dto;
 
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Size;
+
 public class ContactDTO {
 
+    @NotBlank(message = "Name is required")
+    @Size(max = 30, message = "Name must be less than 30 characters")
     private String name;
 
+    @NotBlank
+    @Email
     private String email;
 
+    @NotBlank
+    @Size(max = 30, message = "Subject must not be longer than 30 characters")
     private String subject;
 
+    @NotBlank
+    @Size(max = 300, message = "Message must not be longer than 300 characters")
     private String message;
 
     public ContactDTO() {

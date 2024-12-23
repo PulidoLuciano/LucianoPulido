@@ -33,18 +33,18 @@ public class Contact {
     }
 
     public Contact(String name, String email, String subject, String message) {
-        this.name = name;
-        this.email = email;
-        this.subject = subject;
-        this.message = message;
+        setName(name);
+        setEmail(email);
+        setSubject(subject);
+        setMessage(message);
     }
 
     public Contact(UUID id, String name, String email, String subject, String message) {
-        this.id = id;
-        this.name = name;
-        this.email = email;
-        this.subject = subject;
-        this.message = message;
+        setId(id);
+        setName(name);
+        setEmail(email);
+        setSubject(subject);
+        setMessage(message);
     }
 
     public UUID getId() {
@@ -60,6 +60,8 @@ public class Contact {
     }
 
     public void setName(String name) {
+        if(name.isBlank() || name == null) throw new IllegalArgumentException("Name must not be blank");
+        if(name.length() > 30) throw new IllegalArgumentException("Name must not be longer than 30 characters");
         this.name = name;
     }
 
@@ -68,6 +70,8 @@ public class Contact {
     }
 
     public void setEmail(String email) {
+        if(email.isBlank() || email == null) throw new IllegalArgumentException("Email must not be blank");
+        if(!email.matches("^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@((\\[[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}\\])|(([a-zA-Z\\-0-9]+\\.)+[a-zA-Z]{2,}))$")) throw new IllegalArgumentException(email + " is not a valid email");
         this.email = email;
     }
 
@@ -76,6 +80,8 @@ public class Contact {
     }
 
     public void setSubject(String subject) {
+        if(subject.isBlank() || subject == null) throw new IllegalArgumentException("Subject must not be blank");
+        if(subject.length() > 30) throw new IllegalArgumentException("Subject must not be longer than 30 characters");
         this.subject = subject;
     }
 
@@ -84,6 +90,8 @@ public class Contact {
     }
 
     public void setMessage(String message) {
+        if(message.isBlank() || message == null) throw new IllegalArgumentException("Message must not be blank");
+        if(message.length() > 300) throw new IllegalArgumentException("Message must not be longer than 300 characters");
         this.message = message;
     }
 }
