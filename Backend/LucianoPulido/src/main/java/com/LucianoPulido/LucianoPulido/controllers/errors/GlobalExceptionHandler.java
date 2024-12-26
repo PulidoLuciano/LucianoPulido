@@ -16,6 +16,8 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.servlet.resource.NoResourceFoundException;
 
+import com.LucianoPulido.LucianoPulido.security.TokenException;
+
 @ControllerAdvice
 public class GlobalExceptionHandler{
     @ExceptionHandler(NoResourceFoundException.class)
@@ -57,6 +59,12 @@ public class GlobalExceptionHandler{
     @ExceptionHandler(AccessDeniedException.class)
     public ResponseEntity<ErrorResponse> handleAccessDeniedException(AccessDeniedException ex){
         ErrorResponse response = new ErrorResponse("No tienes permisos para hacer eso", createDetails(ex));
+        return new ResponseEntity<>(response, HttpStatus.UNAUTHORIZED);
+    }
+
+    @ExceptionHandler(TokenException.class)
+    public ResponseEntity<ErrorResponse> handleAccessDeniedException(TokenException ex){
+        ErrorResponse response = new ErrorResponse("El token enviado es incorrecto", createDetails(ex));
         return new ResponseEntity<>(response, HttpStatus.UNAUTHORIZED);
     }
 

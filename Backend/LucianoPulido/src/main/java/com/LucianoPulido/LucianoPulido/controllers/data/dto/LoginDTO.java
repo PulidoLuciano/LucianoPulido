@@ -1,13 +1,22 @@
 package com.LucianoPulido.LucianoPulido.controllers.data.dto;
 
+import jakarta.validation.constraints.NotEmpty;
+
 public class LoginDTO {
     
     private String email;
     private String password;
 
-    public LoginDTO(String email, String password) {
+    @NotEmpty(message = "Keep logged in must be specified")
+    private Boolean keepLoggedIn;
+    
+    public LoginDTO() {
+    }
+
+    public LoginDTO(String email, String password, Boolean keepLoggedIn) {
         this.email = email;
         this.password = password;
+        this.keepLoggedIn = keepLoggedIn;
     }
 
     public String getEmail() {
@@ -24,5 +33,13 @@ public class LoginDTO {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public Boolean getKeepLoggedIn() {
+        return keepLoggedIn;
+    }
+
+    public void setKeepLoggedIn(Boolean keepLoggedIn) {
+        this.keepLoggedIn = keepLoggedIn;
     }
 }

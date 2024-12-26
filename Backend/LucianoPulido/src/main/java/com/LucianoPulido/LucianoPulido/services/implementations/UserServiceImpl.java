@@ -21,4 +21,9 @@ public class UserServiceImpl extends GenericServiceImpl<User, UUID, UserReposito
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         return super.save(user);
     }
+
+    @Override
+    public User findByEmail(String email) {
+        return super.getRepositorio().findByEmail(email).orElseThrow(() -> new IllegalArgumentException("User not found"));
+    }
 }

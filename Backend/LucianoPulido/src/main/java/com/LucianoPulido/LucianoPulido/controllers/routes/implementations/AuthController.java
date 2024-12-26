@@ -1,7 +1,5 @@
 package com.LucianoPulido.LucianoPulido.controllers.routes.implementations;
 
-import java.util.Map;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -14,6 +12,7 @@ import com.LucianoPulido.LucianoPulido.controllers.data.dto.UserDTO;
 import com.LucianoPulido.LucianoPulido.controllers.data.mappers.UserMapper;
 import com.LucianoPulido.LucianoPulido.models.Session;
 import com.LucianoPulido.LucianoPulido.models.User;
+import com.LucianoPulido.LucianoPulido.security.TokenException;
 import com.LucianoPulido.LucianoPulido.services.interfaces.AuthService;
 
 @RestController
@@ -30,25 +29,31 @@ public class AuthController {
     public ResponseEntity<JwtAuthResponse> register(@Validated @RequestBody UserDTO userDto){
         User user = userMapper.toEntity(userDto);
         Session session = authService.register(user);
-        JwtAuthResponse jwtAuthResponse = new JwtAuthResponse();
-        jwtAuthResponse.setUsername(session.getUser().getUsername());
-        jwtAuthResponse.setIsAdmin(session.getUser().getIsAdmin());
-        jwtAuthResponse.setAccessToken(session.getAccessToken());
-        jwtAuthResponse.setRefreshToken(session.getToken());
-        jwtAuthResponse.setTokenType("Bearer");
+        JwtAuthResponse jwtAuthResponse = createJwtResponse(session);
         return new ResponseEntity<>(jwtAuthResponse, HttpStatus.CREATED);
     }
     
     @PostMapping("/login")
     public ResponseEntity<JwtAuthResponse> login(@RequestBody LoginDTO loginDto){
-        JwtAuthResponse jwtAuthResponse = new JwtAuthResponse();
-        return new ResponseEntity<>(jwtAuthResponse, HttpStatus.OK);
+        Session session = authService.login(loginDto.getEmail(), loginDto.getPassword(), loginDto.getKeepLoggedIn());
+        JwtAuthResponse jwtAuthResponse = createJwtResponse(session);
+        return new ResponseEntity<>(jwtAuthResponse, HttpStatus.CREATED);
     }
 
     @PostMapping("/refresh")
-    public ResponseEntity<JwtAuthResponse> refresh(@RequestBody LoginDTO loginDto){
-        JwtAuthResponse jwtAuthResponse = new JwtAuthResponse();
+    public ResponseEntity<JwtAuthResponse> refresh(@RequestHeader("Authorization") String authorizationHeader) throws TokenException{
+        Session session = authService.refresh(authorizationHeader);
+        JwtAuthResponse jwtAuthResponse = createJwtResponse(session);
         return new ResponseEntity<>(jwtAuthResponse, HttpStatus.OK);
     }
 
+    private JwtAuthResponse createJwtResponse(Session session){
+        JwtAuthResponse jwtResponse = new JwtAuthResponse();
+        jwtResponse.setUsername(session.getUser().getUsername());
+        jwtResponse.setIsAdmin(session.getUser().getIsAdmin());
+        jwtResponse.setAccessToken(session.getAccessToken());
+        jwtResponse.setRefreshToken(session.getToken());
+        jwtResponse.setTokenType("Bearer");
+        return jwtResponse;
+    }
 }

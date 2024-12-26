@@ -23,6 +23,9 @@ public class Session {
     @Column
     private Date issued;
 
+    @Column
+    private Boolean keepLoggedIn = false;
+
     @ManyToOne(optional = false)
     @JoinColumn(name = "user_id", nullable = false, updatable = false)
     private User user;
@@ -30,17 +33,19 @@ public class Session {
     public Session() {
     }
 
-    public Session(String token, Date issued, User user) {
+    public Session(String token, Date issued, Boolean keepLoggedIn, User user) {
         this.token = token;
         this.issued = issued;
+        this.keepLoggedIn = keepLoggedIn;
         this.user = user;
     }
 
-    public Session(String token, Date issued, User user, String accessToken) {
+    public Session(String accessToken, String token, Date issued, Boolean keepLoggedIn, User user) {
+        this.accessToken = accessToken;
         this.token = token;
         this.issued = issued;
+        this.keepLoggedIn = keepLoggedIn;
         this.user = user;
-        this.accessToken = accessToken;
     }
 
     public String getToken() {
@@ -73,5 +78,13 @@ public class Session {
 
     public void setAccessToken(String accessToken) {
         this.accessToken = accessToken;
+    }
+
+    public Boolean getKeepLoggedIn() {
+        return keepLoggedIn;
+    }
+
+    public void setKeepLoggedIn(Boolean keepLoggedIn) {
+        this.keepLoggedIn = keepLoggedIn;
     }
 }

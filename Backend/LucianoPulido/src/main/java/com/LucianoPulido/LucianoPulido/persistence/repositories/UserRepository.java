@@ -1,5 +1,6 @@
 package com.LucianoPulido.LucianoPulido.persistence.repositories;
 
+import java.util.Optional;
 import java.util.UUID;
 
 import org.springframework.data.repository.CrudRepository;
@@ -10,4 +11,6 @@ import com.LucianoPulido.LucianoPulido.persistence.base.GenericRepository;
 
 @Repository
 public interface UserRepository extends GenericRepository<User, UUID>, CrudRepository<User, UUID>{
+
+    Optional<User> findByEmail(String username);
 }
