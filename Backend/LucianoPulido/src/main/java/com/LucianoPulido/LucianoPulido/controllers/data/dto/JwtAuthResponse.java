@@ -5,15 +5,17 @@ public class JwtAuthResponse {
     private String username;
     private Boolean isAdmin;
     private String accessToken;
+    private String refreshToken;
     private String tokenType = "Bearer";
     
     public JwtAuthResponse() {
     }
 
-    public JwtAuthResponse(String username, Boolean isAdmin, String accessToken, String tokenType) {
+    public JwtAuthResponse(String username, Boolean isAdmin, String accessToken, String refreshToken, String tokenType) {
         this.isAdmin = isAdmin;
         this.accessToken = accessToken;
         this.tokenType = tokenType;
+        this.refreshToken = refreshToken;
     }
 
     public String getAccessToken() {
@@ -46,5 +48,13 @@ public class JwtAuthResponse {
 
     public void setUsername(String username) {
         this.username = username;
+    }
+
+    public String getRefreshToken() {
+        return refreshToken;
+    }
+
+    public void setRefreshToken(String refreshToken) {
+        this.refreshToken = refreshToken;
     }
 }

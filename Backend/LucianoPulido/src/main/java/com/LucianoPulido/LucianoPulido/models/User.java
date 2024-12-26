@@ -1,12 +1,14 @@
 package com.LucianoPulido.LucianoPulido.models;
 
 import java.util.Set;
-
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import java.util.UUID;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
@@ -16,22 +18,29 @@ import jakarta.persistence.Table;
 public class User {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.UUID)
+    private UUID id;
+
+    @Column(unique = true)
+    private String username;
+    
+    @Column(unique = true)
     private String email;
 
     @Column
     private String password;
 
-    @Column
-    private String username;
-
     @Column(name = "is_admin")
-    private Boolean isAdmin;
+    private Boolean isAdmin = false;
 
     @Column(name = "send_emails")
     private Boolean sendEmails;
 
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "user")
     private Set<Comment> comments;
+
+    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    private Set<Session> sessions;
     
     public User() {
     }
@@ -45,6 +54,18 @@ public class User {
         setSendEmails(sendEmails);
         setComments(comments);
         setIsAdmin(false);
+    }
+
+    public User(UUID id, String username, String email, String password, Boolean isAdmin, Boolean sendEmails,
+            Set<Comment> comments, Set<Session> sessions) {
+        this.id = id;
+        this.username = username;
+        this.email = email;
+        this.password = password;
+        this.isAdmin = isAdmin;
+        this.sendEmails = sendEmails;
+        this.comments = comments;
+        this.sessions = sessions;
     }
 
     public String getEmail() {
@@ -63,9 +84,7 @@ public class User {
 
     public void setPassword(String password) {
         if(password.isBlank() || password == null) throw new IllegalArgumentException("Password must not be blank");
-        if(password.length() < 5) throw new IllegalArgumentException("Password must not be shorter than 5 characters");
-        if(password.length() > 30) throw new IllegalArgumentException("Password must not be longer than 255 characters");
-        this.password = new BCryptPasswordEncoder().encode(password);
+        this.password = password;
     }
 
     public String getUsername() {
@@ -101,5 +120,21 @@ public class User {
 
     public void setComments(Set<Comment> comments) {
         this.comments = comments;
+    }
+
+    public UUID getId() {
+        return id;
+    }
+
+    public void setId(UUID id) {
+        this.id = id;
+    }
+
+    public Set<Session> getSessions() {
+        return sessions;
+    }
+
+    public void setSessions(Set<Session> sessions) {
+        this.sessions = sessions;
     }
 }

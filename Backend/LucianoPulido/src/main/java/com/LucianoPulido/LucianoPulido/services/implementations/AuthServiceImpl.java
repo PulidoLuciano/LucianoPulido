@@ -1,40 +1,48 @@
 package com.LucianoPulido.LucianoPulido.services.implementations;
 
+import java.util.Date;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
+import com.LucianoPulido.LucianoPulido.models.Session;
 import com.LucianoPulido.LucianoPulido.models.User;
-import com.LucianoPulido.LucianoPulido.persistence.repositories.UserRepository;
-import com.LucianoPulido.LucianoPulido.security.JwtTokenProvider;
+import com.LucianoPulido.LucianoPulido.persistence.repositories.SessionRepository;
+import com.LucianoPulido.LucianoPulido.security.JwtService;
 import com.LucianoPulido.LucianoPulido.services.interfaces.AuthService;
+import com.LucianoPulido.LucianoPulido.services.interfaces.UserService;
 
 @Service
 public class AuthServiceImpl implements AuthService {
 
     @Autowired
-    private AuthenticationManager authenticationManager;
+    UserService userService;
+
     @Autowired
-    private JwtTokenProvider jwtTokenProvider;
+    JwtService jwtService;
+
     @Autowired
-    private UserRepository usuariosRepository;
+    SessionRepository sessionRepository;
+    
+    @Override
+    public Session login(String email, String password) {
+        return null;
+    }
 
     @Override
-    public Map<String, Object> login(String email, String password) {
+    public Session register(User user) {
+        user = userService.save(user);
+        String accessToken = jwtService.createAccessToken(user);
+        String refreshToken = jwtService.createRefreshToken(user, false);
+        Session session = new Session(refreshToken, new Date(System.currentTimeMillis()), user, accessToken);
+        sessionRepository.save(session);
+        return session;
+    }
 
-        UsernamePasswordAuthenticationToken upat = new UsernamePasswordAuthenticationToken(email, password);
-        Authentication authentication = authenticationManager.authenticate(upat);
-
-        SecurityContextHolder.getContext().setAuthentication(authentication);
-        User user = usuariosRepository.findById(email).get();
-        String token = jwtTokenProvider.generateToken(authentication, user);
-
-        Map<String, Object> claims = Map.of("token", token, "username", user.getUsername(), "isAdmin", user.getIsAdmin());
-        return claims;
+    @Override
+    public Session refresh(User user) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'refresh'");
     }
 }

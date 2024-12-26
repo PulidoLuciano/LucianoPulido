@@ -1,7 +1,10 @@
 package com.LucianoPulido.LucianoPulido.services.interfaces;
 
-import java.util.Map;
+import com.LucianoPulido.LucianoPulido.models.Session;
+import com.LucianoPulido.LucianoPulido.models.User;
 
 public interface AuthService {
-    Map<String, Object> login(String email, String password);
+    Session register(User user);
+    Session login(String email, String password);
+    Session refresh(User user);
 }
