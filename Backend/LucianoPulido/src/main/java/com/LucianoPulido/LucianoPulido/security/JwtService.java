@@ -56,11 +56,11 @@ public class JwtService {
         return Keys.hmacShaKeyFor(keyBytes);
     }
 
-    private UUID extractUserId(String token) {
+    public UUID extractUserId(String token) {
         return UUID.fromString(Jwts.parser().verifyWith(getKey()).build().parseSignedClaims(token).getPayload().getId());
     }
 
-    private boolean isTokenExpired(String token) {
+    public boolean isTokenExpired(String token) {
         return Jwts.parser().verifyWith(getKey()).build().parseSignedClaims(token).getPayload().getExpiration().before(new Date());
     }
 }
