@@ -12,6 +12,7 @@
   },
   "dependencies": {
     "@types/prismjs": "^1.26.4",
+    "jwt-decode": "^4.0.0",
     "luciano-react-router": "^0.0.30",
     "prismjs": "^1.29.0",
     "pulido-react-form": "^1.0.1",

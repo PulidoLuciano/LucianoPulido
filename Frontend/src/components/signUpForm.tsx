@@ -1,4 +1,6 @@
 import { ErrorMessage, Form, Input } from "pulido-react-form";
+import { SyntheticEvent } from "react";
+import { useAuth } from "../contexts/authContext";
 
 const ErrorMessages = [
     {
@@ -22,22 +24,35 @@ const ErrorMessages = [
 ]
 
 export default function SignUpForm() {
+  
+  const auth = useAuth();
+
+  async function handleSignUp(event:SyntheticEvent<HTMLFormElement>) {
+    event.preventDefault();
+    const { email, password, username, sendEmails } = event.currentTarget.elements as HTMLFormControlsCollection & {email : {value : string}, password : {value : string}, username : {value : string}, sendEmails : {checked : boolean}};
+    try {
+      auth.register({email: email.value, password: password.value, username: username.value, sendEmails: sendEmails.checked});
+    } catch (error) {
+      console.error(error);
+    }
+  }
+  
   return (
-    <Form className="flex flex-col pb-4" customMessages={ErrorMessages}>
-      <label htmlFor="Email" className="font-semibold pb-1 pt-2">
+    <Form className="flex flex-col pb-4" customMessages={ErrorMessages} onSubmit={handleSignUp}>
+      <label htmlFor="email" className="font-semibold pb-1 pt-2">
         E-mail
       </label>
       <input
         type="email"
         required={true}
-        name="Email"
+        name="email"
         className="bg-transparent border-b-2 border-primary-light rounded-sm outline-none"
       />
       <ErrorMessage
-        htmlFor="Email"
+        htmlFor="email"
         className="text-red-500 before:content-['ⓘ_']"
       />
-      <label htmlFor="Username" className="font-semibold pb-1 pt-2">
+      <label htmlFor="username" className="font-semibold pb-1 pt-2">
         Username
       </label>
       <input
@@ -45,14 +60,14 @@ export default function SignUpForm() {
         required={true}
         maxLength={30}
         pattern="^[a-zA-Z0-9._-]+$"
-        name="Username"
+        name="username"
         className="bg-transparent border-b-2 border-primary-light rounded-sm outline-none"
       />
       <ErrorMessage
-        htmlFor="Username"
+        htmlFor="username"
         className="text-red-500 before:content-['ⓘ_']"
       />
-      <label htmlFor="Password" className="font-semibold pb-1 pt-2">
+      <label htmlFor="password" className="font-semibold pb-1 pt-2">
         Password
       </label>
       <Input
@@ -61,11 +76,11 @@ export default function SignUpForm() {
         minLength={5}
         maxLength={30}
         equalize="password"
-        name="Password"
+        name="password"
         className="bg-transparent border-b-2 border-primary-light rounded-sm outline-none"
       />
       <ErrorMessage
-        htmlFor="Password"
+        htmlFor="password"
         className="text-red-500 before:content-['ⓘ_']"
       />
       <label htmlFor="Confirm password" className="font-semibold pb-1 pt-2">
@@ -87,12 +102,12 @@ export default function SignUpForm() {
       <div className="mt-2 pb-1 relative flex items-center gap-1">
         <input
           type="checkbox"
-          name="receiveEmail"
-          id="receiveEmail"
+          name="sendEmails"
+          id="sendEmails"
           className="opacity-0 cursor-pointer size-6 peer z-10"
         />
         <span className="absolute top-0 left-0 size-6 border-primary-dark border-2 bg-transparent peer-checked:bg-primary-light rounded-md after:hidden peer-checked:after:block after:absolute after:left-[6px] after:w-2 after:h-4 after:border-white after:border-r-4 after:border-b-4 after:rotate-45" />
-        <label htmlFor="receiveEmail" className="cursor-pointer select-none">
+        <label htmlFor="sendEmails" className="cursor-pointer select-none">
           Receive e-mails about new articles
         </label>
       </div>
