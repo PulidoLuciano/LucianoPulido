@@ -8,4 +8,5 @@ public interface AuthService {
     Session register(User user);
     Session login(String email, String password, Boolean keepLoggedIn);
     Session refresh(String authorizationHeader) throws TokenException;
+    void logout(String authorizationHeader) throws TokenException;
 }

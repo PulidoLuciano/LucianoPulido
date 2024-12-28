@@ -47,6 +47,12 @@ public class AuthController {
         return new ResponseEntity<>(jwtAuthResponse, HttpStatus.OK);
     }
 
+    @DeleteMapping("/logout")
+    public ResponseEntity<Void> logout(@RequestHeader("Authorization") String authorizationHeader) throws TokenException{
+        authService.logout(authorizationHeader);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
+
     private JwtAuthResponse createJwtResponse(Session session){
         JwtAuthResponse jwtResponse = new JwtAuthResponse();
         jwtResponse.setUsername(session.getUser().getUsername());

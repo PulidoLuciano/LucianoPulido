@@ -48,14 +48,7 @@ public class AuthServiceImpl implements AuthService {
 
     @Override
     public Session refresh(String authorizationHeader) throws TokenException{
-        if(authorizationHeader == null || !authorizationHeader.startsWith("Bearer ")){
-            throw new TokenException("The authorization header is missing or does not have the Bearer prefix");
-        }
-
-        String token = authorizationHeader.substring(7);
-        Session session = sessionRepository.findById(token).orElseThrow(() -> new TokenException("Refresh token not found"));
-        jwtService.validateToken(token, session.getUser());
-        
+        Session session = validateRefreshToken(authorizationHeader);
         Session newSession = createSession(session.getUser(), session.getKeepLoggedIn());
         sessionRepository.delete(session);
         return newSession;
@@ -66,6 +59,24 @@ public class AuthServiceImpl implements AuthService {
         String refreshToken = jwtService.createRefreshToken(user, keepLoggedIn);
         Session session = new Session(accessToken, refreshToken, new Date(System.currentTimeMillis()), keepLoggedIn, user);
         sessionRepository.save(session);
+        return session;
+    }
+
+    @Override
+    public void logout(String authorizationHeader) throws TokenException {
+        Session session = validateRefreshToken(authorizationHeader);
+        sessionRepository.delete(session);
+    }
+
+    private Session validateRefreshToken(String authorizationHeader) throws TokenException{
+        if(authorizationHeader == null || !authorizationHeader.startsWith("Bearer ")){
+            throw new TokenException("The authorization header is missing or does not have the Bearer prefix");
+        }
+
+        String token = authorizationHeader.substring(7);
+        Session session = sessionRepository.findById(token).orElseThrow(() -> new TokenException("Refresh token not found"));
+        jwtService.validateToken(token, session.getUser());
+
         return session;
     }
 }
