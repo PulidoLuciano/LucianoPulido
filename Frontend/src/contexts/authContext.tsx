@@ -46,19 +46,15 @@ export const AuthContext = ({children} : {children : ReactNode}) => {
     },[])
     
     async function login(loginData : LoginData){
-        try {
-            const sessionData : SessionData = await authService.login(loginData);
-            if(sessionData){
-                setUser({username : sessionData.username, isAdmin : sessionData.isAdmin});
-                setAccessToken(sessionData.accessToken);
-                setRefreshToken(sessionData.refreshToken);
-                if(loginData.keepLoggedIn){
-                    localStorage.setItem("refresh", sessionData.refreshToken);
-                }
-            } 
-        } catch (error) {
-            throw error;
-        }
+        const sessionData : SessionData = await authService.login(loginData);
+        if(sessionData){
+            setUser({username : sessionData.username, isAdmin : sessionData.isAdmin});
+            setAccessToken(sessionData.accessToken);
+            setRefreshToken(sessionData.refreshToken);
+            if(loginData.keepLoggedIn){
+                localStorage.setItem("refresh", sessionData.refreshToken);
+            }
+        } 
     }
 
     async function logout(){

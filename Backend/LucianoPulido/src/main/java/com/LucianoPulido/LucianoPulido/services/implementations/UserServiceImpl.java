@@ -26,4 +26,14 @@ public class UserServiceImpl extends GenericServiceImpl<User, UUID, UserReposito
     public User findByEmail(String email) {
         return super.getRepositorio().findByEmail(email).orElseThrow(() -> new IllegalArgumentException("User not found"));
     }
+
+    @Override
+    public boolean existsByUsername(String username) {
+        return super.getRepositorio().existsByUsername(username);
+    }
+
+    @Override
+    public boolean existsByEmail(String email) {
+        return super.getRepositorio().existsByEmail(email);
+    }
 }

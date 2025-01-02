@@ -8,4 +8,8 @@ import com.LucianoPulido.LucianoPulido.services.base.GenericService;
 public interface UserService extends GenericService<User, UUID>{
 
     User findByEmail(String email);
+
+    boolean existsByUsername(String username);
+
+    boolean existsByEmail(String email);
 }

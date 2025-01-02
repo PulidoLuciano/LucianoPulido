@@ -28,6 +28,7 @@ public class SecurityConfig {
         .csrf(csrf -> csrf.disable())
         .authorizeHttpRequests((req) -> {
             req.requestMatchers("/auth/**").permitAll();
+            req.requestMatchers("/user/exists").permitAll();
             req.requestMatchers(HttpMethod.POST, "/contact").permitAll();
             req.requestMatchers(HttpMethod.GET, "/contact").hasRole("ADMIN");
             req.anyRequest().authenticated();

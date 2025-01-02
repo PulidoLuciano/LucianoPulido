@@ -13,4 +13,8 @@ import com.LucianoPulido.LucianoPulido.persistence.base.GenericRepository;
 public interface UserRepository extends GenericRepository<User, UUID>, CrudRepository<User, UUID>{
 
     Optional<User> findByEmail(String username);
+
+    boolean existsByUsername(String username);
+
+    boolean existsByEmail(String email);
 }

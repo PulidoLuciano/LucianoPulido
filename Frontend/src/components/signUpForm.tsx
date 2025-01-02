@@ -1,52 +1,93 @@
-import { ErrorMessage, Form, Input } from "pulido-react-form";
+import { ErrorMessage, Form, GeneralStatus, Input } from "pulido-react-form";
 import { SyntheticEvent } from "react";
 import { useAuth } from "../contexts/authContext";
+import { applicationConstants } from "../constants/applicationConstants";
 
 const ErrorMessages = [
-    {
-        name: "Password",
-        messages: {
-            equalize: "Passwords are different"
-        }
+  {
+    name: "Password",
+    messages: {
+      equalize: "Passwords are different",
     },
-    {
-        name: "Confirm password",
-        messages: {
-            equalize: "Passwords are different"
-        }
+  },
+  {
+    name: "Confirm password",
+    messages: {
+      equalize: "Passwords are different",
     },
-    {
-      name: "Username",
-      messages: {
-        pattern: "Only letters, numbers, and . _ - are allowed"
-      }
-    }
-]
+  },
+  {
+    name: "username",
+    messages: {
+      pattern: "Only letters, numbers, and . _ - are allowed",
+      custom: "Username already exists",
+    },
+  },
+  {
+    name: "email",
+    messages: {
+      custom: "Email already exists",
+    },
+  },
+];
 
+async function emailExists(email: string, _: null) {
+  return await callExists({ email });
+}
+
+async function usernameExists(username: string, _: null) {
+  return await callExists({ username });
+}
+
+async function callExists(body: { email?: string; username?: string }) {
+  const response = await fetch(
+    `${applicationConstants.VITE_API_BASE_URL}/user/exists`,
+    {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(body),
+    }
+  );
+  const data = await response.json();
+  return data.exists as boolean;
+}
 export default function SignUpForm() {
-  
   const auth = useAuth();
 
-  async function handleSignUp(event:SyntheticEvent<HTMLFormElement>) {
+  async function handleSignUp(event: SyntheticEvent<HTMLFormElement>) {
     event.preventDefault();
-    const { email, password, username, sendEmails } = event.currentTarget.elements as HTMLFormControlsCollection & {email : {value : string}, password : {value : string}, username : {value : string}, sendEmails : {checked : boolean}};
-    try {
-      auth.register({email: email.value, password: password.value, username: username.value, sendEmails: sendEmails.checked});
-    } catch (error) {
-      console.error(error);
-    }
+    const { email, password, username, sendEmails } = event.currentTarget
+      .elements as HTMLFormControlsCollection & {
+      email: { value: string };
+      password: { value: string };
+      username: { value: string };
+      sendEmails: { checked: boolean };
+    };
+    await auth.register({
+      email: email.value,
+      password: password.value,
+      username: username.value,
+      sendEmails: sendEmails.checked,
+    });
   }
-  
+
   return (
-    <Form className="flex flex-col pb-4" customMessages={ErrorMessages} onSubmit={handleSignUp}>
+    <Form
+      className="flex flex-col pb-4"
+      customMessages={ErrorMessages}
+      onSubmit={handleSignUp}
+    >
       <label htmlFor="email" className="font-semibold pb-1 pt-2">
         E-mail
       </label>
-      <input
+      <Input
         type="email"
         required={true}
         name="email"
         className="bg-transparent border-b-2 border-primary-light rounded-sm outline-none"
+        custom={emailExists}
       />
       <ErrorMessage
         htmlFor="email"
@@ -55,13 +96,14 @@ export default function SignUpForm() {
       <label htmlFor="username" className="font-semibold pb-1 pt-2">
         Username
       </label>
-      <input
+      <Input
         type="text"
         required={true}
         maxLength={30}
         pattern="^[a-zA-Z0-9._-]+$"
         name="username"
         className="bg-transparent border-b-2 border-primary-light rounded-sm outline-none"
+        custom={usernameExists}
       />
       <ErrorMessage
         htmlFor="username"
@@ -116,6 +158,15 @@ export default function SignUpForm() {
         value={"Sign-up"}
         className="mt-4 py-2 w-full bg-primary-light rounded-md text-tertiary font-semibold cursor-pointer hover:bg-primary-dark"
       />
+      <GeneralStatus successMessage={null} errorMessage={<GeneralMessage />} />
     </Form>
+  );
+}
+
+function GeneralMessage() {
+  return (
+    <div className="bg-red-300 my-2 p-2 w-full rounded-md text-center border-2 border-red-600">
+      ⓘ There was an error creating your user
+    </div>
   );
 }

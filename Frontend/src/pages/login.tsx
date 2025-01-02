@@ -24,12 +24,9 @@ export default function Login(){
 
     async function handleLogin(event : React.SyntheticEvent<HTMLFormElement>){
         event.preventDefault();
+        event.currentTarget = event.currentTarget ? event.currentTarget : event.target as HTMLFormElement;
         const { email, password, keepLoggedIn } = event.currentTarget.elements as HTMLFormControlsCollection & {email : {value : string}, password : {value : string}, keepLoggedIn : {checked : boolean}};
-        try {
-            await auth.login({email: email.value, password: password.value, keepLoggedIn: keepLoggedIn.checked});
-        } catch (error) {
-            console.error(error);
-        }
+        await auth.login({email: email.value, password: password.value, keepLoggedIn: keepLoggedIn.checked});
     } 
 
     return(
