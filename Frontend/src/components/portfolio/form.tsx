@@ -1,39 +1,63 @@
-import {ErrorMessage, Form, GeneralStatus} from "pulido-react-form"
+import { ErrorMessage, Form, GeneralStatus } from "pulido-react-form";
+import { useFetch } from "../../hooks/useFetch";
 
 const messages = [
-    {
-        name: "Name",
-        messages: {
-            maxLength: "Name must not excede 30 characters"
-        }
+  {
+    name: "Name",
+    messages: {
+      maxLength: "Name must not excede 30 characters",
     },
-    {
-        name: "Email",
-        messages: {
-            maxLength: "E-mail must not excede 50 characters"
-        }
+  },
+  {
+    name: "Email",
+    messages: {
+      maxLength: "E-mail must not excede 50 characters",
     },
-    {
-        name: "Subject",
-        messages: {
-            maxLength: "Subject must not excede 30 characters"
-        }
+  },
+  {
+    name: "Subject",
+    messages: {
+      maxLength: "Subject must not excede 30 characters",
     },
-    {
-        name: "Message",
-        messages: {
-            maxLength: "Message must not excede 300 characters"
-        }
-    }
-]
+  },
+  {
+    name: "Message",
+    messages: {
+      maxLength: "Message must not excede 300 characters",
+    },
+  },
+];
 
 export default function PortfolioForm() {
-  
-  function handleSubmit(event : React.SyntheticEvent<HTMLFormElement>){
+  const { fetcher } = useFetch();
+
+  async function handleSubmit(event: React.SyntheticEvent<HTMLFormElement>) {
     event.preventDefault();
+    event.currentTarget = event.currentTarget
+      ? event.currentTarget
+      : (event.target as HTMLFormElement);
+    const { Name, Email, Subject, Message } = event.currentTarget
+      .elements as HTMLFormControlsCollection & {
+      Email: { value: string };
+      Name: { value: string };
+      Subject: { value: string };
+      Message: { value: string };
+    };
+    await fetcher("/contact", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        name: Name.value,
+        email: Email.value,
+        subject: Subject.value,
+        message: Message.value,
+      }),
+    });
     (event.target as HTMLFormElement).reset();
   }
-  
+
   return (
     <Form
       action=""
@@ -106,13 +130,26 @@ export default function PortfolioForm() {
         value="Send"
         className="mt-4 py-2 w-full bg-primary-light rounded-md text-tertiary font-semibold cursor-pointer hover:bg-primary-dark"
       />
-      <GeneralStatus successMessage={<SuccessMessage/>} errorMessage={null}/>
+      <GeneralStatus
+        successMessage={<SuccessMessage />}
+        errorMessage={<GeneralMessage />}
+      />
     </Form>
   );
 }
 
-function SuccessMessage(){
-  return(
-    <div className="bg-green-300 my-2 p-2 w-full rounded-md text-center border-2 border-green-600">✓ Message sended successfully</div>
-  )
+function SuccessMessage() {
+  return (
+    <div className="bg-green-300 my-2 p-2 w-full rounded-md text-center border-2 border-green-600">
+      ✓ Message sended successfully
+    </div>
+  );
+}
+
+function GeneralMessage() {
+  return (
+    <div className="bg-red-300 my-2 p-2 w-full rounded-md text-center border-2 border-red-600">
+      ⓘ There was an error. Try again!
+    </div>
+  );
 }
