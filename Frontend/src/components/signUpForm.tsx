@@ -58,6 +58,7 @@ export default function SignUpForm() {
 
   async function handleSignUp(event: SyntheticEvent<HTMLFormElement>) {
     event.preventDefault();
+    event.currentTarget = event.currentTarget ? event.currentTarget : event.target as HTMLFormElement;
     const { email, password, username, sendEmails } = event.currentTarget
       .elements as HTMLFormControlsCollection & {
       email: { value: string };
