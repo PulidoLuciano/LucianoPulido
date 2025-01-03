@@ -3,7 +3,7 @@ import { createContext, ReactNode, useContext, useEffect, useState } from "react
 import { LoginData, RegisterData, SessionData, User } from "../types";
 import { authService } from "../services/authService";
 
-const authContext = createContext<{user : User | null, accessToken : String | null, refreshToken : String | null, login : (loginData : LoginData) => Promise<void>, logout : () => void, register : (registerData : RegisterData) => Promise<void>}>({user : null, accessToken : null, refreshToken : null, login : async () => {}, logout : () => {}, register : async () => {}});
+const authContext = createContext<{user : User | null, accessToken : String | null, refreshToken : String | null, login : (loginData : LoginData) => Promise<void>, logout : () => void, register : (registerData : RegisterData) => Promise<void>, getNewRefreshToken : () => void}>({user : null, accessToken : null, refreshToken : null, login : async () => {}, logout : () => {}, register : async () => {}, getNewRefreshToken : async () => {}});
 
 export const AuthContext = ({children} : {children : ReactNode}) => {
     const [user, setUser] = useState<User | null>(null);
@@ -84,8 +84,28 @@ export const AuthContext = ({children} : {children : ReactNode}) => {
         }
     }
 
+    async function getNewRefreshToken(){
+        if(!refreshToken) return;
+        try{
+            const session : SessionData = await authService.getNewRefreshToken(refreshToken);
+            if(session){
+                setAccessToken(session.accessToken);
+                setRefreshToken(session.refreshToken);
+            }else{
+                throw new Error("Session is empty");
+            }
+        }catch(error){
+            setAccessToken(null);
+            setRefreshToken(null);
+            setUser(null);
+            window.history.pushState({}, "", "/login");
+            const navigationEvent = new Event("pushstate");
+            window.dispatchEvent(navigationEvent);
+        }
+    }
+
   return (
-    <authContext.Provider value={{user, accessToken, refreshToken, login, logout, register}}>
+    <authContext.Provider value={{user, accessToken, refreshToken, login, logout, register, getNewRefreshToken}}>
         {children}
     </authContext.Provider>
   )
