@@ -21,6 +21,9 @@ public class Category {
     @ManyToMany(mappedBy = "categories")
     Set<Article> articles;
 
+    public Category() {
+    }
+
     public Category(String url, String name, Set<Article> articles) {
         this.url = url;
         this.name = name;
