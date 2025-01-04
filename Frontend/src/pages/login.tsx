@@ -11,8 +11,8 @@ export default function Login(){
 
     useEffect(() => {
         if(auth.refreshToken){
-            window.history.pushState({}, "", "/");
-            const navigationEvent = new Event("pushstate");
+            window.history.back();
+            const navigationEvent = new Event("popstate");
             window.dispatchEvent(navigationEvent);
         }
     }, [auth.refreshToken])
