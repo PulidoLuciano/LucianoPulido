@@ -15,6 +15,7 @@ interface Article{
     imageUrl : string
     date : string
     body : string
+    categories: Array<Category>
 }
 
 interface Category{
