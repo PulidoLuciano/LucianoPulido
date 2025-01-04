@@ -12,9 +12,14 @@ interface ArticleExtendedPreview extends ArticleShortPreview{
 interface Article{
     title : string
     description: string
-    image : string
+    imageUrl : string
     date : string
     body : string
+}
+
+interface Category{
+    url : string
+    name : string
 }
 
 interface LoginData{
