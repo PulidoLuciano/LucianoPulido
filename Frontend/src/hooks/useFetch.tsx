@@ -5,8 +5,16 @@ function useFetch(){
     
     const auth = useAuth();
 
-    async function fetcher(route : string, options : RequestInit, retry = false){
-        const response = await fetch( applicationConstants.VITE_API_BASE_URL + route , options);
+    async function fetcher(route : string, options : RequestInit | null = null , retry = false){
+        const response = await fetch( applicationConstants.VITE_API_BASE_URL + route , {
+            ...options,
+            method: "GET",
+            headers: {
+                ...options?.headers,
+                "Content-Type": "application/json",
+                "Authorization": (auth.accessToken) ? `Bearer ${auth.accessToken}` : ""
+            },
+        });
         const data = await response.json();
         if(response.ok){
             return data;
