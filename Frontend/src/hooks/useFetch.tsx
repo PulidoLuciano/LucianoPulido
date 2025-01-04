@@ -5,10 +5,10 @@ function useFetch(){
     
     const auth = useAuth();
 
-    async function fetcher(route : string, options : RequestInit | null = null , retry = false){
+    async function fetcher(route : string, method : RequestInit["method"], options : RequestInit | null = null , retry = false){
         const response = await fetch( applicationConstants.VITE_API_BASE_URL + route , {
             ...options,
-            method: "GET",
+            method: method,
             headers: {
                 ...options?.headers,
                 "Content-Type": "application/json",
@@ -21,7 +21,7 @@ function useFetch(){
         }else if(response.status === 401){
             if(!retry){
                 await auth.getNewRefreshToken();
-                fetcher(route, options, true);
+                fetcher(route, method, options, true);
             }else{
                 throw new Error(data.error);
             }
