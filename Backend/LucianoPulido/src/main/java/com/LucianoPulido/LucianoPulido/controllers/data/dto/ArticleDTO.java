@@ -1,24 +1,35 @@
 package com.LucianoPulido.LucianoPulido.controllers.data.dto;
 
-import java.util.Date;
 import java.util.Set;
+
+import org.hibernate.validator.constraints.Length;
 
 import com.LucianoPulido.LucianoPulido.models.Category;
 
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+
 public class ArticleDTO {
 
+    @NotBlank
+    @Length(min = 3, max = 100)
     private String url;
 
-    private Date date;
-
+    @NotNull
     private boolean published;
 
+    @NotBlank
+    @Length(min = 1, max=75)
     private String title;
 
+    @NotBlank
     private String imageUrl;
 
+    @NotBlank
+    @Length(max=200)
     private String description;
 
+    @NotBlank
     private String body;
 
     Set<Category> categories;
@@ -26,10 +37,9 @@ public class ArticleDTO {
     public ArticleDTO() {
     }
 
-    public ArticleDTO(String url, Date date, boolean published, String title, String imageUrl, String description,
+    public ArticleDTO(String url, boolean published, String title, String imageUrl, String description,
             String body, Set<Category> categories) {
         this.url = url;
-        this.date = date;
         this.published = published;
         this.title = title;
         this.imageUrl = imageUrl;
@@ -44,14 +54,6 @@ public class ArticleDTO {
 
     public void setUrl(String url) {
         this.url = url;
-    }
-
-    public Date getDate() {
-        return date;
-    }
-
-    public void setDate(Date date) {
-        this.date = date;
     }
 
     public boolean isPublished() {
