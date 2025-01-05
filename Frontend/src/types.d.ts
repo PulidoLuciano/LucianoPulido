@@ -10,12 +10,14 @@ interface ArticleExtendedPreview extends ArticleShortPreview{
 }
 
 interface Article{
+    url: string
     title : string
     description: string
     imageUrl : string
     date : string
     body : string
     categories: Array<Category>
+    published : boolean
 }
 
 interface Category{

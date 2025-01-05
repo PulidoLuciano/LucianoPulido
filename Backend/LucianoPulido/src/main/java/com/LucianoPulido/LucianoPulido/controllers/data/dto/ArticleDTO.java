@@ -4,8 +4,6 @@ import java.util.Set;
 
 import org.hibernate.validator.constraints.Length;
 
-import com.LucianoPulido.LucianoPulido.models.Category;
-
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 
@@ -32,13 +30,13 @@ public class ArticleDTO {
     @NotBlank
     private String body;
 
-    Set<Category> categories;
+    Set<CategoryDTO> categories;
 
     public ArticleDTO() {
     }
 
     public ArticleDTO(String url, boolean published, String title, String imageUrl, String description,
-            String body, Set<Category> categories) {
+            String body, Set<CategoryDTO> categories) {
         this.url = url;
         this.published = published;
         this.title = title;
@@ -96,11 +94,11 @@ public class ArticleDTO {
         this.body = body;
     }
 
-    public Set<Category> getCategories() {
+    public Set<CategoryDTO> getCategories() {
         return categories;
     }
 
-    public void setCategories(Set<Category> categories) {
+    public void setCategories(Set<CategoryDTO> categories) {
         this.categories = categories;
     }
 }

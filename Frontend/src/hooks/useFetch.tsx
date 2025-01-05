@@ -23,7 +23,9 @@ function useFetch(){
                 await auth.getNewRefreshToken();
                 fetcher(route, method, options, true);
             }else{
-                throw new Error(data.error);
+                window.history.pushState({}, "", "/login");
+            const navigationEvent = new Event("pushstate");
+            window.dispatchEvent(navigationEvent);
             }
         }else{
             throw new Error(data.error);

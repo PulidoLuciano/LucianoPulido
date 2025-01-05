@@ -8,7 +8,7 @@ export default function ArticleBody({article} : {article : Article}){
                 <h1 className="text-5xl text-pretty font-semibold pb-1">{article.title}</h1>
                 <p className="text-xl font-light pb-2">{article.description}</p>
                 <p className="text-right text-gray-500">{article.date}</p>
-                <img src={article.image} alt="" />
+                <img src={article.imageUrl} alt="" />
             </section>
             <section className="pb-4">
                 <BodyParser body={article.body}/>
