@@ -48,6 +48,9 @@ public class Article {
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "article")
     private Set<Comment> comments;
 
+    public Article() {
+    }
+
     public Article(String url, Date date, boolean published, String title, String imageUrl, String description,
             String body, Long views, Set<Category> categories, Set<Comment> comments) {
         this.url = url;
