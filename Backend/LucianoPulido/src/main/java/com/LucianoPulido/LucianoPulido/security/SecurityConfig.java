@@ -27,12 +27,18 @@ public class SecurityConfig {
         http.cors(cors -> cors.configurationSource(customCorsConfiguration))
         .csrf(csrf -> csrf.disable())
         .authorizeHttpRequests((req) -> {
+            //Authentication and users
             req.requestMatchers("/auth/**").permitAll();
             req.requestMatchers("/user/exists").permitAll();
+            //Categories
             req.requestMatchers(HttpMethod.GET, "/category").permitAll();
+            req.requestMatchers("/category/**").hasAnyAuthority("ADMIN");
+            //Contacts
+            req.requestMatchers(HttpMethod.GET, "/contact/**").hasAnyAuthority("ADMIN");
             req.requestMatchers(HttpMethod.POST, "/contact").permitAll();
+            //Articles
             req.requestMatchers(HttpMethod.GET, "article/**").permitAll();
-            req.requestMatchers(HttpMethod.POST, "/article/**").hasAnyAuthority("ADMIN");
+            req.requestMatchers("/article/**").hasAnyAuthority("ADMIN");
         }
         )
         .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
