@@ -29,9 +29,6 @@ public class Comment {
     @Column
     private String message;
 
-    @Column
-    private Long score;
-
     @ManyToOne(optional = false)
     @JoinColumn(name = "article_id", nullable = false)
     private Article article;
@@ -48,15 +45,21 @@ public class Comment {
         this.date = new Date();
     }
     
-    public Comment(UUID id, Date date, String message, Long score, Article article, User user,
+    public Comment(UUID id, Date date, String message, Article article, User user,
             Set<Comment> responses) {
         this.id = id;
         this.date = new Date();
         this.message = message;
-        this.score = score;
         this.article = article;
         this.user = user;
         this.responses = responses;
+    }
+
+    public Comment(String message, Article article, User user) {
+        this.message = message;
+        this.article = article;
+        this.user = user;
+        this.date = new Date();
     }
 
     public UUID getId() {
@@ -81,14 +84,6 @@ public class Comment {
 
     public void setMessage(String message) {
         this.message = message;
-    }
-
-    public Long getScore() {
-        return score;
-    }
-
-    public void setScore(Long score) {
-        this.score = score;
     }
 
     public Article getArticle() {

@@ -1,6 +1,8 @@
 package com.LucianoPulido.LucianoPulido.models;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.Set;
 
 import jakarta.persistence.CascadeType;
@@ -62,7 +64,12 @@ public class Article {
         this.body = body;
         this.views = views;
         this.categories = categories;
-        this.comments = comments;
+    }
+
+    public Comment createComment(String message, User user){
+        Comment comment = new Comment(message, this, user);
+        this.getComments().add(comment);
+        return comment;
     }
 
     public String getUrl() {
@@ -130,6 +137,7 @@ public class Article {
     }
 
     public Set<Category> getCategories() {
+        if(categories == null) this.categories = new HashSet<>();
         return categories;
     }
 
@@ -138,6 +146,7 @@ public class Article {
     }
 
     public Set<Comment> getComments() {
+        if(comments == null) this.comments = new HashSet<>();
         return comments;
     }
 
