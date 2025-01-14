@@ -44,10 +44,14 @@ public class Comment {
     @JoinColumn(name = "parent_id", nullable = true, updatable = false)
     private Set<Comment> responses;
 
+    public Comment(){
+        this.date = new Date();
+    }
+    
     public Comment(UUID id, Date date, String message, Long score, Article article, User user,
             Set<Comment> responses) {
         this.id = id;
-        this.date = date;
+        this.date = new Date();
         this.message = message;
         this.score = score;
         this.article = article;

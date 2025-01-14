@@ -39,6 +39,10 @@ public class SecurityConfig {
             //Articles
             req.requestMatchers(HttpMethod.GET, "article/**").permitAll();
             req.requestMatchers("/article/**").hasAnyAuthority("ADMIN");
+            //Comments
+            req.requestMatchers(HttpMethod.GET, "comment/**").permitAll();
+            req.requestMatchers(HttpMethod.POST, "comment/**").authenticated();
+            req.requestMatchers("comment/**").hasAnyAuthority("ADMIN");
         }
         )
         .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
