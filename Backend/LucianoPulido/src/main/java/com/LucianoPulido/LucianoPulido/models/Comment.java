@@ -1,6 +1,7 @@
 package com.LucianoPulido.LucianoPulido.models;
 
 import java.util.Date;
+import java.util.HashSet;
 import java.util.Set;
 import java.util.UUID;
 
@@ -29,37 +30,48 @@ public class Comment {
     @Column
     private String message;
 
-    @ManyToOne(optional = false)
-    @JoinColumn(name = "article_id", nullable = false)
+    @ManyToOne(optional = true)
+    @JoinColumn(name = "article_id", nullable = true, updatable = false)
     private Article article;
 
     @ManyToOne(optional = false)
     @JoinColumn(name = "user_id", nullable = false, updatable = false)
     private User user;
 
-    @OneToMany(cascade = CascadeType.ALL)
-    @JoinColumn(name = "parent_id", nullable = true, updatable = false)
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "parent")
     private Set<Comment> responses;
-
+    
+    @ManyToOne(optional = true)
+    @JoinColumn(name = "parent_id", nullable = true, updatable = false)
+    private Comment parent;
+    
     public Comment(){
         this.date = new Date();
     }
     
     public Comment(UUID id, Date date, String message, Article article, User user,
-            Set<Comment> responses) {
+            Set<Comment> responses, Comment parent) {
         this.id = id;
         this.date = new Date();
         this.message = message;
         this.article = article;
         this.user = user;
         this.responses = responses;
+        this.parent = parent;
     }
 
-    public Comment(String message, Article article, User user) {
+    public Comment(String message, Article article, User user, Comment parent) {
         this.message = message;
         this.article = article;
         this.user = user;
         this.date = new Date();
+        this.parent = parent;
+    }
+
+    public Comment createResponse(String message, User user){
+        Comment response = new Comment(message, null, user, this);
+        this.getResponses().add(response);
+        return response;
     }
 
     public UUID getId() {
@@ -103,10 +115,19 @@ public class Comment {
     }
 
     public Set<Comment> getResponses() {
+        if(this.responses == null) this.responses = new HashSet<>();
         return responses;
     }
 
     public void setResponses(Set<Comment> responses) {
         this.responses = responses;
+    }
+
+    public Comment getParent() {
+        return parent;
+    }
+
+    public void setParent(Comment parent) {
+        this.parent = parent;
     }
 }

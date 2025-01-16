@@ -10,5 +10,4 @@ import com.LucianoPulido.LucianoPulido.persistence.base.GenericRepository;
 
 @Repository
 public interface CommentRepository extends GenericRepository<Comment, UUID>, CrudRepository<Comment, UUID>{
-
 }

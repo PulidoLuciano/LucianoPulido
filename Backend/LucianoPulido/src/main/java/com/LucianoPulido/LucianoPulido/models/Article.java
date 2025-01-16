@@ -1,6 +1,5 @@
 package com.LucianoPulido.LucianoPulido.models;
 
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
@@ -67,7 +66,7 @@ public class Article {
     }
 
     public Comment createComment(String message, User user){
-        Comment comment = new Comment(message, this, user);
+        Comment comment = new Comment(message, this, user, null);
         this.getComments().add(comment);
         return comment;
     }
