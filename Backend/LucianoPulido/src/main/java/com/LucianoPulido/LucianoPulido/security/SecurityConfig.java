@@ -31,7 +31,7 @@ public class SecurityConfig {
             req.requestMatchers("/auth/**").permitAll();
             req.requestMatchers("/user/exists").permitAll();
             //Categories
-            req.requestMatchers(HttpMethod.GET, "/category").permitAll();
+            req.requestMatchers(HttpMethod.GET, "/category/**").permitAll();
             req.requestMatchers("/category/**").hasAnyAuthority("ADMIN");
             //Contacts
             req.requestMatchers(HttpMethod.GET, "/contact/**").hasAnyAuthority("ADMIN");
