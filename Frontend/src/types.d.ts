@@ -2,7 +2,7 @@ import { UUID } from "crypto"
 
 export interface ArticleShortPreview{
     title : string
-    image : string
+    imageUrl : string
     date : string
     url : string
 }
