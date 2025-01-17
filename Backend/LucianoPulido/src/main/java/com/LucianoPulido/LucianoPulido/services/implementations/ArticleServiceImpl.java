@@ -13,6 +13,7 @@ import com.LucianoPulido.LucianoPulido.persistence.repositories.ArticleRepositor
 import com.LucianoPulido.LucianoPulido.security.JwtService;
 import com.LucianoPulido.LucianoPulido.services.base.GenericServiceImpl;
 import com.LucianoPulido.LucianoPulido.services.interfaces.ArticlesService;
+import com.LucianoPulido.LucianoPulido.services.interfaces.CommentService;
 import com.LucianoPulido.LucianoPulido.services.interfaces.UserService;
 
 @Service
@@ -22,6 +23,8 @@ public class ArticleServiceImpl extends GenericServiceImpl<Article, String, Arti
     UserService userService;
     @Autowired
     JwtService jwtService;
+    @Autowired
+    CommentService commentService;
 
     @Override
     public Comment createComment(String articleId, String message, String token) {
@@ -29,7 +32,7 @@ public class ArticleServiceImpl extends GenericServiceImpl<Article, String, Arti
         UUID userId = jwtService.extractUserId(token);
         User user = userService.getById(userId).orElseThrow(() -> new IllegalArgumentException("The user does not exist"));
         Comment comment = article.createComment(message, user);
-        super.getRepositorio().save(article);
+        comment = commentService.save(comment);
         return comment;
     }
 

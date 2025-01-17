@@ -10,5 +10,5 @@ public interface CommentService extends GenericService<Comment, UUID>{
 
     Set<Comment> getResponsesById(UUID id);
 
-    Comment createResponseByParentId(UUID id, String message, String token);
+    Comment createResponseByParentId(UUID id, String message, String token) throws Exception;
 }

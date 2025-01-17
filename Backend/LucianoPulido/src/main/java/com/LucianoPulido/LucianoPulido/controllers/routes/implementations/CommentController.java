@@ -39,7 +39,7 @@ public class CommentController extends GenericController<Comment, UUID, CommentS
     }
 
     @PostMapping("/{id}/response")
-    public ResponseEntity<CommentDTO> postResponseOnParentComment(@PathVariable("id") UUID id, @Valid @RequestBody CommentDTO dto, @RequestHeader("Authorization") String authorizationHeader) throws TokenException {
+    public ResponseEntity<CommentDTO> postResponseOnParentComment(@PathVariable("id") UUID id, @Valid @RequestBody CommentDTO dto, @RequestHeader("Authorization") String authorizationHeader) throws TokenException, Exception {
         if (authorizationHeader == null || !authorizationHeader.startsWith("Bearer ")) {
             throw new TokenException("The authorization header is missing or does not have the Bearer prefix");
         }
