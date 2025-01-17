@@ -32,7 +32,7 @@ const routes: Array<RouteObject> = [
     component: SearchResults
   },
   {
-    path: "/articles/:id",
+    path: "/articles/:articleId",
     component: Article
   },
   {

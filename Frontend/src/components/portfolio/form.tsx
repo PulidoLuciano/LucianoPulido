@@ -43,8 +43,7 @@ export default function PortfolioForm() {
       Subject: { value: string };
       Message: { value: string };
     };
-    await fetcher("/contact", {
-      method: "POST",
+    await fetcher("/contact", "POST", {
       headers: {
         "Content-Type": "application/json",
       },

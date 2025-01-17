@@ -6,16 +6,6 @@ export default function Dashboard(){
             <section className="my-5 flex justify-between">
                 <h1 className="text-3xl font-bold">Admin's dashboard</h1>
             </section>
-            <section className="laptop:grid laptop:grid-cols-2 gap-8">
-                <article>
-                    <h2 className="text-2xl font-semibold">Weekly views</h2>
-                    <div className="bg-white w-full h-96"/>
-                </article>
-                <article>
-                    <h2 className="text-2xl font-semibold">Weekly comments</h2>
-                    <div className="bg-white w-full h-96"/>
-                </article>
-            </section>
             <section className="laptop:grid laptop:grid-cols-2 gap-8 py-8">
                 <article>
                     <section className="flex justify-between">
@@ -69,11 +59,7 @@ export default function Dashboard(){
                             <p className="text-2xl">123</p>
                         </span>
                         <span>
-                            <p className="text-gray-500 italic">Logins</p>
-                            <p className="text-2xl">12</p>
-                        </span>
-                        <span>
-                            <p className="text-gray-500 italic">Comments</p>
+                            <p className="text-gray-500 italic">Suscribe</p>
                             <p className="text-2xl">1230</p>
                         </span>
                     </section>
@@ -92,8 +78,49 @@ export default function Dashboard(){
                         <article className="tablet:flex w-full justify-between">
                             <Link className="font-semibold" href="/admin/user/test">Username</Link>
                             <div className="flex gap-2">
-                                <p>👁 225</p>
                                 <p>🗨 225</p>
+                                <button className="bg-secondary-light px-1 rounded-lg">Delete</button>
+                            </div>
+                        </article>
+                    </section>
+                </article>
+                <article>
+                    <section>
+                        <h2 className="text-2xl font-semibold">Comments</h2>
+                    </section>
+                    <section className="flex justify-around py-4">
+                        <span>
+                            <p className="text-gray-500 italic">Quantity</p>
+                            <p className="text-2xl">123</p>
+                        </span>
+                        <span>
+                            <p className="text-gray-500 italic">Responses</p>
+                            <p className="text-2xl">1230</p>
+                        </span>
+                    </section>
+                    <section className="border-2 border-primary-light rounded-3xl h-96 scroll-auto px-4 py-4">
+                        <article className="tablet:flex w-full justify-between">
+                            <Link className="font-semibold" href="/admin/user/test">Username</Link>
+                            <div className="flex gap-2">
+                                <button className="bg-secondary-light px-1 rounded-lg">Delete</button>
+                            </div>
+                        </article>
+                    </section>
+                </article>
+                <article>
+                    <section>
+                        <h2 className="text-2xl font-semibold">Contacts</h2>
+                    </section>
+                    <section className="flex justify-around py-4">
+                        <span>
+                            <p className="text-gray-500 italic">Quantity</p>
+                            <p className="text-2xl">123</p>
+                        </span>
+                    </section>
+                    <section className="border-2 border-primary-light rounded-3xl h-96 scroll-auto px-4 py-4">
+                        <article className="tablet:flex w-full justify-between">
+                            <Link className="font-semibold" href="/admin/user/test">Username</Link>
+                            <div className="flex gap-2">
                                 <button className="bg-secondary-light px-1 rounded-lg">Delete</button>
                             </div>
                         </article>

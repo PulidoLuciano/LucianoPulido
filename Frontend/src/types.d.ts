@@ -1,3 +1,5 @@
+import { UUID } from "crypto"
+
 export interface ArticleShortPreview{
     title : string
     image : string
@@ -49,4 +51,11 @@ interface RegisterData{
     password : string
     username : string
     sendEmails : boolean
+}
+
+interface CommentData{
+    date : string
+    username : string
+    id : string
+    message : string
 }
