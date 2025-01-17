@@ -12,6 +12,7 @@ import com.LucianoPulido.LucianoPulido.models.Comment;
 import com.LucianoPulido.LucianoPulido.security.TokenException;
 import com.LucianoPulido.LucianoPulido.services.interfaces.ArticlesService;
 
+import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -48,15 +49,16 @@ public class ArticleController extends GenericController<Article, String, Articl
     }
 
     @GetMapping("/{id}/comment")
-    public Set<CommentDTO> getComments(@PathVariable("id") String id) {
+    public List<CommentDTO> getComments(@PathVariable("id") String id) {
         Set<Comment> comments = super.getServicio().getComments(id);
-        Set<CommentDTO> commentDTOs = comments.stream()
+        List<CommentDTO> commentDTOs = comments.stream()
                 .map(comment -> new CommentDTO(
                         comment.getId(),
                         comment.getMessage(),
                         comment.getDate(),
                         comment.getUser().getUsername()))
-                .collect(Collectors.toSet());
+                .collect(Collectors.toSet()).stream().sorted((e1, e2) -> e1.getDate().compareTo(e2.getDate()))
+                .collect(Collectors.toList());
         return commentDTOs;
     }
 

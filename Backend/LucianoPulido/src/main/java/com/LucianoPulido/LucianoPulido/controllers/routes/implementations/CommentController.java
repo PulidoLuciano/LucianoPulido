@@ -1,5 +1,6 @@
 package com.LucianoPulido.LucianoPulido.controllers.routes.implementations;
 
+import java.util.List;
 import java.util.Set;
 import java.util.UUID;
 import java.util.stream.Collectors;
@@ -29,11 +30,11 @@ import org.springframework.web.bind.annotation.RequestHeader;
 public class CommentController extends GenericController<Comment, UUID, CommentService, CommentDTO, CommentMapper> {
 
     @GetMapping("/{id}/response")
-    public ResponseEntity<Set<CommentDTO>> getCommentsByArticle(@PathVariable("id") UUID id) {
+    public ResponseEntity<List<CommentDTO>> getCommentsByArticle(@PathVariable("id") UUID id) {
         Set<Comment> responses = super.getServicio().getResponsesById(id);
-        Set<CommentDTO> responsesDTO = responses.stream().map(response -> new CommentDTO(response.getId(),
+        List<CommentDTO> responsesDTO = responses.stream().map(response -> new CommentDTO(response.getId(),
                 response.getMessage(), response.getDate(), response.getUser().getUsername()))
-                .collect(Collectors.toSet());
+                .collect(Collectors.toSet()).stream().sorted((e1, e2) -> e1.getDate().compareTo(e2.getDate())).collect(Collectors.toList());
         return new ResponseEntity<>(responsesDTO, HttpStatus.OK);
     }
 
