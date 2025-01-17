@@ -50,6 +50,8 @@ public class Article {
     private Set<Comment> comments;
 
     public Article() {
+        this.published = false;
+        this.views = 0L;
     }
 
     public Article(String url, Date date, boolean published, String title, String imageUrl, String description,
@@ -130,10 +132,12 @@ public class Article {
     }
 
     public Long getViews() {
+        if(this.views == null) this.views = 0L;
         return views;
     }
 
     public void setViews(Long views) {
+        if(views == null) return;
         this.views = views;
     }
 
