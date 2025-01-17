@@ -56,6 +56,7 @@ public class Article {
             String body, Long views, Set<Category> categories, Set<Comment> comments) {
         this.url = url;
         this.date = date;
+        if(this.published == false && published == true) this.date = new Date();
         this.published = published;
         this.title = title;
         this.imageUrl = imageUrl;
@@ -92,6 +93,7 @@ public class Article {
     }
 
     public void setPublished(boolean published) {
+        if(this.published == false && published == true) this.date = new Date();
         this.published = published;
     }
 

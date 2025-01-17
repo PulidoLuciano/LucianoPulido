@@ -1,5 +1,6 @@
 package com.LucianoPulido.LucianoPulido.controllers.data.dto;
 
+import java.util.Date;
 import java.util.Set;
 
 import org.hibernate.validator.constraints.Length;
@@ -30,13 +31,15 @@ public class ArticleDTO {
     @NotBlank
     private String body;
 
-    Set<CategoryDTO> categories;
+    private Set<CategoryDTO> categories;
+
+    private Date date;
 
     public ArticleDTO() {
     }
 
     public ArticleDTO(String url, boolean published, String title, String imageUrl, String description,
-            String body, Set<CategoryDTO> categories) {
+            String body, Set<CategoryDTO> categories, Date date) {
         this.url = url;
         this.published = published;
         this.title = title;
@@ -44,6 +47,7 @@ public class ArticleDTO {
         this.description = description;
         this.body = body;
         this.categories = categories;
+        this.date = date;
     }
 
     public String getUrl() {
@@ -100,5 +104,13 @@ public class ArticleDTO {
 
     public void setCategories(Set<CategoryDTO> categories) {
         this.categories = categories;
+    }
+
+    public Date getDate() {
+        return date;
+    }
+
+    public void setDate(Date date) {
+        this.date = date;
     }
 }
