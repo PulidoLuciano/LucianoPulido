@@ -10,6 +10,7 @@ import com.LucianoPulido.LucianoPulido.controllers.data.mappers.ArticlePreviewMa
 import com.LucianoPulido.LucianoPulido.controllers.data.mappers.CategoryMapper;
 import com.LucianoPulido.LucianoPulido.controllers.routes.base.GenericController;
 import com.LucianoPulido.LucianoPulido.models.Category;
+import com.LucianoPulido.LucianoPulido.services.interfaces.ArticlesService;
 import com.LucianoPulido.LucianoPulido.services.interfaces.CategoryService;
 
 import java.util.List;
@@ -20,6 +21,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 
+
 @RestController
 @RequestMapping("/category")
 public class CategoryController
@@ -27,6 +29,8 @@ public class CategoryController
 
     @Autowired
     private ArticlePreviewMapper articlePreviewMapper;
+    @Autowired
+    private ArticlesService articlesService;
 
     @GetMapping("/{id}/preview")
     public ResponseEntity<CategoryPreviewDTO> getCategoryPreview(@PathVariable("id") String categoryId) {
@@ -40,4 +44,23 @@ public class CategoryController
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
+    @GetMapping("/recent/preview")
+    public ResponseEntity<CategoryPreviewDTO> getRecentPreview() {
+        CategoryDTO categoryDto = new CategoryDTO("recent", "Recent");
+        List<ArticlePreview> articles = articlePreviewMapper
+                .toDTOList(articlesService.getAll().stream().sorted((e1, e2) -> e1.getDate().compareTo(e2.getDate()))
+                        .filter(e -> e.isPublished()).limit(5).toList());
+        CategoryPreviewDTO response = new CategoryPreviewDTO(categoryDto, articles);
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+
+    @GetMapping("/popular/preview")
+    public ResponseEntity<CategoryPreviewDTO> getPopularPreview() {
+        CategoryDTO categoryDto = new CategoryDTO("popular", "Popular");
+        List<ArticlePreview> articles = articlePreviewMapper
+                .toDTOList(articlesService.getAll().stream().sorted((e1, e2) -> e1.getViews().compareTo(e2.getViews()))
+                        .filter(e -> e.isPublished()).limit(5).toList());
+        CategoryPreviewDTO response = new CategoryPreviewDTO(categoryDto, articles);
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
 }
