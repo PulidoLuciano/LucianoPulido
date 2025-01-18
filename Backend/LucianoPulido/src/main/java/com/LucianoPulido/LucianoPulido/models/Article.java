@@ -36,7 +36,7 @@ public class Article {
     @Column
     private String description;
 
-    @Column
+    @Column(columnDefinition = "TEXT")
     private String body;
 
     @Column
