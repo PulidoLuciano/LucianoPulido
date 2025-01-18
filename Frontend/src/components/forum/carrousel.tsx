@@ -47,7 +47,7 @@ export default function ArticlesCarrousel({title, articles, categoryRef} : Carro
     return(
         <article className="w-full mb-8 group">
             <div className="grid grid-cols-[auto_1fr] items-center mb-4">
-                <h2 className="text-3xl text-primary-dark mr-3">{title}</h2>
+                <h2 className="text-3xl text-primary-dark mr-3">{title} articles</h2>
                 <div className="hidden laptop:block h-1 w-full bg-primary-light relative -bottom-1"/>
             </div>
             {
