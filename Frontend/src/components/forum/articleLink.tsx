@@ -6,7 +6,7 @@ export default function ArticleLink({article} : {article : ArticleShortPreview})
         <Link href={`/articles/${article.url}`} className="inline-block w-60 h-60">
             <img src={article.imageUrl} alt="" className="max-w-full min-w-60 aspect-video"/>
             <p className="text-lg font-semibold text-pretty">{article.title}</p>
-            <p>{article.date}</p>
+            <p>{new Date(article.date).toLocaleDateString()}</p>
         </Link>
     )
 }
