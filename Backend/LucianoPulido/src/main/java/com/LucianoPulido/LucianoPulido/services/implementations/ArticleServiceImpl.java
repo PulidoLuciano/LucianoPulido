@@ -1,5 +1,6 @@
 package com.LucianoPulido.LucianoPulido.services.implementations;
 
+import java.util.Optional;
 import java.util.Set;
 import java.util.UUID;
 
@@ -25,6 +26,17 @@ public class ArticleServiceImpl extends GenericServiceImpl<Article, String, Arti
     JwtService jwtService;
     @Autowired
     CommentService commentService;
+
+    @Override
+    public Optional<Article> getById(String id){
+        Optional<Article> optionalArticle = super.getById(id);
+        if(optionalArticle.isPresent()){
+            Article article = optionalArticle.get();
+            article.setViews(article.getViews() + 1);
+            super.save(article);
+        }
+        return optionalArticle;
+    }
 
     @Override
     public Comment createComment(String articleId, String message, String token) {
