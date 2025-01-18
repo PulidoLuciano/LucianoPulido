@@ -2,12 +2,7 @@ import { useEffect, useState } from "react";
 import ArticlesCarrousel from "../components/forum/carrousel";
 import SearchBar from "../components/forum/searchBar";
 import { useFetch } from "../hooks/useFetch";
-import { ArticleShortPreview, Category } from "../types";
-
-interface CategoryCarrousel {
-  category: Category;
-  articles: Array<ArticleShortPreview>;
-}
+import { CategoryCarrousel } from "../types";
 
 export default function Forum() {
   const CARROUSEL_URLS = [

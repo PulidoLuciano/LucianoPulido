@@ -59,3 +59,8 @@ interface CommentData{
     id : string
     message : string
 }
+
+interface CategoryCarrousel {
+    category: Category;
+    articles: Array<ArticleShortPreview>;
+}
