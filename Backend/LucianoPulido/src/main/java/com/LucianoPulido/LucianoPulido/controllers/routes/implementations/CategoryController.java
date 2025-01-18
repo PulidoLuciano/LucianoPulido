@@ -39,7 +39,7 @@ public class CategoryController
         CategoryDTO categoryDto = super.getMapper().toDTO(category);
         List<ArticlePreview> articles = articlePreviewMapper
                 .toDTOList(category.getArticles().stream().sorted((e1, e2) -> e1.getDate().compareTo(e2.getDate()))
-                        .filter(e -> e.isPublished()).limit(5).toList());
+                        .filter(e -> e.isPublished()).limit(10).toList());
         CategoryPreviewDTO response = new CategoryPreviewDTO(categoryDto, articles);
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
@@ -49,7 +49,7 @@ public class CategoryController
         CategoryDTO categoryDto = new CategoryDTO("recent", "Recent");
         List<ArticlePreview> articles = articlePreviewMapper
                 .toDTOList(articlesService.getAll().stream().sorted((e1, e2) -> e1.getDate().compareTo(e2.getDate()))
-                        .filter(e -> e.isPublished()).limit(5).toList());
+                        .filter(e -> e.isPublished()).limit(10).toList());
         CategoryPreviewDTO response = new CategoryPreviewDTO(categoryDto, articles);
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
@@ -59,7 +59,7 @@ public class CategoryController
         CategoryDTO categoryDto = new CategoryDTO("popular", "Popular");
         List<ArticlePreview> articles = articlePreviewMapper
                 .toDTOList(articlesService.getAll().stream().sorted((e1, e2) -> e1.getViews().compareTo(e2.getViews()))
-                        .filter(e -> e.isPublished()).limit(5).toList());
+                        .filter(e -> e.isPublished()).limit(10).toList());
         CategoryPreviewDTO response = new CategoryPreviewDTO(categoryDto, articles);
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
