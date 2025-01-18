@@ -51,7 +51,7 @@ export default function Comment( { data } : { data : CommentData}){
               </Form>
           }
           {
-            responses.map(response => <Comment data={response}/>)
+            responses.map(response => <Comment key={response.id} data={response}/>)
           }
         </article>
     )

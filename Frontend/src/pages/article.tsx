@@ -91,7 +91,7 @@ export default function ArticlePage({
       <CommentSection articleId={routeParams.articleId} />
       <section>
         {
-            carrousels.map(data => <ArticlesCarrousel articles={data.articles} categoryRef={data.category.url} title={data.category.name} />)
+            carrousels.map(data => <ArticlesCarrousel key={data.category.url} articles={data.articles} categoryRef={data.category.url} title={data.category.name} />)
         }
       </section>
     </main>

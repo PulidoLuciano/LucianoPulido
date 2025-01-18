@@ -91,6 +91,8 @@ export const AuthContext = ({children} : {children : ReactNode}) => {
             if(session){
                 setAccessToken(session.accessToken);
                 setRefreshToken(session.refreshToken);
+                if(localStorage.getItem("refresh"))
+                    localStorage.setItem("refresh", session.refreshToken);
             }else{
                 throw new Error("Session is empty");
             }

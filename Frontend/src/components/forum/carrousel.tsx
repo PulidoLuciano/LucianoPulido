@@ -59,7 +59,7 @@ export default function ArticlesCarrousel({title, articles, categoryRef} : Carro
                     <div className="flex flex-col overflow-x-hidden items-center tablet:flex-row tablet:items-start gap-4 py-4" ref={contentDiv}>
                         {
                             articles.map(article => {
-                                return <ArticleLink article={article}/>
+                                return <ArticleLink key={article.url} article={article}/>
                             })
                         }
                         <Link href={`/categories/${categoryRef}`} className="min-w-60 flex items-center justify-center flex-col my-auto">
