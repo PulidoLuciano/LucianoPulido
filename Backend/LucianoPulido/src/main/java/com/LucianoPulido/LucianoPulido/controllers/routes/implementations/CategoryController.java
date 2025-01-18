@@ -38,7 +38,7 @@ public class CategoryController
                 .orElseThrow(() -> new IllegalArgumentException("There's no category with that id"));
         CategoryDTO categoryDto = super.getMapper().toDTO(category);
         List<ArticlePreview> articles = articlePreviewMapper
-                .toDTOList(category.getArticles().stream().sorted((e1, e2) -> e1.getDate().compareTo(e2.getDate()))
+                .toDTOList(category.getArticles().stream().sorted((e1, e2) -> e2.getDate().compareTo(e1.getDate()))
                         .filter(e -> e.isPublished()).limit(10).toList());
         CategoryPreviewDTO response = new CategoryPreviewDTO(categoryDto, articles);
         return new ResponseEntity<>(response, HttpStatus.OK);
@@ -48,7 +48,7 @@ public class CategoryController
     public ResponseEntity<CategoryPreviewDTO> getRecentPreview() {
         CategoryDTO categoryDto = new CategoryDTO("recent", "Recent");
         List<ArticlePreview> articles = articlePreviewMapper
-                .toDTOList(articlesService.getAll().stream().sorted((e1, e2) -> e1.getDate().compareTo(e2.getDate()))
+                .toDTOList(articlesService.getAll().stream().sorted((e1, e2) -> e2.getDate().compareTo(e1.getDate()))
                         .filter(e -> e.isPublished()).limit(10).toList());
         CategoryPreviewDTO response = new CategoryPreviewDTO(categoryDto, articles);
         return new ResponseEntity<>(response, HttpStatus.OK);
@@ -58,7 +58,7 @@ public class CategoryController
     public ResponseEntity<CategoryPreviewDTO> getPopularPreview() {
         CategoryDTO categoryDto = new CategoryDTO("popular", "Popular");
         List<ArticlePreview> articles = articlePreviewMapper
-                .toDTOList(articlesService.getAll().stream().sorted((e1, e2) -> e1.getViews().compareTo(e2.getViews()))
+                .toDTOList(articlesService.getAll().stream().sorted((e1, e2) -> e2.getViews().compareTo(e1.getViews()))
                         .filter(e -> e.isPublished()).limit(10).toList());
         CategoryPreviewDTO response = new CategoryPreviewDTO(categoryDto, articles);
         return new ResponseEntity<>(response, HttpStatus.OK);
