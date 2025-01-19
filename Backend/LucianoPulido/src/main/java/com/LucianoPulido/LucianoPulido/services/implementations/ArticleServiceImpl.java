@@ -68,4 +68,10 @@ public class ArticleServiceImpl extends GenericServiceImpl<Article, String, Arti
     public Long countViews() {
         return super.getRepositorio().countViews();
     }
+
+    @Override
+    public Set<Article> searchArticlesByTitle(String search) {
+        String regex = "%".concat(search.toLowerCase()).concat("%");
+        return super.getRepositorio().searchArticlesByTitle(regex);
+    }
 }

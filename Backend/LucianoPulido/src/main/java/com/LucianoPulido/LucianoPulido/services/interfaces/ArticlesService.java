@@ -17,4 +17,6 @@ public interface ArticlesService extends GenericService<Article, String>{
     Long count();
 
     Long countViews();
+
+    Set<Article> searchArticlesByTitle(String search);
 }

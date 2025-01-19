@@ -72,6 +72,13 @@ public class ArticleController extends GenericController<Article, String, Articl
         return response;
     }
 
+    @GetMapping("/dashboard/search")
+    public List<ArticleDashboardDTO> getArticleDashboardInfo(@RequestParam("query") String search) {
+        Set<Article> articles = super.getServicio().searchArticlesByTitle(search);
+        List<ArticleDashboardDTO> response = articles.stream().map(e -> new ArticleDashboardDTO(e.getUrl(), e.getTitle(), e.getViews(), e.getComments().size())).toList();
+        return response;
+    }
+
     @GetMapping("/count")
     public Map<String, Long> countArticles() {
         return Map.of("count", super.getServicio().count());

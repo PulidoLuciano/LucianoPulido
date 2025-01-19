@@ -18,4 +18,7 @@ public interface ArticleRepository extends GenericRepository<Article, String>, C
 
     @Query(value = "SELECT SUM(views) FROM articles", nativeQuery = true)
     public Long countViews();
+
+    @Query(value = "SELECT * FROM articles WHERE LOWER(title) LIKE :searchRegex", nativeQuery = true)
+    public Set<Article> searchArticlesByTitle(@Param("searchRegex") String searchRegex);
 }
