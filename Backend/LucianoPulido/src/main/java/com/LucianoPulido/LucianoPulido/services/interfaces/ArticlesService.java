@@ -13,4 +13,8 @@ public interface ArticlesService extends GenericService<Article, String>{
     Set<Comment> getComments(String id);
 
     Set<Article> getDashboardInfo(int limit, int offset);
+
+    Long count();
+
+    Long countViews();
 }

@@ -14,6 +14,7 @@ import com.LucianoPulido.LucianoPulido.security.TokenException;
 import com.LucianoPulido.LucianoPulido.services.interfaces.ArticlesService;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -69,5 +70,15 @@ public class ArticleController extends GenericController<Article, String, Articl
         Set<Article> articles = super.getServicio().getDashboardInfo(limit, offset);
         List<ArticleDashboardDTO> response = articles.stream().map(e -> new ArticleDashboardDTO(e.getUrl(), e.getTitle(), e.getViews(), e.getComments().size())).toList();
         return response;
+    }
+
+    @GetMapping("/count")
+    public Map<String, Long> countArticles() {
+        return Map.of("count", super.getServicio().count());
+    }
+
+    @GetMapping("/count/views")
+    public Map<String, Long> countArticleViews() {
+        return Map.of("count", super.getServicio().countViews());
     }
 }

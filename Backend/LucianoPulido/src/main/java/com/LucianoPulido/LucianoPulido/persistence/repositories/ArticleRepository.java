@@ -15,4 +15,7 @@ public interface ArticleRepository extends GenericRepository<Article, String>, C
 
     @Query(value = "SELECT * FROM articles ORDER BY date DESC LIMIT :limit OFFSET :offset", nativeQuery = true)
     public Set<Article> findDashboardInfo(@Param("limit") int limit, @Param("offset") int offset);
+
+    @Query(value = "SELECT SUM(views) FROM articles", nativeQuery = true)
+    public Long countViews();
 }

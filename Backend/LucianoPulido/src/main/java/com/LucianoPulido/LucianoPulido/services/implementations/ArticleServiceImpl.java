@@ -58,4 +58,14 @@ public class ArticleServiceImpl extends GenericServiceImpl<Article, String, Arti
     public Set<Article> getDashboardInfo(int limit, int offset) {
         return super.getRepositorio().findDashboardInfo(limit, offset);
     }
+
+    @Override
+    public Long count() {
+        return super.getRepositorio().count();
+    }
+
+    @Override
+    public Long countViews() {
+        return super.getRepositorio().countViews();
+    }
 }
