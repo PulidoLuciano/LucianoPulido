@@ -53,6 +53,8 @@ export const AuthContext = ({children} : {children : ReactNode}) => {
             setRefreshToken(sessionData.refreshToken);
             if(loginData.keepLoggedIn){
                 localStorage.setItem("refresh", sessionData.refreshToken);
+            }else{
+                sessionStorage.setItem("refresh", sessionData.refreshToken);
             }
         } 
     }
@@ -65,6 +67,7 @@ export const AuthContext = ({children} : {children : ReactNode}) => {
                 setAccessToken(null);
                 setRefreshToken(null);
                 localStorage.removeItem("refresh");
+                sessionStorage.removeItem("refresh");
             }
         } catch (error) {
             throw error;
@@ -78,6 +81,7 @@ export const AuthContext = ({children} : {children : ReactNode}) => {
                 setUser({username : session.username, isAdmin : session.isAdmin});
                 setAccessToken(session.accessToken);
                 setRefreshToken(session.refreshToken);
+                sessionStorage.setItem("refresh", session.refreshToken);
             }
         }catch(error){
             throw error;
@@ -85,14 +89,20 @@ export const AuthContext = ({children} : {children : ReactNode}) => {
     }
 
     async function getNewRefreshToken(){
-        if(!refreshToken) return;
+        const localRefresh = localStorage.getItem("refresh");
+        const sessionRefresh = sessionStorage.getItem("refresh");
+        if(!refreshToken || (!localRefresh && !sessionRefresh)) return;
         try{
+            localStorage.removeItem("refresh");
+            sessionStorage.removeItem("refresh");
             const session : SessionData = await authService.getNewRefreshToken(refreshToken);
             if(session){
                 setAccessToken(session.accessToken);
                 setRefreshToken(session.refreshToken);
-                if(localStorage.getItem("refresh"))
+                if(localRefresh)
                     localStorage.setItem("refresh", session.refreshToken);
+                else
+                    sessionStorage.setItem("refresh", session.refreshToken);
             }else{
                 throw new Error("Session is empty");
             }
@@ -100,6 +110,8 @@ export const AuthContext = ({children} : {children : ReactNode}) => {
             setAccessToken(null);
             setRefreshToken(null);
             setUser(null);
+            localStorage.removeItem("refresh");
+            sessionStorage.removeItem("refresh");
             window.history.pushState({}, "", "/login");
             const navigationEvent = new Event("pushstate");
             window.dispatchEvent(navigationEvent);
