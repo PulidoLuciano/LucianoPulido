@@ -11,4 +11,6 @@ public interface ArticlesService extends GenericService<Article, String>{
     Comment createComment(String articleId, String message, String token);
 
     Set<Comment> getComments(String id);
+
+    Set<Article> getDashboardInfo(int limit, int offset);
 }

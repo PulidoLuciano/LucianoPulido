@@ -53,4 +53,9 @@ public class ArticleServiceImpl extends GenericServiceImpl<Article, String, Arti
         Article article = super.getRepositorio().findById(id).orElseThrow(() -> new IllegalArgumentException("The article does not exist"));
         return article.getComments();
     }
+
+    @Override
+    public Set<Article> getDashboardInfo(int limit, int offset) {
+        return super.getRepositorio().findDashboardInfo(limit, offset);
+    }
 }

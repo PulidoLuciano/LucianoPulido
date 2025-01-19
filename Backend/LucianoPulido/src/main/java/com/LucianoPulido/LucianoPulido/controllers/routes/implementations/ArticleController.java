@@ -4,6 +4,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.LucianoPulido.LucianoPulido.controllers.data.dto.ArticleDTO;
+import com.LucianoPulido.LucianoPulido.controllers.data.dto.ArticleDashboardDTO;
 import com.LucianoPulido.LucianoPulido.controllers.data.dto.CommentDTO;
 import com.LucianoPulido.LucianoPulido.controllers.data.mappers.ArticleMapper;
 import com.LucianoPulido.LucianoPulido.controllers.routes.base.GenericController;
@@ -23,6 +24,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+
 
 @RestController
 @RequestMapping("/article")
@@ -61,4 +64,10 @@ public class ArticleController extends GenericController<Article, String, Articl
         return commentDTOs;
     }
 
+    @GetMapping("/dashboard")
+    public List<ArticleDashboardDTO> getArticleDashboardInfo(@RequestParam("limit") int limit, @RequestParam("offset") int offset) {
+        Set<Article> articles = super.getServicio().getDashboardInfo(limit, offset);
+        List<ArticleDashboardDTO> response = articles.stream().map(e -> new ArticleDashboardDTO(e.getUrl(), e.getTitle(), e.getViews(), e.getComments().size())).toList();
+        return response;
+    }
 }
