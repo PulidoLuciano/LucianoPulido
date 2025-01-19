@@ -64,3 +64,10 @@ interface CategoryCarrousel {
     category: Category;
     articles: Array<ArticleShortPreview>;
 }
+
+interface ArticleDashboard {
+    url: String
+    title: String
+    views: number
+    comments: number
+}
