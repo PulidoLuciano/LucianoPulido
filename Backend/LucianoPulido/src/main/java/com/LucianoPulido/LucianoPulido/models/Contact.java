@@ -1,5 +1,6 @@
 package com.LucianoPulido.LucianoPulido.models;
 
+import java.util.Date;
 import java.util.UUID;
 
 import jakarta.persistence.Column;
@@ -29,7 +30,11 @@ public class Contact {
     @Column
     private String message;
 
+    @Column
+    private Date date;
+
     public Contact() {
+        this.date = new Date();
     }
 
     public Contact(String name, String email, String subject, String message) {
@@ -37,6 +42,7 @@ public class Contact {
         setEmail(email);
         setSubject(subject);
         setMessage(message);
+        this.date = new Date();
     }
 
     public Contact(UUID id, String name, String email, String subject, String message) {
@@ -45,6 +51,7 @@ public class Contact {
         setEmail(email);
         setSubject(subject);
         setMessage(message);
+        this.date = new Date();
     }
 
     public UUID getId() {
@@ -93,5 +100,13 @@ public class Contact {
         if(message.isBlank() || message == null) throw new IllegalArgumentException("Message must not be blank");
         if(message.length() > 300) throw new IllegalArgumentException("Message must not be longer than 300 characters");
         this.message = message;
+    }
+
+    public Date getDate() {
+        return date;
+    }
+
+    public void setDate(Date date) {
+        this.date = date;
     }
 }

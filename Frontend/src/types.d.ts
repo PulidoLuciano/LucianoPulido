@@ -84,3 +84,12 @@ interface CommentDashboard{
     message: string
     articleUrl: string
 }
+
+interface Contact{
+    id: string
+    name : string
+    email : string
+    subject : string
+    message: string
+    date: string
+}

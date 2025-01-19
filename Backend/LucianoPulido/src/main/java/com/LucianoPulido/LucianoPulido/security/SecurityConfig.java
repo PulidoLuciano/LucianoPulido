@@ -45,6 +45,8 @@ public class SecurityConfig {
             req.requestMatchers(HttpMethod.GET, "/comment/**").permitAll();
             req.requestMatchers(HttpMethod.POST, "/comment/*/response").authenticated();
             req.requestMatchers("/comment/**").hasAnyAuthority("ADMIN");
+
+            req.requestMatchers("/**").hasAnyAuthority("ADMIN");
         }
         )
         .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
