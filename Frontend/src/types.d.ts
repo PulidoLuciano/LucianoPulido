@@ -77,3 +77,10 @@ interface UserDashboard{
     id: string
     comments: number
 }
+
+interface CommentDashboard{
+    id: string
+    username: string
+    message: string
+    articleUrl: string
+}

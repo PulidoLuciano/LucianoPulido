@@ -99,7 +99,11 @@ public class Comment {
     }
 
     public Article getArticle() {
-        return article;
+        Article searchArticle = this.article;
+        if(searchArticle == null){
+            searchArticle = parent.getArticle();
+        } 
+        return searchArticle;
     }
 
     public void setArticle(Article article) {

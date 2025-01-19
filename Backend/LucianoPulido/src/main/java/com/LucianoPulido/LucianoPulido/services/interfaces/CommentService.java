@@ -11,4 +11,10 @@ public interface CommentService extends GenericService<Comment, UUID>{
     Set<Comment> getResponsesById(UUID id);
 
     Comment createResponseByParentId(UUID id, String message, String token) throws Exception;
+
+    Long count();
+
+    Long countResponses();
+
+    Set<Comment> getWithPagination(int limit, int offset);
 }

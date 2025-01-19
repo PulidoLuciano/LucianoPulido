@@ -1,14 +1,18 @@
 package com.LucianoPulido.LucianoPulido.controllers.routes.implementations;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.LucianoPulido.LucianoPulido.controllers.data.dto.CommentDTO;
+import com.LucianoPulido.LucianoPulido.controllers.data.dto.CommentDashboardDTO;
+
 import com.LucianoPulido.LucianoPulido.controllers.data.mappers.CommentMapper;
 import com.LucianoPulido.LucianoPulido.controllers.routes.base.GenericController;
 import com.LucianoPulido.LucianoPulido.models.Comment;
@@ -48,5 +52,22 @@ public class CommentController extends GenericController<Comment, UUID, CommentS
         Comment response = super.getServicio().createResponseByParentId(id, dto.getMessage(), token);
         CommentDTO responseDto = new CommentDTO(response.getId(), response.getMessage(), response.getDate(), response.getUser().getUsername());
         return new ResponseEntity<>(responseDto, HttpStatus.CREATED);
+    }
+
+    @GetMapping("/count")
+    public Map<String, Long> countArticles() {
+        return Map.of("count", super.getServicio().count());
+    }
+
+    @GetMapping("/count/responses")
+    public Map<String, Long> countArticleViews() {
+        return Map.of("count", super.getServicio().countResponses());
+    }
+
+    @GetMapping("/dashboard")
+    public List<CommentDashboardDTO> getArticleDashboardInfo(@RequestParam("limit") int limit, @RequestParam("offset") int offset) {
+        Set<Comment> comments = super.getServicio().getWithPagination(limit, offset);
+        List<CommentDashboardDTO> response = comments.stream().map(e -> new CommentDashboardDTO(e.getId(), e.getMessage(), e.getArticle().getUrl(), e.getUser().getUsername())).toList();
+        return response;
     }
 }

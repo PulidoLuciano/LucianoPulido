@@ -41,4 +41,18 @@ public class CommentServiceImpl extends GenericServiceImpl<Comment, UUID, Commen
         return response;
     }
 
+    @Override
+    public Long count() {
+        return super.getRepositorio().count();
+    }
+
+    @Override
+    public Long countResponses() {
+        return super.getRepositorio().countResponses();
+    }
+
+    @Override
+    public Set<Comment> getWithPagination(int limit, int offset) {
+        return super.getRepositorio().findWithPagination(limit, offset);
+    }
 }
