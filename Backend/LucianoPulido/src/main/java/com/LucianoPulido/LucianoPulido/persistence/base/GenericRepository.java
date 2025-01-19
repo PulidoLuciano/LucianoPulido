@@ -13,4 +13,6 @@ public interface GenericRepository<T,ID>{
     public Iterable<T> findAll();
 
     public void deleteById(ID id);
+
+    public long count();
 }
