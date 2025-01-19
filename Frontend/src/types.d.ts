@@ -71,3 +71,9 @@ interface ArticleDashboard {
     views: number
     comments: number
 }
+
+interface UserDashboard{
+    username: string
+    id: string
+    comments: number
+}

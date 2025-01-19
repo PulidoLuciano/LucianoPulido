@@ -124,7 +124,7 @@ export default function ArticlesDashboard() {
           <p>There's no articles</p>
         )}
         {
-            (articles.length < articlesCount) ?
+            (articles.length < articlesCount && !searchTimeout) ?
             <button className="text-secondary-dark underline w-full" onClick={fetchMoreArticles}>
                 Show more
             </button>

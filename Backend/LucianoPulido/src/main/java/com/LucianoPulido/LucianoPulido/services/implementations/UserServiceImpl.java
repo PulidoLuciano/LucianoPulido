@@ -1,5 +1,6 @@
 package com.LucianoPulido.LucianoPulido.services.implementations;
 
+import java.util.Set;
 import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,5 +36,26 @@ public class UserServiceImpl extends GenericServiceImpl<User, UUID, UserReposito
     @Override
     public boolean existsByEmail(String email) {
         return super.getRepositorio().existsByEmail(email);
+    }
+
+    @Override
+    public Long countSuscribe() {
+        return super.getRepositorio().countSuscribe();
+    }
+
+    @Override
+    public Long count() {
+        return super.getRepositorio().count();
+    }
+
+    @Override
+    public Set<User> findWithPagination(int limit, int offset) {
+        return super.getRepositorio().findWithPagination(limit, offset);
+    }
+
+    @Override
+    public Set<User> searchUserByUsername(String username) {
+        String regex = "%".concat(username.toLowerCase()).concat("%");
+        return super.getRepositorio().searchUsersByUsername(regex);
     }
 }
