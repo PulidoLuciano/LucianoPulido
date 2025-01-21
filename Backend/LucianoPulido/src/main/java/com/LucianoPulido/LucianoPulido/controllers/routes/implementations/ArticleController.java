@@ -5,8 +5,11 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.LucianoPulido.LucianoPulido.controllers.data.dto.ArticleDTO;
 import com.LucianoPulido.LucianoPulido.controllers.data.dto.ArticleDashboardDTO;
+import com.LucianoPulido.LucianoPulido.controllers.data.dto.ArticlesPreviewWithDescription;
 import com.LucianoPulido.LucianoPulido.controllers.data.dto.CommentDTO;
 import com.LucianoPulido.LucianoPulido.controllers.data.mappers.ArticleMapper;
+import com.LucianoPulido.LucianoPulido.controllers.data.mappers.ArticlePreviewWithDescriptionMapper;
+import com.LucianoPulido.LucianoPulido.controllers.data.mappers.ArticlePreviewWithDescriptionMapperImpl;
 import com.LucianoPulido.LucianoPulido.controllers.routes.base.GenericController;
 import com.LucianoPulido.LucianoPulido.models.Article;
 import com.LucianoPulido.LucianoPulido.models.Comment;
@@ -18,6 +21,7 @@ import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -32,6 +36,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 @RequestMapping("/article")
 public class ArticleController extends GenericController<Article, String, ArticlesService, ArticleDTO, ArticleMapper> {
 
+    @Autowired
+    private ArticlePreviewWithDescriptionMapper articlePreviewWithDescriptionMapper;
+    
     @PostMapping("/{id}/comment")
     public ResponseEntity<CommentDTO> createComment(@PathVariable("id") String id, @RequestBody CommentDTO comment,
             @RequestHeader("Authorization") String authorizationHeader) throws TokenException {
@@ -76,6 +83,13 @@ public class ArticleController extends GenericController<Article, String, Articl
     public List<ArticleDashboardDTO> getArticleDashboardInfo(@RequestParam("query") String search) {
         Set<Article> articles = super.getServicio().searchArticlesByTitle(search);
         List<ArticleDashboardDTO> response = articles.stream().map(e -> new ArticleDashboardDTO(e.getUrl(), e.getTitle(), e.getViews(), e.getComments().size())).toList();
+        return response;
+    }
+
+    @GetMapping("/search")
+    public List<ArticlesPreviewWithDescription> getSearchArticles(@RequestParam("query") String search) {
+        Set<Article> articles = super.getServicio().searchArticlesByTitle(search);
+        List<ArticlesPreviewWithDescription> response = articles.stream().map(e -> articlePreviewWithDescriptionMapper.toDTO(e)).toList();
         return response;
     }
 

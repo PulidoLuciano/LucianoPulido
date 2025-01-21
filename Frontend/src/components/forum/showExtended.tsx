@@ -8,7 +8,7 @@ export default function ShowExtendedArticles({articles} : {articles : ArticleExt
                 (articles.length !== 0) ?
                     articles.map(article => <ExtendedArticleLink article={article}/>)
                 :
-                    <p>There're no articles in this category</p>
+                    <p>There're no articles related</p>
             }
         </article>
     )
