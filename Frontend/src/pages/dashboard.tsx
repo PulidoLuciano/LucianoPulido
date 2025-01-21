@@ -2,6 +2,7 @@ import ArticlesDashboard from "../components/forum/dashboard/articlesDashboard";
 import UsersDashboard from "../components/forum/dashboard/usersDashboard";
 import CommentsDashboard from "../components/forum/dashboard/commentsDashboard";
 import ContactsDashboard from "../components/forum/dashboard/contactsDashboard";
+import CategoryForm from "../components/forum/dashboard/CategoryForm";
 
 export default function Dashboard(){
     return(
@@ -15,6 +16,7 @@ export default function Dashboard(){
                 <CommentsDashboard/>
                 <ContactsDashboard/>
             </section>
+            <CategoryForm/>
         </main>
     )
 }
