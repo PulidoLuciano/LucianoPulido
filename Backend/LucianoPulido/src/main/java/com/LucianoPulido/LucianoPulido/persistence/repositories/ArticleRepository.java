@@ -21,4 +21,13 @@ public interface ArticleRepository extends GenericRepository<Article, String>, C
 
     @Query(value = "SELECT * FROM articles WHERE LOWER(title) LIKE :searchRegex", nativeQuery = true)
     public Set<Article> searchArticlesByTitle(@Param("searchRegex") String searchRegex);
+
+    @Query(value = "SELECT * FROM articles as a, article_category as ac WHERE ac.article_id = a.url AND ac.category_id = :categoryUrl AND published = TRUE ORDER BY date DESC LIMIT :limit OFFSET :offset", nativeQuery = true)
+    public Set<Article> findArticlesByCategoryUrl(@Param("categoryUrl") String categoryUrl, @Param("limit") int limit, @Param("offset") int offset);
+
+    @Query(value = "SELECT * FROM articles as a WHERE published = TRUE ORDER BY date DESC LIMIT :limit OFFSET :offset", nativeQuery = true)
+    public Set<Article> findLastPublishedArticles(@Param("limit") int limit, @Param("offset") int offset);
+
+    @Query(value = "SELECT * FROM articles as a WHERE published = TRUE ORDER BY views DESC LIMIT :limit OFFSET :offset", nativeQuery = true)
+    public Set<Article> findPopularPublishedArticles(@Param("limit") int limit, @Param("offset") int offset);
 }

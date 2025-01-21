@@ -74,4 +74,19 @@ public class ArticleServiceImpl extends GenericServiceImpl<Article, String, Arti
         String regex = "%".concat(search.toLowerCase()).concat("%");
         return super.getRepositorio().searchArticlesByTitle(regex);
     }
+
+    @Override
+    public Set<Article> findArticlesByCategoryUrl(String categoryUrl, int limit, int offset) {
+        return super.getRepositorio().findArticlesByCategoryUrl(categoryUrl, limit, offset);
+    }
+
+    @Override
+    public Set<Article> findLastArticles(int limit, int offset) {
+        return super.getRepositorio().findLastPublishedArticles(limit, offset);
+    }
+
+    @Override
+    public Set<Article> findPopularArticles(int limit, int offset) {
+        return super.getRepositorio().findPopularPublishedArticles(limit, offset);
+    }
 }

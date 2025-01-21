@@ -19,4 +19,10 @@ public interface ArticlesService extends GenericService<Article, String>{
     Long countViews();
 
     Set<Article> searchArticlesByTitle(String search);
+
+    Set<Article> findArticlesByCategoryUrl(String categoryUrl, int limit, int offset);
+
+    Set<Article> findLastArticles(int limit, int offset);
+
+    Set<Article> findPopularArticles(int limit, int offset);
 }
