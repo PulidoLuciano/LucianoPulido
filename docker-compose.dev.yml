@@ -27,11 +27,8 @@ services:
       - "./backend/LucianoPulido:/app"
     ports:
       - "8080:8080"
-    environment:
-      - DATABASE_URL=jdbc:postgresql://database:5432/LucianoPulido
-      - DATABASE_USER=postgres
-      - DATABASE_PASSWORD=example
-      - DATABASE_NAME=POSTGRESQL
+    env_file:
+      - .env.local.backend
     depends_on:
       - database
   
@@ -39,9 +36,8 @@ services:
     image: postgres
     ports:
       - "5432:5432"
-    environment:
-      POSTGRES_PASSWORD: example
-      POSTGRES_DB: LucianoPulido
+    env_file:
+      - .env.local.database
     volumes:
       - lucianopulido-database-volume:/var/lib/postgresql/data
 
