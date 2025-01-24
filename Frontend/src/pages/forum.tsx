@@ -85,11 +85,11 @@ export default function Forum() {
           <div className="hidden laptop:block h-1 w-full bg-primary-light relative -bottom-1" />
         </div>
         {categories.length ? (
-          <div className="grid grid-cols-3 gap-6">
+          <div className="tablet:grid grid-cols-3 gap-6">
             {categories.map((category) => (
                 <Link
                   href={`/categories/${category.url}`}
-                  className="text-2xl text-center underline text-primary-dark hover:text-primary-light"
+                  className="text-2xl text-center underline text-primary-dark hover:text-primary-light block"
                 >
                   {category.name}
                 </Link>
