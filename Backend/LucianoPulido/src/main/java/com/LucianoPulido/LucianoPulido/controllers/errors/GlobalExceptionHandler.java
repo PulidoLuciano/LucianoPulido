@@ -18,6 +18,8 @@ import org.springframework.web.servlet.resource.NoResourceFoundException;
 
 import com.LucianoPulido.LucianoPulido.security.TokenException;
 
+import jakarta.mail.MessagingException;
+
 @ControllerAdvice
 public class GlobalExceptionHandler{
     @ExceptionHandler(NoResourceFoundException.class)
@@ -71,6 +73,12 @@ public class GlobalExceptionHandler{
     @ExceptionHandler(HttpClientErrorException.class)
     public ResponseEntity<ErrorResponse> handleHttpClientException(Exception ex) {
         ErrorResponse response = new ErrorResponse("Hubo un error al hacer un llamado a una API externa", createDetails(ex));
+        return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+
+    @ExceptionHandler(MessagingException.class)
+    public ResponseEntity<ErrorResponse> handleMessagingException(MessagingException ex) {
+        ErrorResponse response = new ErrorResponse("Hubo un error al enviar un correo", createDetails(ex));
         return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
     }
     

@@ -76,13 +76,7 @@ export const AuthContext = ({children} : {children : ReactNode}) => {
 
     async function register(registerData : RegisterData){
         try{
-            const session : SessionData = await authService.register(registerData);
-            if(session){
-                setUser({username : session.username, isAdmin : session.isAdmin});
-                setAccessToken(session.accessToken);
-                setRefreshToken(session.refreshToken);
-                sessionStorage.setItem("refresh", session.refreshToken);
-            }
+            await authService.register(registerData);
         }catch(error){
             throw error;
         }

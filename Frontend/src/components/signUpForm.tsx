@@ -53,7 +53,7 @@ async function callExists(body: { email?: string; username?: string }) {
   const data = await response.json();
   return data.exists as boolean;
 }
-export default function SignUpForm() {
+export default function SignUpForm( { setSignedUp } : { setSignedUp : (value : boolean) => void } ) {
   const auth = useAuth();
 
   async function handleSignUp(event: SyntheticEvent<HTMLFormElement>) {
@@ -72,6 +72,7 @@ export default function SignUpForm() {
       username: username.value,
       sendEmails: sendEmails.checked,
     });
+    setSignedUp(true);
   }
 
   return (

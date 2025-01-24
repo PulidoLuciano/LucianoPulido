@@ -37,7 +37,7 @@ public class JwtService {
 
     public void validateToken(String token, User user) throws TokenException{
         UUID userId = extractUserId(token);
-        if(!userId.equals(user.getId())){
+        if(user != null && !userId.equals(user.getId())){
             throw new TokenException("The token does not belong to the user");
         }
         if(isTokenExpired(token)){

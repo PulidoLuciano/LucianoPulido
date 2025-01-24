@@ -23,7 +23,7 @@ public class User {
 
     @Column(unique = true)
     private String username;
-    
+
     @Column(unique = true)
     private String email;
 
@@ -33,6 +33,9 @@ public class User {
     @Column(name = "is_admin")
     private Boolean isAdmin = false;
 
+    @Column(name = "is_verified")
+    private Boolean isVerified = false;
+
     @Column(name = "send_emails")
     private Boolean sendEmails;
 
@@ -41,7 +44,7 @@ public class User {
 
     @OneToMany(mappedBy = "user", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private Set<Session> sessions;
-    
+
     public User() {
     }
 
@@ -56,13 +59,15 @@ public class User {
         setIsAdmin(false);
     }
 
-    public User(UUID id, String username, String email, String password, Boolean isAdmin, Boolean sendEmails,
+    public User(UUID id, String username, String email, String password, Boolean isAdmin, Boolean isVerified,
+            Boolean sendEmails,
             Set<Comment> comments, Set<Session> sessions) {
         this.id = id;
         this.username = username;
         this.email = email;
         this.password = password;
         this.isAdmin = isAdmin;
+        this.isVerified = isVerified;
         this.sendEmails = sendEmails;
         this.comments = comments;
         this.sessions = sessions;
@@ -73,8 +78,11 @@ public class User {
     }
 
     public void setEmail(String email) {
-        if(email.isBlank() || email == null) throw new IllegalArgumentException("Email must not be blank");
-        if(!email.matches("^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@((\\[[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}\\])|(([a-zA-Z\\-0-9]+\\.)+[a-zA-Z]{2,}))$")) throw new IllegalArgumentException(email + " is not a valid email");
+        if (email.isBlank() || email == null)
+            throw new IllegalArgumentException("Email must not be blank");
+        if (!email.matches(
+                "^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@((\\[[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}\\])|(([a-zA-Z\\-0-9]+\\.)+[a-zA-Z]{2,}))$"))
+            throw new IllegalArgumentException(email + " is not a valid email");
         this.email = email;
     }
 
@@ -83,7 +91,8 @@ public class User {
     }
 
     public void setPassword(String password) {
-        if(password.isBlank() || password == null) throw new IllegalArgumentException("Password must not be blank");
+        if (password.isBlank() || password == null)
+            throw new IllegalArgumentException("Password must not be blank");
         this.password = password;
     }
 
@@ -92,9 +101,13 @@ public class User {
     }
 
     public void setUsername(String username) {
-        if(username.isBlank() || username == null) throw new IllegalArgumentException("Username must not be blank");
-        if(username.length() > 30) throw new IllegalArgumentException("Username must not be longer than 30 characters");
-        if(!username.matches("^[a-zA-Z0-9._-]+$")) throw new IllegalArgumentException("Username must only contain letters, numbers, periods, underscores, and hyphens");
+        if (username.isBlank() || username == null)
+            throw new IllegalArgumentException("Username must not be blank");
+        if (username.length() > 30)
+            throw new IllegalArgumentException("Username must not be longer than 30 characters");
+        if (!username.matches("^[a-zA-Z0-9._-]+$"))
+            throw new IllegalArgumentException(
+                    "Username must only contain letters, numbers, periods, underscores, and hyphens");
         this.username = username;
     }
 
@@ -136,5 +149,13 @@ public class User {
 
     public void setSessions(Set<Session> sessions) {
         this.sessions = sessions;
+    }
+
+    public Boolean getIsVerified() {
+        return isVerified;
+    }
+
+    public void setIsVerified(Boolean isVerified) {
+        this.isVerified = isVerified;
     }
 }

@@ -15,6 +15,8 @@ import com.LucianoPulido.LucianoPulido.models.User;
 import com.LucianoPulido.LucianoPulido.security.TokenException;
 import com.LucianoPulido.LucianoPulido.services.interfaces.AuthService;
 
+import jakarta.mail.MessagingException;
+
 @RestController
 @RequestMapping("/auth")
 public class AuthController {
@@ -26,11 +28,18 @@ public class AuthController {
     private UserMapper userMapper;
 
     @PostMapping("/register")
-    public ResponseEntity<JwtAuthResponse> register(@Validated @RequestBody UserDTO userDto){
+    public ResponseEntity<UserDTO> register(@Validated @RequestBody UserDTO userDto) throws MessagingException{
         User user = userMapper.toEntity(userDto);
-        Session session = authService.register(user);
-        JwtAuthResponse jwtAuthResponse = createJwtResponse(session);
-        return new ResponseEntity<>(jwtAuthResponse, HttpStatus.CREATED);
+        user = authService.register(user);
+        UserDTO userDtoResponse = userMapper.toDTO(user);
+        return new ResponseEntity<>(userDtoResponse, HttpStatus.CREATED);
+    }
+
+    @PostMapping("/verify-account")
+    public ResponseEntity<UserDTO> verifyAccount(@RequestParam("token") String token){
+        User user = authService.verifyAccount(token);
+        UserDTO userDtoResponse = userMapper.toDTO(user);
+        return new ResponseEntity<>(userDtoResponse, HttpStatus.OK);
     }
     
     @PostMapping("/login")
