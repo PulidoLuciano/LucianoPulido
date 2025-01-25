@@ -10,6 +10,7 @@ public interface AuthService {
     User register(User user) throws MessagingException;
     User verifyAccount(String token);
     void recoverPassword(String email) throws MessagingException;
+    void changePassword(String token, String password);
     Session login(String email, String password, Boolean keepLoggedIn);
     Session refresh(String authorizationHeader) throws TokenException;
     void logout(String authorizationHeader) throws TokenException;

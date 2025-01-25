@@ -3,6 +3,7 @@ import ReactDOM from 'react-dom/client'
 import './index.css'
 import { RouteObject } from 'luciano-react-router/types'
 import App from './App.tsx' 
+const ChangePassword = lazy(() => import('./pages/changePassword.tsx'));
 const RecoverPassword = lazy(() => import('./pages/recover.tsx'));
 const VerifyEmail = lazy(() => import('./pages/verifyEmail.tsx'));
 const Editor = lazy(() => import('./pages/editor.tsx'));
@@ -68,6 +69,10 @@ const routes: Array<RouteObject> = [
   {
     path: "/recover",
     component: RecoverPassword
+  },
+  {
+    path: "/recover/change",
+    component: ChangePassword
   }
 ];
 

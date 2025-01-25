@@ -8,6 +8,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import com.LucianoPulido.LucianoPulido.controllers.data.dto.ChangePasswordDTO;
 import com.LucianoPulido.LucianoPulido.controllers.data.dto.JwtAuthResponse;
 import com.LucianoPulido.LucianoPulido.controllers.data.dto.LoginDTO;
 import com.LucianoPulido.LucianoPulido.controllers.data.dto.UserDTO;
@@ -48,6 +49,12 @@ public class AuthController {
     public ResponseEntity<Map<String, Boolean>> recoverPassword(@RequestParam("email") String email) throws MessagingException{
         authService.recoverPassword(email);
         return new ResponseEntity<>(Map.of("emailSended", true), HttpStatus.OK);
+    }
+
+    @PostMapping("/reset-password")
+    public ResponseEntity<Map<String, Boolean>> resetPassword(@RequestBody ChangePasswordDTO changePasswordDTO){
+        authService.changePassword(changePasswordDTO.getToken(), changePasswordDTO.getPassword());
+        return new ResponseEntity<>(Map.of("passwordReseted", true), HttpStatus.OK);
     }
     
     @PostMapping("/login")

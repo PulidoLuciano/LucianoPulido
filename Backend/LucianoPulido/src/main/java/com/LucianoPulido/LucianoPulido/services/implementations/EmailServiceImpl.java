@@ -222,7 +222,7 @@ public class EmailServiceImpl implements EmailService{
                         "            <p>Hi " + user.getUsername() + ",</p>\r\n" + //
                         "            <p>Seems like you forgot your password, or someone is trying to recover your password</p>\r\n" + //
                         "            <p>If it was you who did it, please click the button below to change your password:</p>\r\n" + //
-                        "            <a href=\""+ recoverLink + "\" class=\"email-button\">Verify Email</a>\r\n" + //
+                        "            <a href=\""+ recoverLink + "\" class=\"email-button\">Change password</a>\r\n" + //
                         "            <p>This e-mail works only for 10 minutes, so hurry up!</p>\r\n" + //
                         "            <p>If it wasn’t you, don’t worry—you can just ignore this email or contact me to this same e-mail address.</p>\r\n" + //
                         "        </div>\r\n" + //

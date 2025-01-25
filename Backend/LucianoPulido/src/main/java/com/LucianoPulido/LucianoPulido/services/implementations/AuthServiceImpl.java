@@ -109,4 +109,14 @@ public class AuthServiceImpl implements AuthService {
         String token = jwtService.createAccessToken(user);
         emailService.sendForgotPasswordEmail(user, token);
     }
+
+    @Override
+    public void changePassword(String token, String password) {
+        if(token == null || token.trim() == "") throw new IllegalArgumentException("Token is null or empty");
+        if(jwtService.isTokenExpired(token)) throw new IllegalArgumentException("Token is expired");
+        UUID userId = jwtService.extractUserId(token);
+        User user = userService.getById(userId).orElseThrow(() -> new IllegalArgumentException("The user does not exist"));
+        user.setPassword(passwordEncoder.encode(password));
+        userService.save(user);
+    }
 }
