@@ -52,4 +52,9 @@ public class UserServiceImpl extends GenericServiceImpl<User, UUID, UserReposito
         String regex = "%".concat(username.toLowerCase()).concat("%");
         return super.getRepositorio().searchUsersByUsername(regex);
     }
+
+    @Override
+    public Set<User> getSuscribeUsers() {
+        return super.getRepositorio().findSuscribeUsers();
+    }
 }

@@ -21,4 +21,6 @@ public interface UserService extends GenericService<User, UUID>{
     Set<User> findWithPagination(int limit, int offset);
 
     Set<User> searchUserByUsername(String username);
+
+    Set<User> getSuscribeUsers();
 }

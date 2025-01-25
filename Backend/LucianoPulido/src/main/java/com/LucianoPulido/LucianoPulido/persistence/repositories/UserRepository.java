@@ -29,4 +29,7 @@ public interface UserRepository extends GenericRepository<User, UUID>, CrudRepos
 
     @Query(value = "SELECT * FROM users WHERE LOWER(username) LIKE :searchRegex", nativeQuery = true)
     public Set<User> searchUsersByUsername(@Param("searchRegex") String searchRegex);
+
+    @Query(value = "SELECT * FROM users WHERE send_emails=TRUE", nativeQuery = true)
+    public Set<User> findSuscribeUsers();
 }

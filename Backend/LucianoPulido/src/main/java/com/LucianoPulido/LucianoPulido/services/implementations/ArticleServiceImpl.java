@@ -15,7 +15,10 @@ import com.LucianoPulido.LucianoPulido.security.JwtService;
 import com.LucianoPulido.LucianoPulido.services.base.GenericServiceImpl;
 import com.LucianoPulido.LucianoPulido.services.interfaces.ArticlesService;
 import com.LucianoPulido.LucianoPulido.services.interfaces.CommentService;
+import com.LucianoPulido.LucianoPulido.services.interfaces.EmailService;
 import com.LucianoPulido.LucianoPulido.services.interfaces.UserService;
+
+import jakarta.mail.MessagingException;
 
 @Service
 public class ArticleServiceImpl extends GenericServiceImpl<Article, String, ArticleRepository> implements ArticlesService{
@@ -26,7 +29,23 @@ public class ArticleServiceImpl extends GenericServiceImpl<Article, String, Arti
     JwtService jwtService;
     @Autowired
     CommentService commentService;
+    @Autowired
+    EmailService emailService;
 
+    @Override
+    public Article save(Article article){
+        article = super.save(article);
+        if(article.isPublished()){
+            Set<User> users = userService.getSuscribeUsers();
+            try {
+                emailService.sendArticleEmail(article, users);
+            } catch (MessagingException e) {
+                throw new IllegalArgumentException("Error sending email");
+            }
+        }
+        return article;
+    }
+    
     @Override
     public Optional<Article> getById(String id){
         Optional<Article> optionalArticle = super.getById(id);
