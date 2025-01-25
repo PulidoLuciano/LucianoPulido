@@ -102,4 +102,11 @@ public class AuthServiceImpl implements AuthService {
         user = userService.save(user);
         return user;
     }
+
+    @Override
+    public void recoverPassword(String email) throws MessagingException{
+        User user = userService.findByEmail(email);
+        String token = jwtService.createAccessToken(user);
+        emailService.sendForgotPasswordEmail(user, token);
+    }
 }

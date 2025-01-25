@@ -7,5 +7,5 @@ import jakarta.mail.MessagingException;
 public interface EmailService {
     void sendArticleEmail() throws MessagingException;
     void sendWelcomeEmail(User user, String token) throws MessagingException;
-    void sendForgotPasswordEmail() throws MessagingException;
+    void sendForgotPasswordEmail(User user, String token) throws MessagingException;
 }

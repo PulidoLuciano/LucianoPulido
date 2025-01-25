@@ -1,6 +1,7 @@
 import { Form, GeneralStatus } from "pulido-react-form";
 import { lazy, Suspense, useEffect, useRef, useState } from "react";
 import { useAuth } from "../contexts/authContext";
+import { Link } from "luciano-react-router";
 const SignUpForm = lazy(() => import("../components/signUpForm"));
 
 export default function Login() {
@@ -68,6 +69,8 @@ export default function Login() {
             />
           </div>
           {showLogin ? (
+            <>
+            
             <Form className="flex flex-col pb-4" onSubmit={handleLogin}>
               <label htmlFor="email" className="font-semibold pb-1 pt-2">
                 E-mail
@@ -114,6 +117,8 @@ export default function Login() {
                 errorMessage={<GeneralMessage />}
               />
             </Form>
+            <Link href="/recover" className="block text-center text-secondary-dark underline">Did you forget your password?</Link>
+            </>
           ) : (
             <Suspense fallback={"Loading..."}>
               <SignUpForm setSignedUp={setSignedUp} />

@@ -1,5 +1,7 @@
 package com.LucianoPulido.LucianoPulido.controllers.routes.implementations;
 
+import java.util.Map;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -40,6 +42,12 @@ public class AuthController {
         User user = authService.verifyAccount(token);
         UserDTO userDtoResponse = userMapper.toDTO(user);
         return new ResponseEntity<>(userDtoResponse, HttpStatus.OK);
+    }
+
+    @PostMapping("/recover")
+    public ResponseEntity<Map<String, Boolean>> recoverPassword(@RequestParam("email") String email) throws MessagingException{
+        authService.recoverPassword(email);
+        return new ResponseEntity<>(Map.of("emailSended", true), HttpStatus.OK);
     }
     
     @PostMapping("/login")
