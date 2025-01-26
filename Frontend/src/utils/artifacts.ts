@@ -1,3 +1,4 @@
+import BlockEquation from "../components/forum/articles/blockEquation"
 import Code from "../components/forum/articles/code"
 import Danger from "../components/forum/articles/danger"
 import Image from "../components/forum/articles/image"
@@ -72,6 +73,12 @@ const ARTICLE_ARTIFACTS : ArticleArtifact[] = [
         type : ArtifactTypes.Image,
         structure: "#&Image#&url#&alt#&description",
         component: Image
+    },
+    {
+        name : "Equation",
+        type : ArtifactTypes.OnlyText,
+        structure: "#&Equation#&text",
+        component: BlockEquation 
     },
     {
         name : "Ordered",
