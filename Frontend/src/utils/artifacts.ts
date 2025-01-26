@@ -5,6 +5,7 @@ import Image from "../components/forum/articles/image"
 import Info from "../components/forum/articles/info"
 import Ordered from "../components/forum/articles/ordered"
 import Paragraph from "../components/forum/articles/paragraph"
+import { bold, equation, italic, link, strikethrough } from "../components/forum/articles/TextStylers"
 import Title1 from "../components/forum/articles/Title1"
 import Title2 from "../components/forum/articles/Title2"
 import Title3 from "../components/forum/articles/Title3"
@@ -23,6 +24,12 @@ export enum ArtifactTypes{
     List = "List",
     Image = "Image",
     Code = "Code"
+}
+
+export interface TextStylers{
+    name : string
+    delimiter : string
+    component : ({} : any) => JSX.Element
 }
 
 const ARTICLE_ARTIFACTS : ArticleArtifact[] = [
@@ -100,5 +107,33 @@ const ARTICLE_ARTIFACTS : ArticleArtifact[] = [
     },
 ]
 
-export default ARTICLE_ARTIFACTS;
+const TEXT_STYLERS : TextStylers[] = [
+    {
+        name : "Bold",
+        delimiter : "**",
+        component : bold
+    },
+    {
+        name : "Italic",
+        delimiter : "__",
+        component : italic
+    },
+    {
+        name : "Strikethrough",
+        delimiter : "~~",
+        component : strikethrough
+    },
+    {
+        name : "Link",
+        delimiter : "{}",
+        component : link
+    },
+    {
+        name : "Equation",
+        delimiter : "$$",
+        component : equation
+    },
+]
+
+export {ARTICLE_ARTIFACTS, TEXT_STYLERS};
 

@@ -1,3 +1,3 @@
-export default function Paragraph({text} : {text : string}){
-    return <p className="pb-1 indent-8">{text}</p>
+export default function Paragraph({ children } : { children : JSX.Element }){
+    return <p className="pb-1 indent-8">{children}</p>
 }

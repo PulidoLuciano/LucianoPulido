@@ -2,7 +2,7 @@ import { ErrorMessage, Form, GeneralStatus } from "pulido-react-form";
 import ArticleBody from "../components/forum/articleBody";
 import { useEffect, useRef, useState } from "react";
 import { Article, Category } from "../types";
-import ARTICLE_ARTIFACTS from "../utils/artifacts";
+import {ARTICLE_ARTIFACTS} from "../utils/artifacts";
 import { useFetch } from "../hooks/useFetch";
 
 export default function Editor({routeParams} : {routeParams : {articleId : string}}){

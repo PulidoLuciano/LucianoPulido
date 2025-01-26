@@ -1,9 +1,9 @@
 import Latex from "react-latex";
 
-export default function BlockEquation({ text } : { text : string }){
+export default function BlockEquation({ children } : { children : string }){
     return(
         <div>
-            <Latex displayMode={true}>{`$$ ${text} $$`}</Latex>
+            <Latex displayMode={true}>{`$$ ${children} $$`}</Latex>
         </div>
     )
 }
