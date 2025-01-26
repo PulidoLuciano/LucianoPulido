@@ -2,7 +2,7 @@ import { ErrorMessage, Form, GeneralStatus } from "pulido-react-form";
 import ArticleBody from "../components/forum/articleBody";
 import { useEffect, useRef, useState } from "react";
 import { Article, Category } from "../types";
-import {ARTICLE_ARTIFACTS} from "../utils/artifacts";
+import {ARTICLE_ARTIFACTS, TEXT_STYLERS} from "../utils/artifacts";
 import { useFetch } from "../hooks/useFetch";
 
 export default function Editor({routeParams} : {routeParams : {articleId : string}}){
@@ -39,6 +39,13 @@ export default function Editor({routeParams} : {routeParams : {articleId : strin
         event.preventDefault();
         const artifact = (event.target as HTMLButtonElement).innerText;
         let body = article.body + "\n" + ARTICLE_ARTIFACTS.filter(type => type.name === artifact)[0].structure;
+        setArticle({...article, body});
+    }
+
+    function handleStyleClick(event : React.SyntheticEvent<HTMLButtonElement>){
+        event.preventDefault();
+        const artifact = (event.target as HTMLButtonElement).innerText;
+        let body = article.body + TEXT_STYLERS.filter(type => type.name === artifact)[0].structure;
         setArticle({...article, body});
     }
 
@@ -101,6 +108,7 @@ export default function Editor({routeParams} : {routeParams : {articleId : strin
                 <label htmlFor="body" className="font-semibold pb-1 pt-2">Body</label>
                 <div className="w-full flex justify-between gap-2 py-3 sticky top-11 overflow-x-auto laptopL:min-h-20">
                     {ARTICLE_ARTIFACTS.map(artifact => <button className="bg-secondary-light p-1 rounded-md" onClick={handleArtefactClick}>{artifact.name}</button>)}
+                    {TEXT_STYLERS.map(artifact => <button className="bg-secondary-light p-1 rounded-md" onClick={handleStyleClick}>{artifact.name}</button>)}
                 </div>
                 <textarea name="body" required={true} className="bg-transparent border-b-2 border-primary-light rounded-sm outline-none scroll h-32" onChange={changePreview} value={article.body}/>
                 <ErrorMessage htmlFor="body" className="text-red-500 before:content-['ⓘ_']" />

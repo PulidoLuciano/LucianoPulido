@@ -29,6 +29,7 @@ export enum ArtifactTypes{
 export interface TextStylers{
     name : string
     delimiter : string
+    structure: string
     component : ({} : any) => JSX.Element
 }
 
@@ -111,27 +112,32 @@ const TEXT_STYLERS : TextStylers[] = [
     {
         name : "Bold",
         delimiter : "**",
-        component : bold
+        component : bold,
+        structure: "**text**"
     },
     {
         name : "Italic",
         delimiter : "__",
-        component : italic
+        component : italic,
+        structure: "__text__"
     },
     {
         name : "Strikethrough",
         delimiter : "~~",
-        component : strikethrough
+        component : strikethrough,
+        structure: "~~text~~"
     },
     {
         name : "Link",
         delimiter : "{}",
-        component : link
+        component : link,
+        structure : "{}url|text{}"
     },
     {
         name : "Equation",
         delimiter : "$$",
-        component : equation
+        component : equation,
+        structure: "$$text$$"
     },
 ]
 
