@@ -28,6 +28,7 @@ export default function ArticlesDashboard() {
     const articlesData = await fetcher(`/article/dashboard?limit=${limit}&offset=${0}`, "GET");
     setArticles(articlesData);
     setOffset(0 + limit);
+    setSearchTimeout(null);
   }
   
   async function fetchMoreArticles() {

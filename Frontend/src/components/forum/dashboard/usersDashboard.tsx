@@ -27,6 +27,7 @@ export default function UsersDashboard() {
     const usersData = await fetcher(`/user/dashboard?limit=${limit}&offset=${0}`, "GET");
     setUsers(usersData);
     setOffset(0 + limit);
+    setSearchTimeout(null);
   }
   
   async function fetchMoreUsers() {
