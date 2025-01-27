@@ -4,6 +4,7 @@ import java.util.Set;
 import java.util.UUID;
 
 import com.LucianoPulido.LucianoPulido.models.User;
+import com.LucianoPulido.LucianoPulido.security.TokenException;
 import com.LucianoPulido.LucianoPulido.services.base.GenericService;
 
 public interface UserService extends GenericService<User, UUID>{
@@ -23,4 +24,8 @@ public interface UserService extends GenericService<User, UUID>{
     Set<User> searchUserByUsername(String username);
 
     Set<User> getSuscribeUsers();
+
+    User getMe(String authorizationHeader) throws TokenException;
+
+    User editUser(String username, String email, String password, Boolean sendEmails, String currentPassword, String authorizationHeader) throws TokenException;
 }

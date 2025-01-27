@@ -4,15 +4,21 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.LucianoPulido.LucianoPulido.controllers.data.dto.ChangeDataDTO;
 import com.LucianoPulido.LucianoPulido.controllers.data.dto.UserDTO;
 import com.LucianoPulido.LucianoPulido.controllers.data.dto.UserDashboardDTO;
 import com.LucianoPulido.LucianoPulido.controllers.data.dto.UserExistsDTO;
 import com.LucianoPulido.LucianoPulido.controllers.data.mappers.UserMapper;
 import com.LucianoPulido.LucianoPulido.controllers.routes.base.GenericController;
 import com.LucianoPulido.LucianoPulido.models.User;
+import com.LucianoPulido.LucianoPulido.security.TokenException;
 import com.LucianoPulido.LucianoPulido.services.interfaces.UserService;
+
+import jakarta.validation.Valid;
+
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
 
 import java.util.List;
 import java.util.Map;
@@ -73,4 +79,18 @@ public class UserController extends GenericController<User, UUID, UserService, U
     public Map<String, Long> countArticleViews() {
         return Map.of("count", super.getServicio().countSuscribe());
     }
+
+    @GetMapping("/me")
+    public UserDTO getMe(@RequestHeader("Authorization") String authorizationHeader) throws TokenException{
+        User user = super.getServicio().getMe(authorizationHeader);
+        UserDTO dto = getMapper().toDTO(user);
+        return dto;
+    }
+
+    @PostMapping("/edit")
+    public Map<String, Object> editUserData(@RequestBody @Valid ChangeDataDTO dto, @RequestHeader("Authorization") String authorizationHeader) throws TokenException{
+        User user = super.getServicio().editUser(dto.getUsername(), dto.getEmail(), dto.getPassword(), dto.getSendEmails(), dto.getCurrentPassword(), authorizationHeader);
+        return Map.of("isAdmin", user.getIsAdmin(), "username", user.getUsername());
+    }
+    
 }

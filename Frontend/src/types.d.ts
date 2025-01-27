@@ -46,6 +46,13 @@ interface User{
     isAdmin : boolean
 }
 
+interface CompleteUser extends User{
+    email : string
+    sendEmails : boolean
+    password? : string
+    currentPassword? : string
+}
+
 interface RegisterData{
     email : string
     password : string

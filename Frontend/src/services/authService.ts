@@ -1,5 +1,5 @@
 import { applicationConstants } from "../constants/applicationConstants";
-import { LoginData, RegisterData, SessionData } from "../types";
+import { CompleteUser, LoginData, RegisterData, SessionData, User } from "../types";
 
 const apiUrl = applicationConstants.VITE_API_BASE_URL;
 
@@ -64,4 +64,21 @@ const getNewRefreshToken = async (refreshToken : String) : Promise<SessionData> 
     }
 }
 
-export const authService = { login, logout, register, getNewRefreshToken };
+const changeUserData = async (userData : CompleteUser, token : String) : Promise<User> => {
+    const response = await fetch(apiUrl + "/user/edit", {
+        method : "POST",
+        headers : {
+            "Content-Type" : "application/json",
+            "Authorization": "Bearer " + token
+        },
+        body: JSON.stringify(userData)
+    });
+    const data = await response.json();
+    if(response.ok){
+        return data;
+    }else{
+        throw new Error(data.error);
+    }
+}
+
+export const authService = { login, logout, register, getNewRefreshToken, changeUserData };

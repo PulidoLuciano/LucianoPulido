@@ -30,6 +30,8 @@ public class SecurityConfig {
             //Authentication and users
             req.requestMatchers("/auth/**").permitAll();
             req.requestMatchers("/user/exists").permitAll();
+            req.requestMatchers("/user/me").authenticated();
+            req.requestMatchers("/user/edit").authenticated();
             req.requestMatchers("/user/**").hasAnyAuthority("ADMIN");
             //Categories
             req.requestMatchers(HttpMethod.GET, "/category/**").permitAll();

@@ -1,9 +1,9 @@
 import { jwtDecode } from "jwt-decode";
 import { createContext, ReactNode, useContext, useEffect, useState } from "react";
-import { LoginData, RegisterData, SessionData, User } from "../types";
+import { CompleteUser, LoginData, RegisterData, SessionData, User } from "../types";
 import { authService } from "../services/authService";
 
-const authContext = createContext<{user : User | null, accessToken : String | null, refreshToken : String | null, login : (loginData : LoginData) => Promise<void>, logout : () => void, register : (registerData : RegisterData) => Promise<void>, getNewRefreshToken : () => void}>({user : null, accessToken : null, refreshToken : null, login : async () => {}, logout : () => {}, register : async () => {}, getNewRefreshToken : async () => {}});
+const authContext = createContext<{user : User | null, accessToken : String | null, refreshToken : String | null, login : (loginData : LoginData) => Promise<void>, logout : () => void, register : (registerData : RegisterData) => Promise<void>, getNewRefreshToken : () => void, changeUserData : (userData : CompleteUser) => void}>({user : null, accessToken : null, refreshToken : null, login : async () => {}, logout : () => {}, register : async () => {}, getNewRefreshToken : async () => {}, changeUserData : async () => {}});
 
 export const AuthContext = ({children} : {children : ReactNode}) => {
     const [user, setUser] = useState<User | null>(null);
@@ -112,8 +112,18 @@ export const AuthContext = ({children} : {children : ReactNode}) => {
         }
     }
 
+    async function changeUserData(userData : CompleteUser){
+        if(!refreshToken) return;
+        try {
+            const response = await authService.changeUserData(userData, refreshToken);
+            setUser({username : response.username, isAdmin : response.isAdmin});
+        } catch (error) {
+            throw error;
+        }
+    }
+
   return (
-    <authContext.Provider value={{user, accessToken, refreshToken, login, logout, register, getNewRefreshToken}}>
+    <authContext.Provider value={{user, accessToken, refreshToken, login, logout, register, getNewRefreshToken, changeUserData}}>
         {children}
     </authContext.Provider>
   )
