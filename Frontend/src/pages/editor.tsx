@@ -10,7 +10,7 @@ export default function Editor({routeParams} : {routeParams : {articleId : strin
     const [article, setArticle] = useState<Article>({url: "",title: "", description:"", date:new Date().toJSON().slice(0, 10), body:"", imageUrl: "", categories: [], published: false});
     const [categories, setCategories] = useState<Array<Category>>([]);
     const categoryInput = useRef(null);
-    const { fetcher } = useFetch();
+    const { fetcher } = useFetch(true);
     const [sending, setSending] = useState<boolean>(false);
 
     useEffect(() => {

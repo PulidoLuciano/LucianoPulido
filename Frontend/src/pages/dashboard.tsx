@@ -7,7 +7,7 @@ import { useFetch } from "../hooks/useFetch";
 
 export default function Dashboard(){
     
-    const { fetcher } = useFetch();
+    const { fetcher } = useFetch(true);
     
     return(
         <main className="max-w-screen-mobileS tablet:max-w-screen-tablet laptopL:max-w-screen-laptopL m-auto w-full px-8">

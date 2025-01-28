@@ -1,9 +1,22 @@
+import { useEffect } from "react";
 import { applicationConstants } from "../constants/applicationConstants";
 import { useAuth } from "../contexts/authContext";
 
-function useFetch() {
+function useFetch(onlyAdmin : boolean = false) {
   const auth = useAuth();
   let newToken: Promise<string> | null = null;
+
+  useEffect(() => {
+    function backLogin(){
+      if(onlyAdmin && !auth.user?.isAdmin){
+        window.history.pushState({}, "", "/login");
+        const navigationEvent = new Event("pushstate");
+        window.dispatchEvent(navigationEvent);
+      }
+    }
+
+    backLogin();
+  }, [])
 
   async function fetcher(
     route: string,
@@ -11,6 +24,7 @@ function useFetch() {
     options: RequestInit | null = null,
     token: string | null = auth.accessToken as string
   ) {
+    if(onlyAdmin && !auth.user?.isAdmin) return;
     if(newToken) token = await newToken;
     const response = await fetch(
       applicationConstants.VITE_API_BASE_URL + route,
