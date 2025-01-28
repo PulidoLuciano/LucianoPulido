@@ -3,6 +3,7 @@ import { useFetch } from "../hooks/useFetch";
 import { useEffect, useState } from "react";
 import { CompleteUser } from "../types";
 import { useAuth } from "../contexts/authContext";
+import { applicationConstants } from "../constants/applicationConstants";
 
 const ErrorMessages = [
   {
@@ -17,17 +18,32 @@ const ErrorMessages = [
       equalize: "Passwords are different",
     },
   },
+  {
+    name: "username",
+    messages: {
+      pattern: "Only letters, numbers, and . _ - are allowed",
+      custom: "Username already exists",
+    },
+  },
+  {
+    name: "email",
+    messages: {
+      custom: "Email already exists",
+    },
+  },
 ];
 
 export default function EditUser() {
   const { fetcher } = useFetch();
   const [user, setUser] = useState<CompleteUser | null>(null);
+  const [originalUser, setOriginalUser] = useState<CompleteUser | null>(null);
   const auth = useAuth();
 
   useEffect(() => {
     async function getUserData() {
       const response = await fetcher("/user/me", "GET");
       setUser({ ...response, password: "", currentPassword: "" });
+      setOriginalUser({ ...response, password: "", currentPassword: "" });
     }
     getUserData();
   }, []);
@@ -51,6 +67,31 @@ export default function EditUser() {
     setUser(newUser);
   }
 
+  async function emailExists(email: string, _: null) {
+    if(email == originalUser?.email) return false;
+    return await callExists({ email });
+  }
+  
+  async function usernameExists(username: string, _: null) {
+    if(username == originalUser?.username) return false;
+    return await callExists({ username });
+  }
+  
+  async function callExists(body: { email?: string; username?: string }) {
+    const response = await fetch(
+      `${applicationConstants.VITE_API_BASE_URL}/user/exists`,
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(body),
+      }
+    );
+    const data = await response.json();
+    return data.exists as boolean;
+  }
+
   return (
     <main className="max-w-screen-mobileS px-2 mx-auto">
       <h1 className="text-3xl font-bold py-4">Change your data</h1>
@@ -62,22 +103,23 @@ export default function EditUser() {
         <label htmlFor="Email" className="font-semibold pb-1 pt-2">
           E-mail
         </label>
-        <input
+        <Input
           type="email"
           required={true}
           name="email"
           className="bg-transparent border-b-2 border-primary-light rounded-sm outline-none"
           onChange={changeData}
           value={user?.email}
+          custom={emailExists}
         />
         <ErrorMessage
-          htmlFor="Email"
+          htmlFor="email"
           className="text-red-500 before:content-['ⓘ_']"
         />
         <label htmlFor="Username" className="font-semibold pb-1 pt-2">
           Username
         </label>
-        <input
+        <Input
           type="text"
           required={true}
           maxLength={15}
@@ -85,9 +127,11 @@ export default function EditUser() {
           className="bg-transparent border-b-2 border-primary-light rounded-sm outline-none"
           onChange={changeData}
           value={user?.username}
+          pattern="^[a-zA-Z0-9._-]+$"
+          custom={usernameExists}
         />
         <ErrorMessage
-          htmlFor="Username"
+          htmlFor="username"
           className="text-red-500 before:content-['ⓘ_']"
         />
         <div className="mt-2 pb-1 relative flex items-center gap-1">
