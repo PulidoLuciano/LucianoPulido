@@ -88,7 +88,7 @@ export default function ArticlePage({
           </section>
         </>
       )}
-      <CommentSection articleId={routeParams.articleId} />
+      <CommentSection articleId={routeParams.articleId} fetcher={fetcher} />
       <section>
         {
             carrousels.map(data => <ArticlesCarrousel key={data.category.url} articles={data.articles} categoryRef={data.category.url} title={data.category.name} />)

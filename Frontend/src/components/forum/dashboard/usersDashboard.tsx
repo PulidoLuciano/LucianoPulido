@@ -1,9 +1,7 @@
-import { useFetch } from "../../../hooks/useFetch";
 import { useEffect, useState } from "react";
 import { UserDashboard } from "../../../types";
 
-export default function UsersDashboard() {
-  const { fetcher } = useFetch();
+export default function UsersDashboard({ fetcher } : { fetcher : (route: string, method: RequestInit["method"], options?: RequestInit | null, token?: string | null) => Promise<any>}) {
   const [usersCount, setUsersCount] = useState<number>(0);
   const [suscribeCount, setSuscribeCount] = useState<number>(0);
   const [users, setUsers] = useState<Array<UserDashboard>>([]);

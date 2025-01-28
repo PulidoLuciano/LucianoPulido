@@ -1,10 +1,8 @@
 import { Link } from "luciano-react-router";
-import { useFetch } from "../../../hooks/useFetch";
 import { useEffect, useState } from "react";
 import { ArticleDashboard } from "../../../types";
 
-export default function ArticlesDashboard() {
-  const { fetcher } = useFetch();
+export default function ArticlesDashboard({ fetcher } : { fetcher : (route: string, method: RequestInit["method"], options?: RequestInit | null, token?: string | null) => Promise<any>}) {
   const [articlesCount, setArticlesCount] = useState<number>(0);
   const [viewsCount, setViewsCount] = useState<number>(0);
   const [articles, setArticles] = useState<Array<ArticleDashboard>>([]);

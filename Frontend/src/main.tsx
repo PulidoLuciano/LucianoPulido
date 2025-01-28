@@ -77,7 +77,5 @@ const routes: Array<RouteObject> = [
 ];
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
-  <React.StrictMode>
-    <App routes={routes}/>
-  </React.StrictMode>,
+    <App routes={routes}/>,
 )

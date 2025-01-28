@@ -1,10 +1,8 @@
-import { useFetch } from "../../../hooks/useFetch";
 import { useEffect, useState } from "react";
 import { CommentDashboard } from "../../../types";
 import { Link } from "luciano-react-router";
 
-export default function CommentsDashboard() {
-  const { fetcher } = useFetch();
+export default function CommentsDashboard({ fetcher } : { fetcher : (route: string, method: RequestInit["method"], options?: RequestInit | null, token?: string | null) => Promise<any>}) {
   const [commentsCount, setCommentsCount] = useState<number>(0);
   const [responsesCount, setResponsesCount] = useState<number>(0);
   const [comments, setComments] = useState<Array<CommentDashboard>>([]);

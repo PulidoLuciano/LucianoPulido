@@ -1,9 +1,7 @@
-import { useFetch } from "../../../hooks/useFetch";
 import { useEffect, useState } from "react";
 import { Contact } from "../../../types";
 
-export default function ContactsDashboard() {
-  const { fetcher } = useFetch();
+export default function ContactsDashboard({ fetcher } : { fetcher : (route: string, method: RequestInit["method"], options?: RequestInit | null, token?: string | null) => Promise<any>}) {
   const [contactsCount, setContactsCount] = useState<number>(0);
   const [contacts, setContacts] = useState<Array<Contact>>([]);
   const [offset, setOffset] = useState<number>(0);

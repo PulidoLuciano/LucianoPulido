@@ -3,7 +3,7 @@ import { createContext, ReactNode, useContext, useEffect, useState } from "react
 import { CompleteUser, LoginData, RegisterData, SessionData, User } from "../types";
 import { authService } from "../services/authService";
 
-const authContext = createContext<{user : User | null, accessToken : String | null, refreshToken : String | null, login : (loginData : LoginData) => Promise<void>, logout : () => void, register : (registerData : RegisterData) => Promise<void>, getNewRefreshToken : () => void, changeUserData : (userData : CompleteUser) => void}>({user : null, accessToken : null, refreshToken : null, login : async () => {}, logout : () => {}, register : async () => {}, getNewRefreshToken : async () => {}, changeUserData : async () => {}});
+const authContext = createContext<{user : User | null, accessToken : String | null, refreshToken : String | null, login : (loginData : LoginData) => Promise<void>, logout : () => void, register : (registerData : RegisterData) => Promise<void>, getNewRefreshToken : () => Promise<string>, changeUserData : (userData : CompleteUser) => void}>({user : null, accessToken : null, refreshToken : null, login : async () => {}, logout : () => {}, register : async () => {}, getNewRefreshToken : async () => {return ""}, changeUserData : async () => {}});
 
 export const AuthContext = ({children} : {children : ReactNode}) => {
     const [user, setUser] = useState<User | null>(null);
@@ -85,7 +85,7 @@ export const AuthContext = ({children} : {children : ReactNode}) => {
     async function getNewRefreshToken(){
         const localRefresh = localStorage.getItem("refresh");
         const sessionRefresh = sessionStorage.getItem("refresh");
-        if(!refreshToken || (!localRefresh && !sessionRefresh)) return;
+        if(!refreshToken || (!localRefresh && !sessionRefresh)) return "";
         try{
             localStorage.removeItem("refresh");
             sessionStorage.removeItem("refresh");
@@ -100,15 +100,14 @@ export const AuthContext = ({children} : {children : ReactNode}) => {
             }else{
                 throw new Error("Session is empty");
             }
+            return session.accessToken;
         }catch(error){
             setAccessToken(null);
             setRefreshToken(null);
             setUser(null);
             localStorage.removeItem("refresh");
             sessionStorage.removeItem("refresh");
-            window.history.pushState({}, "", "/login");
-            const navigationEvent = new Event("pushstate");
-            window.dispatchEvent(navigationEvent);
+            throw error;
         }
     }
 
