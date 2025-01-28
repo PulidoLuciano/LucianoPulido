@@ -13,7 +13,7 @@ public class CustomCorsConfiguration implements CorsConfigurationSource {
     @Override
     public CorsConfiguration getCorsConfiguration(@SuppressWarnings("null") HttpServletRequest request) {
         CorsConfiguration config = new CorsConfiguration();
-        config.setAllowedOrigins(List.of("http://localhost:8080", "http://127.0.0.1:8080", "http://127.0.0.1:5173","http://localhost:5173"));
+        config.setAllowedOrigins(List.of("http://localhost:8080", "http://127.0.0.1:8080", "http://127.0.0.1:5173","http://localhost:5173", "http://127.0.0.1:4173","http://localhost:4173", "http://192.168.100.20:4173"));
         config.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE"));
         config.setAllowedHeaders(List.of("*"));
         return config;

@@ -12,6 +12,7 @@ interface ArticleExtendedPreview extends ArticleShortPreview{
 }
 
 interface Article{
+    [key: string]: any
     url: string
     title : string
     description: string
@@ -47,6 +48,7 @@ interface User{
 }
 
 interface CompleteUser extends User{
+    [key: string]: any
     email : string
     sendEmails : boolean
     password? : string
