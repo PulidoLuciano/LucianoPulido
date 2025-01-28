@@ -20,9 +20,8 @@ export default function Login() {
 
   useEffect(() => {
     if (buttonBackground.current)
-      (buttonBackground.current as HTMLDivElement).classList.toggle(
-        "translate-x-full"
-      );
+      if(showLogin)(buttonBackground.current as HTMLInputElement).classList.remove("translate-x-full");
+        else (buttonBackground.current as HTMLInputElement).classList.add("translate-x-full");
   }, [showLogin]);
 
   async function handleLogin(event: React.SyntheticEvent<HTMLFormElement>) {
