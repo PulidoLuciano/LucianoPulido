@@ -11,12 +11,18 @@ function App({routes} : {routes : Array<RouteObject>}) {
     <>
       <AuthContext>
         <Header/>
-        <Suspense fallback={<h1>Loading...</h1>}>
+        <Suspense fallback={<LoadingPage/>}>
           <Router routes={routes} defaultComponent={ErrorPage}/>
         </Suspense>
         <Footer/>
       </AuthContext>
     </>
+  )
+}
+
+function LoadingPage(){
+  return(
+    null
   )
 }
 
