@@ -1,5 +1,6 @@
 import { ErrorMessage, Form, GeneralStatus } from "pulido-react-form";
 import { useFetch } from "../../hooks/useFetch";
+import { useState } from "react";
 
 const messages = [
   {
@@ -30,31 +31,37 @@ const messages = [
 
 export default function PortfolioForm() {
   const { fetcher } = useFetch();
+  const [ sendingForm, setSending ] = useState<boolean>(false);
 
   async function handleSubmit(event: React.SyntheticEvent<HTMLFormElement>) {
-    event.preventDefault();
-    event.currentTarget = event.currentTarget
-      ? event.currentTarget
-      : (event.target as HTMLFormElement);
-    const { Name, Email, Subject, Message } = event.currentTarget
-      .elements as HTMLFormControlsCollection & {
-      Email: { value: string };
-      Name: { value: string };
-      Subject: { value: string };
-      Message: { value: string };
-    };
-    await fetcher("/contact", "POST", {
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        name: Name.value,
-        email: Email.value,
-        subject: Subject.value,
-        message: Message.value,
-      }),
-    });
-    (event.target as HTMLFormElement).reset();
+    try{
+      event.preventDefault();
+      setSending(true);
+      event.currentTarget = event.currentTarget
+        ? event.currentTarget
+        : (event.target as HTMLFormElement);
+      const { Name, Email, Subject, Message } = event.currentTarget
+        .elements as HTMLFormControlsCollection & {
+        Email: { value: string };
+        Name: { value: string };
+        Subject: { value: string };
+        Message: { value: string };
+      };
+      await fetcher("/contact", "POST", {
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          name: Name.value,
+          email: Email.value,
+          subject: Subject.value,
+          message: Message.value,
+        }),
+      });
+      (event.target as HTMLFormElement).reset();
+    }finally{
+      setSending(false);
+    }
   }
 
   return (
@@ -126,8 +133,9 @@ export default function PortfolioForm() {
       />
       <input
         type="submit"
-        value="Send"
-        className="mt-4 py-2 w-full bg-primary-light rounded-md text-tertiary font-semibold cursor-pointer hover:bg-primary-dark"
+        value={(!sendingForm) ? "Send" : "Sending..."}
+        className="mt-4 py-2 w-full bg-primary-light rounded-md text-tertiary font-semibold cursor-pointer hover:bg-primary-dark disabled:bg-primary-dark"
+        disabled={sendingForm}
       />
       <GeneralStatus
         successMessage={<SuccessMessage />}

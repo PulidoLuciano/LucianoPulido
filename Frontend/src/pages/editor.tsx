@@ -11,6 +11,7 @@ export default function Editor({routeParams} : {routeParams : {articleId : strin
     const [categories, setCategories] = useState<Array<Category>>([]);
     const categoryInput = useRef(null);
     const { fetcher } = useFetch();
+    const [sending, setSending] = useState<boolean>(false);
 
     useEffect(() => {
         async function fetchCategories(){
@@ -65,13 +66,19 @@ export default function Editor({routeParams} : {routeParams : {articleId : strin
     }
 
     async function handleSubmitArticle(event : React.SyntheticEvent<HTMLFormElement>){
-        event.preventDefault();
-        await fetcher("/article", "POST", {
-            body: JSON.stringify(article)
-        })
-        window.history.pushState({}, "", "/admin");
-        const navigationEvent = new Event("pushstate");
-        window.dispatchEvent(navigationEvent);
+        try{
+            event.preventDefault();
+            setSending(true);
+            await fetcher("/article", "POST", {
+                body: JSON.stringify(article)
+            })
+            window.history.pushState({}, "", "/admin");
+            const navigationEvent = new Event("pushstate");
+            window.dispatchEvent(navigationEvent);
+
+        }finally{
+            setSending(false);
+        }
     }
 
     return(
@@ -119,7 +126,7 @@ export default function Editor({routeParams} : {routeParams : {articleId : strin
                     <label htmlFor="published" className="cursor-pointer select-none">Publish</label>
                 </div>
                 
-                <input type="submit" value="Save article" className="mt-4 py-2 w-full bg-primary-light rounded-md text-tertiary font-semibold cursor-pointer hover:bg-primary-dark"/>
+                <input type="submit" value={(sending) ? "Saving..." : "Save article"} className="mt-4 py-2 w-full bg-primary-light rounded-md text-tertiary font-semibold cursor-pointer hover:bg-primary-dark disabled:bg-primary-dark" disabled={sending}/>
                 <GeneralStatus errorMessage={<GeneralMessage/>} successMessage={null}/>
             </Form>
             <section className="max-w-screen-tablet w-full py-6 overflow-y-auto laptopL:max-h-[880px]"> 

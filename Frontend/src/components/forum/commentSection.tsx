@@ -16,6 +16,7 @@ export default function CommentSection({
   ) => Promise<any>;
 }) {
   const [comments, setComments] = useState<Array<CommentData>>([]);
+  const [sending, setSending] = useState<boolean>(false);
 
   useEffect(() => {
     async function fetchComments() {
@@ -30,15 +31,20 @@ export default function CommentSection({
   }, []);
 
   async function postComment(event: React.SyntheticEvent<HTMLFormElement>) {
-    event.preventDefault();
-    const data = {
-      message: ((event.target as HTMLFormElement)[0] as HTMLInputElement).value,
-    };
-    const newComment = await fetcher(`/article/${articleId}/comment`, "POST", {
-      body: JSON.stringify(data),
-    });
-    setComments([newComment, ...comments]);
-    (event.target as HTMLFormElement).reset();
+    try{
+      event.preventDefault();
+      setSending(true);
+      const data = {
+        message: ((event.target as HTMLFormElement)[0] as HTMLInputElement).value,
+      };
+      const newComment = await fetcher(`/article/${articleId}/comment`, "POST", {
+        body: JSON.stringify(data),
+      });
+      setComments([newComment, ...comments]);
+      (event.target as HTMLFormElement).reset();
+    }finally{
+      setSending(false);
+    }
   }
 
   return (
@@ -61,7 +67,9 @@ export default function CommentSection({
         />
         <input
           type="submit"
-          className="bg-secondary-light font-semibold hover:bg-secondary-dark py-1 my-1 px-3 rounded-2xl text-black text-right"
+          value={(sending) ? "..." : "Submit"}
+          disabled={sending}
+          className="bg-secondary-light font-semibold hover:bg-secondary-dark py-1 my-1 px-3 rounded-2xl text-black text-right disabled:bg-secondary-dark"
         />
         <ErrorMessage
           className="text-red-500 before:content-['ⓘ_'] my-auto mx-2"

@@ -15,6 +15,7 @@ export default function Comment({
   ) => Promise<any>;
 }) {
   const [responses, setResponses] = useState<Array<CommentData>>([]);
+  const [sendingResponse, setSendingResponse] = useState<boolean>(false);
   const [showForm, setShowForm] = useState<Boolean>(false);
 
   useEffect(() => {
@@ -30,16 +31,21 @@ export default function Comment({
   }, []);
 
   async function postResponse(event: React.SyntheticEvent<HTMLFormElement>) {
-    event.preventDefault();
-    const dataResponse = {
-      message: ((event.target as HTMLFormElement)[0] as HTMLInputElement).value,
-    };
-    const newResponse = await fetcher(`/comment/${data.id}/response`, "POST", {
-      body: JSON.stringify(dataResponse),
-    });
-    setResponses([newResponse, ...responses]);
-    (event.target as HTMLFormElement).reset();
-    setShowForm(false);
+    try{
+      event.preventDefault();
+      setSendingResponse(true);
+      const dataResponse = {
+        message: ((event.target as HTMLFormElement)[0] as HTMLInputElement).value,
+      };
+      const newResponse = await fetcher(`/comment/${data.id}/response`, "POST", {
+        body: JSON.stringify(dataResponse),
+      });
+      setResponses([newResponse, ...responses]);
+      (event.target as HTMLFormElement).reset();
+      setShowForm(false);
+    }finally{
+      setSendingResponse(false);
+    }
   }
 
   return (
@@ -76,8 +82,8 @@ export default function Comment({
             >
               Cancel
             </button>
-            <button type="submit" className="text-secondary-light underline">
-              Submit
+            <button type="submit" className="text-secondary-light underline disabled:text-secondary-dark" disabled={sendingResponse}>
+              {(!sendingResponse) ? "Submit" : "Submitting..."}
             </button>
           </div>
         </Form>

@@ -7,6 +7,7 @@ const SignUpForm = lazy(() => import("../components/signUpForm"));
 export default function Login() {
   const [showLogin, setShowLogin] = useState(true);
   const [signedUp, setSignedUp] = useState(false);
+  const [sendingLogin, setSendingLogin] = useState<boolean>(false);
   const buttonBackground = useRef(null);
   const auth = useAuth();
 
@@ -25,21 +26,26 @@ export default function Login() {
   }, [showLogin]);
 
   async function handleLogin(event: React.SyntheticEvent<HTMLFormElement>) {
-    event.preventDefault();
-    event.currentTarget = event.currentTarget
-      ? event.currentTarget
-      : (event.target as HTMLFormElement);
-    const { email, password, keepLoggedIn } = event.currentTarget
-      .elements as HTMLFormControlsCollection & {
-      email: { value: string };
-      password: { value: string };
-      keepLoggedIn: { checked: boolean };
-    };
-    await auth.login({
-      email: email.value,
-      password: password.value,
-      keepLoggedIn: keepLoggedIn.checked,
-    });
+    try{
+      event.preventDefault();
+      setSendingLogin(true);
+      event.currentTarget = event.currentTarget
+        ? event.currentTarget
+        : (event.target as HTMLFormElement);
+      const { email, password, keepLoggedIn } = event.currentTarget
+        .elements as HTMLFormControlsCollection & {
+        email: { value: string };
+        password: { value: string };
+        keepLoggedIn: { checked: boolean };
+      };
+      await auth.login({
+        email: email.value,
+        password: password.value,
+        keepLoggedIn: keepLoggedIn.checked,
+      });
+    }finally{
+      setSendingLogin(false);
+    }
   }
 
   return (
@@ -108,8 +114,9 @@ export default function Login() {
               </div>
               <input
                 type="submit"
-                value={"Log-in"}
-                className="mt-4 py-2 w-full bg-primary-light rounded-md text-tertiary font-semibold cursor-pointer hover:bg-primary-dark"
+                value={(sendingLogin) ? "..." : "Log-in"}
+                disabled={sendingLogin}
+                className="mt-4 py-2 w-full bg-primary-light rounded-md text-tertiary font-semibold cursor-pointer hover:bg-primary-dark disabled:bg-primary-dark"
               />
               <GeneralStatus
                 successMessage={null}

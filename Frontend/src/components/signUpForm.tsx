@@ -1,5 +1,5 @@
 import { ErrorMessage, Form, GeneralStatus, Input } from "pulido-react-form";
-import { SyntheticEvent } from "react";
+import { SyntheticEvent, useState } from "react";
 import { useAuth } from "../contexts/authContext";
 import { applicationConstants } from "../constants/applicationConstants";
 
@@ -55,24 +55,30 @@ async function callExists(body: { email?: string; username?: string }) {
 }
 export default function SignUpForm( { setSignedUp } : { setSignedUp : (value : boolean) => void } ) {
   const auth = useAuth();
+  const [sending, setSending] = useState<boolean>(false);
 
   async function handleSignUp(event: SyntheticEvent<HTMLFormElement>) {
-    event.preventDefault();
-    event.currentTarget = event.currentTarget ? event.currentTarget : event.target as HTMLFormElement;
-    const { email, password, username, sendEmails } = event.currentTarget
-      .elements as HTMLFormControlsCollection & {
-      email: { value: string };
-      password: { value: string };
-      username: { value: string };
-      sendEmails: { checked: boolean };
-    };
-    await auth.register({
-      email: email.value,
-      password: password.value,
-      username: username.value,
-      sendEmails: sendEmails.checked,
-    });
-    setSignedUp(true);
+    try{
+      event.preventDefault();
+      setSending(true);
+      event.currentTarget = event.currentTarget ? event.currentTarget : event.target as HTMLFormElement;
+      const { email, password, username, sendEmails } = event.currentTarget
+        .elements as HTMLFormControlsCollection & {
+        email: { value: string };
+        password: { value: string };
+        username: { value: string };
+        sendEmails: { checked: boolean };
+      };
+      await auth.register({
+        email: email.value,
+        password: password.value,
+        username: username.value,
+        sendEmails: sendEmails.checked,
+      });
+      setSignedUp(true);
+    }finally{
+      setSending(false);
+    }
   }
 
   return (
@@ -157,8 +163,9 @@ export default function SignUpForm( { setSignedUp } : { setSignedUp : (value : b
       </div>
       <input
         type="submit"
-        value={"Sign-up"}
-        className="mt-4 py-2 w-full bg-primary-light rounded-md text-tertiary font-semibold cursor-pointer hover:bg-primary-dark"
+        value={(sending) ? "..." : "Sign-up"}
+        disabled={sending}
+        className="mt-4 py-2 w-full bg-primary-light rounded-md text-tertiary font-semibold cursor-pointer hover:bg-primary-dark disabled:bg-primary-dark"
       />
       <GeneralStatus successMessage={null} errorMessage={<GeneralMessage />} />
     </Form>
