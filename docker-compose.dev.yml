@@ -24,7 +24,7 @@ services:
       context: ./Backend/LucianoPulido
       dockerfile: dockerfile.dev
     volumes:
-      - "./backend/LucianoPulido:/app"
+      - "./Backend/LucianoPulido:/app"
     ports:
       - "8080:8080"
     env_file:
