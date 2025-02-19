@@ -124,7 +124,7 @@ export default function SignUpForm( { setSignedUp } : { setSignedUp : (value : b
         type="password"
         required={true}
         minLength={5}
-        maxLength={30}
+        maxLength={24}
         equalize="password"
         name="password"
         className="bg-transparent border-b-2 border-primary-light rounded-sm outline-none"
@@ -140,7 +140,7 @@ export default function SignUpForm( { setSignedUp } : { setSignedUp : (value : b
         type="password"
         required={true}
         minLength={5}
-        maxLength={30}
+        maxLength={24}
         equalize="password"
         name="Confirm password"
         className="bg-transparent border-b-2 border-primary-light rounded-sm outline-none"
