@@ -1,0 +1,15 @@
+{
+  "nav": {
+    "home": "Home",
+    "projects": "Projects",
+    "blog": "Blog",
+    "about": "About"
+  },
+  "hero": {
+    "greeting": "Hi, I'm Luciano Pulido",
+    "subtitle": "Information Systems Engineer & Data Analyst"
+  },
+  "footer": {
+    "rights": "All rights reserved."
+  }
+}
