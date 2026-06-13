@@ -1,0 +1,432 @@
+openapi: 3.0.3
+info:
+  title: Decoupled Multilingual Blog & Analytics Engine API
+  description: >
+    Headless CMS backend API built in Go to support an internationalized 
+    Astro portfolio. Features localized categories, markdown delivery, and 
+    high-throughput, asynchronous user engagement metrics.
+  version: 1.0.0
+  contact:
+    name: Luciano Nicolás Pulido
+    email: lucianonpulido@gmail.com
+    url: https://github.com/lucianopulido
+servers:
+  - url: http://localhost:8080/api
+    description: Local Development Server
+tags:
+  - name: Posts
+    description: Content delivery operations for blog articles and category metadata matrices.
+  - name: Metrics
+    description: Real-time user interaction tracking and background engagement ingestion.
+  - name: Admin Auth
+    description: Administrative session management and authentication workflows.
+  - name: Admin Posts
+    description: Protected Content Management System (CMS) operations requiring an active session cookie.
+paths:
+  /posts:
+    get:
+      tags:
+        - Posts
+      summary: Retrieve a filtered list of blog posts
+      operationId: GetPosts
+      description: Returns a collection of metadata-only post records localized to the requested language.
+      parameters:
+        - name: lang
+          in: query
+          description: Two-letter ISO language code filter
+          required: true
+          schema:
+            type: string
+            enum: [en, es]
+            default: en
+        - name: category
+          in: query
+          description: Filter posts matching a specific category slug
+          required: false
+          schema:
+            type: string
+      responses:
+        "200":
+          description: A successful array response of localized posts metadata
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/PostSummary"
+
+  /posts/{slug}:
+    get:
+      tags:
+        - Posts
+      summary: Fetch a single localized blog post
+      operationId: GetPostBySlug
+      description: Returns full content, metrics metadata, and category mappings for a distinct article by its slug string.
+      parameters:
+        - name: slug
+          in: path
+          description: Unique URL-friendly post identifier
+          required: true
+          schema:
+            type: string
+        - name: lang
+          in: query
+          description: Two-letter ISO language code target
+          required: true
+          schema:
+            type: string
+            enum: [en, es]
+            default: en
+      responses:
+        "200":
+          description: Detailed post mapping content found successfully
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PostDetail"
+        "404":
+          description: Target post slug or localized translation matrix missing
+
+  /posts/metrics/view:
+    post:
+      tags:
+        - Metrics
+      summary: Initialize a new unique page view tracker session
+      operationId: InitializePostView
+      description: Called immediately when a visitor mounts a blog page. Resolves GeoIP data locally and returns a critical tracking record index.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - post_id
+              properties:
+                post_id:
+                  type: integer
+                  example: 12
+      responses:
+        "201":
+          description: Session ledger initialized successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  view_id:
+                    type: integer
+                    format: int64
+                    description: Unique transaction tracking index to be passed to the beacon closure lifecycle.
+                    example: 104857
+
+  /posts/metrics/update:
+    post:
+      tags:
+        - Metrics
+      summary: Update duration and interaction metrics asynchronously
+      operationId: UpdatePostMetrics
+      description: Triggered via the browser's `navigator.sendBeacon` runtime closure immediately upon tab disposal or unmounting.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - view_id
+                - duration_seconds
+                - max_scroll_percentage
+              properties:
+                view_id:
+                  type: integer
+                  format: int64
+                  example: 104857
+                duration_seconds:
+                  type: integer
+                  description: Total time active elapsed inside the view frame context.
+                  example: 142
+                max_scroll_percentage:
+                  type: integer
+                  minimum: 0
+                  maximum: 100
+                  description: Furthest viewport milestone reading progress achieved by the reader.
+                  example: 85
+      responses:
+        "200":
+          description: Asynchronous metric payload dispatched into internal queues successfully.
+
+  /admin/login:
+    post:
+      tags:
+        - Admin Auth
+      summary: Authenticate administrator credentials
+      operationId: AdminLogin
+      description: Validates administrative credentials. Upon success, returns a secure, HTTP-Only session cookie (`session_token`) via the `Set-Cookie` header response.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - email
+                - password
+              properties:
+                email:
+                  type: string
+                  format: email
+                  example: lucianonpulido@gmail.com
+                password:
+                  type: string
+                  format: password
+                  example: super_secure_password
+      responses:
+        "200":
+          description: Authentication successful. Secure session token set in headers.
+          headers:
+            Set-Cookie:
+              schema:
+                type: string
+                example: session_token=abc123xyz; Path=/; HttpOnly; Secure; SameSite=Strict
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: authenticated
+        "401":
+          description: Invalid cryptographic credential parameters
+
+  /admin/logout:
+    post:
+      tags:
+        - Admin Auth
+      summary: Invalidate the current administrative session
+      operationId: AdminLogout
+      description: Instructs the client browser to immediately clear the session identifier and marks the transaction token dead within the Go system context.
+      responses:
+        "200":
+          description: Session destroyed successfully, cookie un-set.
+
+  # --- NEW: PROTECTED CMS CONTENT MANAGEMENT PATHS ---
+  /admin/posts:
+    post:
+      tags:
+        - Admin Posts
+      summary: Create a new parent post entry alongside its translation payloads
+      operationId: CreatePost
+      description: Creates the base database metadata entity and iterates through translations inside a single database transaction block. Requires cookie authentication.
+      security:
+        - CookieAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/PostCreatePayload"
+      responses:
+        "201":
+          description: Article completely registered across all localized matrices
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: integer
+                    example: 15
+                  slug:
+                    type: string
+                    example: robust-go-architectures
+        "401":
+          description: Session missing or validation check failed
+
+  /admin/posts/{id}:
+    put:
+      tags:
+        - Admin Posts
+      summary: Update an existing post structural data matrix
+      operationId: UpdatePost
+      description: Modifies global settings or patches specific localized texts for an existing index key. Requires cookie authentication.
+      security:
+        - CookieAuth: []
+      parameters:
+        - name: id
+          in: path
+          description: Numeric index target of the parent post entity
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/PostCreatePayload"
+      responses:
+        "200":
+          description: Document modified across requested languages safely
+        "401":
+          description: Unauthorized
+        "404":
+          description: Target post database reference index not found
+
+    delete:
+      tags:
+        - Admin Posts
+      summary: Cascade remove an article and its components from the database
+      operationId: DeletePost
+      description: Removes the parent post row, triggering a database cascade delete that wipes translations, categories junction maps, and analytics tracking histories.
+      security:
+        - CookieAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        "204":
+          description: Database references successfully purged
+        "401":
+          description: Unauthorized
+
+components:
+  securitySchemes:
+    CookieAuth:
+      type: apiKey
+      in: cookie
+      name: session_token
+      description: Secure, HTTP-Only session state reference key generated upon successful admin dashboard login.
+
+  schemas:
+    Category:
+      type: object
+      properties:
+        id:
+          type: integer
+          example: 4
+        slug:
+          type: string
+          example: go-backend
+        name:
+          type: string
+          description: Localized category name output matching query contextual string.
+          example: Backend en Go
+
+    PostSummary:
+      type: object
+      properties:
+        id:
+          type: integer
+          example: 1
+        slug:
+          type: string
+          example: safe-concurrency-patterns
+        title:
+          type: string
+          example: Mastering Go Concurrency Safely
+        image_url:
+          type: string
+          nullable: true
+          example: https://cdn.yourdomain.com/covers/go-concurrency.jpg
+        read_time_minutes:
+          type: integer
+          description: Computed server-side word count speed projection estimation metrics.
+          example: 6
+        categories:
+          type: array
+          items:
+            $ref: "#/components/schemas/Category"
+        created_at:
+          type: string
+          format: date-time
+          example: "2026-06-13T16:25:00Z"
+
+    PostDetail:
+      type: object
+      properties:
+        id:
+          type: integer
+          example: 1
+        slug:
+          type: string
+          example: safe-concurrency-patterns
+        title:
+          type: string
+          example: Mastering Go Concurrency Safely
+        content:
+          type: string
+          description: Raw localized Markdown text contents containing syntax formatting structures, pre-formatted code elements, or LaTeX expressions.
+          example: "# Concurrency\nUsing channels allows safe routine threading. Example: $$ E = mc^2 $$"
+        read_time_minutes:
+          type: integer
+          example: 6
+        total_views:
+          type: integer
+          description: Total aggregated baseline popularity count context.
+          example: 1240
+        view_id:
+          type: integer
+          format: int64
+          description: Pre-allocated view transaction ID injected directly into this delivery lifecycle so the browser client is prepared to send back metrics.
+          example: 104857
+        categories:
+          type: array
+          items:
+            $ref: "#/components/schemas/Category"
+        created_at:
+          type: string
+          format: date-time
+          example: "2026-06-13T16:25:00Z"
+    PostCreatePayload:
+      type: object
+      required:
+        - slug
+        - category_ids
+        - translations
+      properties:
+        slug:
+          type: string
+          example: robust-go-architectures
+        image_url:
+          type: string
+          example: https://cdn.yourdomain.com/covers/architecture.jpg
+        category_ids:
+          type: array
+          items:
+            type: integer
+          example: [1, 3]
+        translations:
+          type: object
+          required:
+            - en
+            - es
+          properties:
+            en:
+              type: object
+              required:
+                - title
+                - content
+              properties:
+                title:
+                  type: string
+                  example: Designing Robust Go Architectures
+                content:
+                  type: string
+                  example: "# Architecture\nGo shines when designing decoupled microservices..."
+            es:
+              type: object
+              required:
+                - title
+                - content
+              properties:
+                title:
+                  type: string
+                  example: Diseñando Arquitecturas Robustas en Go
+                content:
+                  type: string
+                  example: "# Arquitectura\nGo brilla al diseñar microservicios desacoplados..."
