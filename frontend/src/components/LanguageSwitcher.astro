@@ -1,0 +1,30 @@
+---
+import { locales, type Locale, getLocalizedUrl } from "../locales/utils";
+
+const currentLocale = Astro.currentLocale as Locale;
+const currentPath = Astro.url.pathname;
+---
+
+<nav class="lang-switcher">
+  {
+    locales.map((locale) => (
+      <a
+        href={getLocalizedUrl(currentPath, locale)}
+        class={locale === currentLocale ? "font-bold underline" : ""}
+        hreflang={locale}
+        lang={locale}
+        data-lang={locale}
+      >
+        {locale.toUpperCase()}
+      </a>
+    ))
+  }
+</nav>
+
+<script>
+  document.querySelectorAll("[data-lang]").forEach((el) => {
+    el.addEventListener("click", () => {
+      localStorage.setItem("lang", el.getAttribute("data-lang"));
+    });
+  });
+</script>

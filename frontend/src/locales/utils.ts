@@ -3,15 +3,16 @@ import es from "./es.json";
 
 const dictionaries = { en, es };
 
-/**
- * High-performance, compile-time translation hook for Astro templates.
- * Resolves static UI components safely based on current locale string.
- */
+export const locales = Object.keys(dictionaries) as Array<keyof typeof dictionaries>;
+export type Locale = keyof typeof dictionaries;
+export const defaultLocale: Locale = "en";
+
+export function isValidLocale(value: string): value is Locale {
+  return locales.includes(value as Locale);
+}
+
 export function useTranslations(locale: string) {
-  // Fallback cleanly to default English configuration if locale is missing
-  const selectedLang = (
-    locale === "es" ? "es" : "en"
-  ) as keyof typeof dictionaries;
+  const selectedLang = isValidLocale(locale) ? locale : defaultLocale;
   const dictionary = dictionaries[selectedLang];
 
   return function t(keyPath: string): string {
@@ -19,4 +20,21 @@ export function useTranslations(locale: string) {
       return obj && obj[key] !== undefined ? obj[key] : keyPath;
     }, dictionary);
   };
+}
+
+export function getLocaleFromUrl(pathname: string): Locale {
+  const [, segment] = pathname.split("/");
+  return isValidLocale(segment) ? segment : defaultLocale;
+}
+
+export function getLocalizedUrl(pathname: string, targetLocale: Locale): string {
+  const segments = pathname.split("/").filter(Boolean);
+
+  if (segments.length > 0 && isValidLocale(segments[0])) {
+    segments[0] = targetLocale;
+  } else {
+    segments.unshift(targetLocale);
+  }
+
+  return "/" + segments.join("/");
 }

@@ -1,0 +1,28 @@
+---
+import { useTranslations, locales } from "../../locales/utils";
+import LanguageSwitcher from "../../components/LanguageSwitcher.astro";
+
+export function getStaticPaths() {
+  return locales.map((locale) => ({ params: { locale } }));
+}
+
+const locale = Astro.currentLocale ?? "en";
+const t = useTranslations(locale);
+---
+
+<html lang={locale}>
+	<head>
+		<meta charset="utf-8" />
+		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+		<link rel="icon" href="/favicon.ico" />
+		<meta name="viewport" content="width=device-width" />
+		<meta name="generator" content={Astro.generator} />
+		<title>Luciano Pulido</title>
+	</head>
+	<body>
+		<LanguageSwitcher />
+		<h1>Luciano Pulido</h1>
+		<p>{t("hero.greeting")}</p>
+		<p>{t("hero.subtitle")}</p>
+	</body>
+</html>
