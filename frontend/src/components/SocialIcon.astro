@@ -1,0 +1,16 @@
+---
+import IconGithub from "./icons/IconGithub.astro";
+import IconLinkedin from "./icons/IconLinkedin.astro";
+import IconX from "./icons/IconX.astro";
+
+interface Props {
+  icon: string;
+  class?: string;
+}
+
+const { icon, class: className = "" } = Astro.props;
+---
+
+{icon === "github" && <IconGithub class={className} />}
+{icon === "linkedin" && <IconLinkedin class={className} />}
+{icon === "x" && <IconX class={className} />}

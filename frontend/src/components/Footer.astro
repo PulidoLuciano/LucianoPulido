@@ -1,6 +1,7 @@
 ---
 import { useTranslations } from "../locales/utils";
 import { socialLinks } from "../data/social";
+import SocialIcon from "./SocialIcon.astro";
 
 const locale = Astro.currentLocale ?? "en";
 const t = useTranslations(locale);
@@ -14,17 +15,15 @@ const t = useTranslations(locale);
           href={link.url}
           target="_blank"
           rel="noopener noreferrer"
-          class="hover:text-orange-light transition-colors text-sm"
+          aria-label={link.label}
+          class="hover:text-orange-light transition-colors"
         >
-          {link.label}
+          <SocialIcon icon={link.icon} class="w-5 h-5" />
         </a>
       ))}
     </div>
     <p class="text-sm text-white-warm/60">
       &copy; {new Date().getFullYear()} Luciano Pulido &mdash; {t("footer.rights")}
-    </p>
-    <p class="text-xs text-white-warm/40">
-      {t("footer.builtWith")}
     </p>
   </div>
 </footer>

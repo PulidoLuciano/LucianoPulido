@@ -16,8 +16,8 @@ export const socialLinks: SocialLink[] = [
     icon: "linkedin",
   },
   {
-    label: "Email",
-    url: "mailto:luciano@example.com",
-    icon: "email",
+    label: "X",
+    url: "https://x.com/lucianopulido",
+    icon: "x",
   },
 ];

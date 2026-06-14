@@ -2,6 +2,7 @@
 import { useTranslations } from "../../locales/utils";
 import SectionWrapper from "../SectionWrapper.astro";
 import { socialLinks } from "../../data/social";
+import SocialIcon from "../SocialIcon.astro";
 
 const locale = Astro.currentLocale ?? "en";
 const t = useTranslations(locale);
@@ -27,9 +28,10 @@ const t = useTranslations(locale);
           href={link.url}
           target="_blank"
           rel="noopener noreferrer"
-          class="text-green-light hover:text-orange-dark transition-colors text-sm font-medium"
+          aria-label={link.label}
+          class="text-green-light hover:text-orange-dark transition-colors"
         >
-          {link.label}
+          <SocialIcon icon={link.icon} class="w-6 h-6" />
         </a>
       ))}
     </div>
