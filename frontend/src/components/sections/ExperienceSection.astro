@@ -1,0 +1,35 @@
+---
+import { useTranslations } from "../../locales/utils";
+import SectionWrapper from "../SectionWrapper.astro";
+import { experiences } from "../../data/experience";
+
+const locale = Astro.currentLocale ?? "en";
+const t = useTranslations(locale);
+---
+
+<SectionWrapper id="experience" class="bg-green-light/5">
+  <h2 class="text-3xl md:text-4xl font-bold text-center mb-12">{t("experience.title")}</h2>
+
+  <div class="max-w-4xl mx-auto flex flex-col gap-6">
+    {experiences.map((exp) => (
+      <div class="bg-white-warm border border-green-light/20 rounded-xl p-6 flex flex-col md:flex-row md:items-start gap-4 md:gap-8">
+        <div class="md:w-48 shrink-0">
+          <h3 class="font-semibold text-lg">{exp.company}</h3>
+          <p class="text-sm text-green-dark/50">{exp.period}</p>
+        </div>
+
+        <div class="flex-1 flex flex-col gap-3">
+          <h4 class="font-medium text-orange-dark">{t(exp.roleKey)}</h4>
+          <p class="text-sm text-green-dark/70 leading-relaxed">{t(exp.descriptionKey)}</p>
+          <div class="flex flex-wrap gap-1.5">
+            {exp.tags.map((tag) => (
+              <span class="px-2 py-0.5 bg-green-light/10 text-green-dark text-xs rounded-full">
+                {tag}
+              </span>
+            ))}
+          </div>
+        </div>
+      </div>
+    ))}
+  </div>
+</SectionWrapper>

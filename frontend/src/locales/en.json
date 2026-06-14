@@ -3,13 +3,89 @@
     "home": "Home",
     "projects": "Projects",
     "blog": "Blog",
-    "about": "About"
+    "about": "About",
+    "experience": "Experience",
+    "contact": "Contact"
   },
   "hero": {
     "greeting": "Hi, I'm Luciano Pulido",
-    "subtitle": "Information Systems Engineer & Data Analyst"
+    "subtitle": "Information Systems Engineer & Data Analyst",
+    "cta": "View my work"
+  },
+  "about": {
+    "title": "About Me",
+    "bio1": "I'm a passionate information systems engineer with a strong background in data analysis and software development. I enjoy turning complex data into actionable insights and building tools that make a difference.",
+    "bio2": "When I'm not coding, you can find me exploring new technologies, contributing to open-source projects, or writing about software engineering and data science.",
+    "skillsTitle": "Technologies I work with"
+  },
+  "projects": {
+    "title": "Projects",
+    "viewProject": "View Project",
+    "sourceCode": "Source Code",
+    "list": {
+      "portfolio": {
+        "title": "Personal Portfolio",
+        "description": "A performant, multilingual portfolio and blog built with Astro and Tailwind CSS. Features static generation, i18n routing, and a clean responsive design."
+      },
+      "dataDashboard": {
+        "title": "Real-Time Data Dashboard",
+        "description": "Interactive analytics dashboard visualizing streaming data with React and D3.js. Backend powered by FastAPI with WebSocket support for live updates."
+      },
+      "etlPipeline": {
+        "title": "ETL Data Pipeline",
+        "description": "Scalable ETL pipeline processing terabytes of data daily. Built with Apache Airflow for orchestration, Python for transformations, and Docker for containerization."
+      },
+      "mlClassifier": {
+        "title": "ML Text Classifier",
+        "description": "Machine learning text classification system using scikit-learn and natural language processing techniques. Achieved 94% accuracy on test datasets with optimized feature extraction."
+      }
+    }
+  },
+  "experience": {
+    "title": "Experience",
+    "list": {
+      "job1": {
+        "role": "Senior Data Analyst",
+        "description": "Lead data initiatives across the organization, building automated dashboards and predictive models that informed key business decisions. Managed a team of three junior analysts."
+      },
+      "job2": {
+        "role": "Data Analyst",
+        "description": "Developed ETL processes and interactive reports for stakeholders. Migrated legacy reporting systems to modern BI tools, reducing report generation time by 60%."
+      },
+      "job3": {
+        "role": "Junior Data Analyst",
+        "description": "Assisted in data collection, cleaning, and visualization for quarterly business reviews. Built automated Excel reporting tools that reduced manual data processing by 40%."
+      }
+    }
+  },
+  "timeline": {
+    "title": "Timeline",
+    "items": {
+      "item1": {
+        "title": "Led data platform migration",
+        "description": "Spearheaded migration of company-wide analytics platform to AWS, improving query performance by 3x."
+      },
+      "item2": {
+        "title": "Graduated with honors",
+        "description": "Completed BSc in Information Systems Engineering with a thesis on predictive analytics for business intelligence."
+      },
+      "item3": {
+        "title": "First industry internship",
+        "description": "Joined DataStart as a data analyst intern, working on customer segmentation and churn prediction models."
+      },
+      "item4": {
+        "title": "Started university",
+        "description": "Began studies in Information Systems Engineering. Founded the university's data science club."
+      }
+    }
+  },
+  "contact": {
+    "title": "Get in Touch",
+    "description": "I'm always open to discussing new projects, opportunities, or collaborations. Feel free to reach out!",
+    "cta": "Send me an email"
   },
   "footer": {
-    "rights": "All rights reserved."
+    "rights": "All rights reserved.",
+    "builtWith": "Built with Astro & Tailwind CSS"
   }
 }

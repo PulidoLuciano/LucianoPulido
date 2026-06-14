@@ -3,13 +3,89 @@
     "home": "Inicio",
     "projects": "Proyectos",
     "blog": "Blog",
-    "about": "Sobre mí"
+    "about": "Sobre mí",
+    "experience": "Experiencia",
+    "contact": "Contacto"
   },
   "hero": {
     "greeting": "Hola, soy Luciano Pulido",
-    "subtitle": "Ingeniero en Sistemas de Información y Analista de Datos"
+    "subtitle": "Ingeniero en Sistemas de Información y Analista de Datos",
+    "cta": "Ver mi trabajo"
+  },
+  "about": {
+    "title": "Sobre Mí",
+    "bio1": "Soy un apasionado ingeniero en sistemas de información con una sólida experiencia en análisis de datos y desarrollo de software. Disfruto transformar datos complejos en información procesable y construir herramientas que marcan la diferencia.",
+    "bio2": "Cuando no estoy programando, me puedes encontrar explorando nuevas tecnologías, contribuyendo a proyectos de código abierto o escribiendo sobre ingeniería de software y ciencia de datos.",
+    "skillsTitle": "Tecnologías con las que trabajo"
+  },
+  "projects": {
+    "title": "Proyectos",
+    "viewProject": "Ver Proyecto",
+    "sourceCode": "Código Fuente",
+    "list": {
+      "portfolio": {
+        "title": "Portafolio Personal",
+        "description": "Un portafolio y blog multilingüe de alto rendimiento construido con Astro y Tailwind CSS. Cuenta con generación estática, enrutamiento i18n y un diseño responsive limpio."
+      },
+      "dataDashboard": {
+        "title": "Dashboard de Datos en Tiempo Real",
+        "description": "Dashboard interactivo de análisis que visualiza datos en tiempo real con React y D3.js. Backend potenciado por FastAPI con soporte WebSocket para actualizaciones en vivo."
+      },
+      "etlPipeline": {
+        "title": "Pipeline ETL de Datos",
+        "description": "Pipeline ETL escalable que procesa terabytes de datos diariamente. Construido con Apache Airflow para orquestación, Python para transformaciones y Docker para contenedorización."
+      },
+      "mlClassifier": {
+        "title": "Clasificador de Texto con ML",
+        "description": "Sistema de clasificación de texto con aprendizaje automático utilizando scikit-learn y técnicas de procesamiento de lenguaje natural. Alcanzó un 94% de precisión en los conjuntos de prueba."
+      }
+    }
+  },
+  "experience": {
+    "title": "Experiencia",
+    "list": {
+      "job1": {
+        "role": "Analista de Datos Senior",
+        "description": "Lideré iniciativas de datos en toda la organización, construyendo dashboards automatizados y modelos predictivos que informaron decisiones clave del negocio. Gestioné un equipo de tres analistas junior."
+      },
+      "job2": {
+        "role": "Analista de Datos",
+        "description": "Desarrollé procesos ETL e informes interactivos para stakeholders. Migré sistemas de reportes heredados a herramientas de BI modernas, reduciendo el tiempo de generación de informes en un 60%."
+      },
+      "job3": {
+        "role": "Analista de Datos Junior",
+        "description": "Asistí en la recolección, limpieza y visualización de datos para revisiones trimestrales de negocio. Construí herramientas automatizadas de reportes en Excel que redujeron el procesamiento manual en un 40%."
+      }
+    }
+  },
+  "timeline": {
+    "title": "Línea de Tiempo",
+    "items": {
+      "item1": {
+        "title": "Lideré migración de plataforma de datos",
+        "description": "Encabecé la migración de la plataforma de análisis empresarial a AWS, mejorando el rendimiento de consultas 3x."
+      },
+      "item2": {
+        "title": "Graduado con honores",
+        "description": "Completé la Licenciatura en Ingeniería en Sistemas de Información con una tesis sobre análisis predictivo para inteligencia de negocios."
+      },
+      "item3": {
+        "title": "Primera pasantía en la industria",
+        "description": "Me uní a DataStart como pasante de análisis de datos, trabajando en segmentación de clientes y modelos de predicción de abandono."
+      },
+      "item4": {
+        "title": "Comencé la universidad",
+        "description": "Inicié estudios en Ingeniería en Sistemas de Información. Fundé el club de ciencia de datos de la universidad."
+      }
+    }
+  },
+  "contact": {
+    "title": "Ponte en Contacto",
+    "description": "Siempre estoy abierto a discutir nuevos proyectos, oportunidades o colaboraciones. ¡No dudes en contactarme!",
+    "cta": "Envíame un correo"
   },
   "footer": {
-    "rights": "Todos los derechos reservados."
+    "rights": "Todos los derechos reservados.",
+    "builtWith": "Construido con Astro y Tailwind CSS"
   }
 }

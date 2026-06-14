@@ -1,0 +1,19 @@
+---
+import { useTranslations } from "../../locales/utils";
+import SectionWrapper from "../SectionWrapper.astro";
+import ProjectCard from "./ProjectCard.astro";
+import { projects } from "../../data/projects";
+
+const locale = Astro.currentLocale ?? "en";
+const t = useTranslations(locale);
+---
+
+<SectionWrapper id="projects" class="bg-green-light/5">
+  <h2 class="text-3xl md:text-4xl font-bold text-center mb-12">{t("projects.title")}</h2>
+
+  <div class="grid md:grid-cols-2 gap-6 max-w-5xl mx-auto">
+    {projects.map((project) => (
+      <ProjectCard project={project} t={t} />
+    ))}
+  </div>
+</SectionWrapper>

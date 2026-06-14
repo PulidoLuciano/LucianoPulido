@@ -1,0 +1,37 @@
+---
+import { useTranslations } from "../../locales/utils";
+import SectionWrapper from "../SectionWrapper.astro";
+import { socialLinks } from "../../data/social";
+
+const locale = Astro.currentLocale ?? "en";
+const t = useTranslations(locale);
+---
+
+<SectionWrapper id="contact" class="bg-white-warm">
+  <h2 class="text-3xl md:text-4xl font-bold text-center mb-6">{t("contact.title")}</h2>
+  <p class="text-center text-lg text-green-dark/70 max-w-2xl mx-auto mb-10">
+    {t("contact.description")}
+  </p>
+
+  <div class="flex flex-col items-center gap-6">
+    <a
+      href="mailto:luciano@example.com"
+      class="inline-block px-8 py-3 bg-orange-light hover:bg-orange-dark text-green-dark font-semibold rounded-lg transition-colors"
+    >
+      {t("contact.cta")}
+    </a>
+
+    <div class="flex gap-6 mt-4">
+      {socialLinks.map((link) => (
+        <a
+          href={link.url}
+          target="_blank"
+          rel="noopener noreferrer"
+          class="text-green-light hover:text-orange-dark transition-colors text-sm font-medium"
+        >
+          {link.label}
+        </a>
+      ))}
+    </div>
+  </div>
+</SectionWrapper>

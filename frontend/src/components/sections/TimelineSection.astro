@@ -1,0 +1,31 @@
+---
+import { useTranslations } from "../../locales/utils";
+import SectionWrapper from "../SectionWrapper.astro";
+import { timeline } from "../../data/timeline";
+
+const locale = Astro.currentLocale ?? "en";
+const t = useTranslations(locale);
+---
+
+<SectionWrapper id="timeline" class="bg-white-warm">
+  <h2 class="text-3xl md:text-4xl font-bold text-center mb-12">{t("timeline.title")}</h2>
+
+  <div class="relative max-w-3xl mx-auto">
+    <div class="absolute left-4 md:left-1/2 top-0 bottom-0 w-px bg-green-light/30 md:-translate-x-px"></div>
+
+    <div class="flex flex-col gap-8">
+      {timeline.map((item, idx) => (
+        <div class={"relative pl-12 md:pl-0 " + (idx % 2 === 0 ? "md:pr-[50%]" : "md:pl-[50%]")}>
+          <div class="absolute left-2 md:left-1/2 top-1 w-5 h-5 bg-orange-light rounded-full border-4 border-white-warm md:-translate-x-1/2 z-10"></div>
+          <div class="bg-green-light/5 border border-green-light/20 rounded-xl p-5">
+            <span class="inline-block px-2 py-0.5 bg-orange-light/20 text-orange-dark text-xs rounded-full font-semibold mb-2">
+              {item.year}
+            </span>
+            <h3 class="text-lg font-semibold">{t(item.titleKey)}</h3>
+            <p class="text-sm text-green-dark/70 mt-1">{t(item.descriptionKey)}</p>
+          </div>
+        </div>
+      ))}
+    </div>
+  </div>
+</SectionWrapper>

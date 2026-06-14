@@ -1,1 +1,13 @@
 @import "tailwindcss";
+
+@theme {
+  --color-green-light: #606C38;
+  --color-green-dark: #283618;
+  --color-orange-light: #DDA15E;
+  --color-orange-dark: #BC6C25;
+  --color-white-warm: #FEFAE0;
+}
+
+html {
+  scroll-behavior: smooth;
+}
