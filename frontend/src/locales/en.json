@@ -15,7 +15,7 @@
   "about": {
     "title": "About Me",
     "bio1": "I'm a passionate information systems engineer with a strong background in data analysis and software development. I enjoy turning complex data into actionable insights and building tools that make a difference.",
-    "bio2": "When I'm not coding, you can find me exploring new technologies, contributing to open-source projects, or writing about software engineering and data science.",
+    "bio2": "When I'm not coding, you can find me exploring new technologies, reading about anything, or playing videogames and board games.",
     "skillsTitle": "Technologies I work with"
   },
   "projects": {
@@ -23,21 +23,21 @@
     "viewProject": "View Project",
     "sourceCode": "Source Code",
     "list": {
-      "portfolio": {
-        "title": "Personal Portfolio",
-        "description": "A performant, multilingual portfolio and blog built with Astro and Tailwind CSS. Features static generation, i18n routing, and a clean responsive design."
+      "pneumoniaCNN": {
+        "title": "Pneumonia Detection using CNNs",
+        "description": "A Deep Learning project focused on healthcare, designed to automate the detection of pneumonia from chest X-ray images using Convolutional Neural Network (CNN)."
       },
-      "dataDashboard": {
-        "title": "Real-Time Data Dashboard",
-        "description": "Interactive analytics dashboard visualizing streaming data with React and D3.js. Backend powered by FastAPI with WebSocket support for live updates."
+      "retailClustering": {
+        "title": "Customer Segmentation using Clustering",
+        "description": "A Machine Learning and Business Analytics project designed to segment retail customers based on their purchasing behavior using clustering and unsupervised learning techniques."
       },
-      "etlPipeline": {
-        "title": "ETL Data Pipeline",
-        "description": "Scalable ETL pipeline processing terabytes of data daily. Built with Apache Airflow for orchestration, Python for transformations, and Docker for containerization."
+      "chatbotCNRT": {
+        "title": "AI Agent and Chatbot for CNRT",
+        "description": "Design and implementation of an intelligent chatbot system powered by Generative Artificial Intelligence for the CNRT (National Commission for Transport Regulation)."
       },
-      "mlClassifier": {
-        "title": "ML Text Classifier",
-        "description": "Machine learning text classification system using scikit-learn and natural language processing techniques. Achieved 94% accuracy on test datasets with optimized feature extraction."
+      "iterolingua": {
+        "title": "IteroLingua",
+        "description": "IteroLingua is a spaced-repetition flashcard app for language learners. Add words, get AI-generated definitions via Google Gemini, and review them on an SM-2 schedule that optimizes retention."
       }
     }
   },
@@ -45,16 +45,12 @@
     "title": "Experience",
     "list": {
       "job1": {
-        "role": "Senior Data Analyst",
-        "description": "Lead data initiatives across the organization, building automated dashboards and predictive models that informed key business decisions. Managed a team of three junior analysts."
+        "role": "Volunteer AI Software Engineer",
+        "description": "I designed and implemented an intelligent chatbot system for the CNRT (National Commission for Transport Regulation). I was responsible for the backend development and the LLM-based agent architecture, leading the ingestion process of complex regulatory standards using RAG techniques to ensure accurate and contextual responses. Through strategic prompt engineering, I optimized the virtual assistant's decision-making capabilities. This resulted in the successful deployment of a multichannel solution integrated into both Telegram and web platforms via web components, successfully advancing the system to its technical validation phase."
       },
       "job2": {
         "role": "Data Analyst",
-        "description": "Developed ETL processes and interactive reports for stakeholders. Migrated legacy reporting systems to modern BI tools, reducing report generation time by 60%."
-      },
-      "job3": {
-        "role": "Junior Data Analyst",
-        "description": "Assisted in data collection, cleaning, and visualization for quarterly business reviews. Built automated Excel reporting tools that reduced manual data processing by 40%."
+        "description": "I transform complex data into strategic business assets. My expertise covers the entire data lifecycle: from advanced extraction and manipulation using SQL and Python, to the cleaning and modeling of corporate databases. I leverage Looker Studio to build intuitive dashboards that enable clients to visualize key trends and optimize their operations through precise, real-time insights."
       }
     }
   },
@@ -62,20 +58,24 @@
     "title": "Timeline",
     "items": {
       "item1": {
-        "title": "Led data platform migration",
-        "description": "Spearheaded migration of company-wide analytics platform to AWS, improving query performance by 3x."
+        "title": "Information Systems Engineer",
+        "description": "I completed my engineering studies, achieving the institution's highest GPA of 9.33. My final graduation project was TrashUp, a smart mobile recycling platform that uses Convolutional Neural Networks (CNNs) to classify waste in real-time and incorporates gamification mechanics to promote environmental awareness."
       },
       "item2": {
-        "title": "Graduated with honors",
-        "description": "Completed BSc in Information Systems Engineering with a thesis on predictive analytics for business intelligence."
+        "title": "Interview with La Gaceta",
+        "description": "Selected by La Gaceta—the most influential local media outlet—for a special interview as one of the top students in the province, in recognition of academic merit and for ranking 1st in my university class."
       },
       "item3": {
-        "title": "First industry internship",
-        "description": "Joined DataStart as a data analyst intern, working on customer segmentation and churn prediction models."
+        "title": "Top GPA and Class Flag Bearer at UTN FRT",
+        "description": "Graduated with a cumulative GPA of 9.20/10, ranking 1st at Universidad Tecnológica Nacional - Facultad Regional Tucumán. Selected as the Class Flag Bearer (Abanderado), the university’s highest distinction for academic merit and leadership. This achievement reflects my commitment to excellence, meticulous attention to detail, and a strong analytical mindset—qualities I now leverage to transform raw data into high-impact business insights."
       },
       "item4": {
-        "title": "Started university",
-        "description": "Began studies in Information Systems Engineering. Founded the university's data science club."
+        "title": "Speaker at CONAISII",
+        "description": "CONAISII is a prestigious conference that brings together innovative student projects from across Argentina. My team and I were selected among the top six student projects to speak at the event. We presented on operational research applied to server resource planning and management for student university enrollment. Our findings have potential applications to improve the efficiency of university administrative systems."
+      },
+      "item5": {
+        "title": "Started My University Studies",
+        "description": "I began my journey in Information Systems Engineering at UTN FRT, focusing ever since on building efficient and innovative technological solutions."
       }
     }
   },

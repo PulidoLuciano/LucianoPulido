@@ -15,7 +15,7 @@
   "about": {
     "title": "Sobre Mí",
     "bio1": "Soy un apasionado ingeniero en sistemas de información con una sólida experiencia en análisis de datos y desarrollo de software. Disfruto transformar datos complejos en información procesable y construir herramientas que marcan la diferencia.",
-    "bio2": "Cuando no estoy programando, me puedes encontrar explorando nuevas tecnologías, contribuyendo a proyectos de código abierto o escribiendo sobre ingeniería de software y ciencia de datos.",
+    "bio2": "Cuando no estoy programando, me puedes encontrar explorando nuevas tecnologías, leyendo sobre todo un poco o jugando videojuegos y juegos de mesa.",
     "skillsTitle": "Tecnologías con las que trabajo"
   },
   "projects": {
@@ -23,21 +23,21 @@
     "viewProject": "Ver Proyecto",
     "sourceCode": "Código Fuente",
     "list": {
-      "portfolio": {
-        "title": "Portafolio Personal",
-        "description": "Un portafolio y blog multilingüe de alto rendimiento construido con Astro y Tailwind CSS. Cuenta con generación estática, enrutamiento i18n y un diseño responsive limpio."
+      "pneumoniaCNN": {
+        "title": "Red neuronal para detección de neumonía",
+        "description": "Proyecto de deep learning enfocado en la atención médica, diseñado para automatizar la detección de neumonía a partir de imágenes de radiografías de tórax usando una red neuronal convolucional (CNN)."
       },
-      "dataDashboard": {
-        "title": "Dashboard de Datos en Tiempo Real",
-        "description": "Dashboard interactivo de análisis que visualiza datos en tiempo real con React y D3.js. Backend potenciado por FastAPI con soporte WebSocket para actualizaciones en vivo."
+      "retailClustering": {
+        "title": "Segmentación de clientes con Clustering",
+        "description": "Proyecto de Machine Learning diseñado para segmentar clientes de un entorno retail a partir de su comportamiento de compra utilizando técnicas de aprendizaje no supervisado como el algoritmo K-Means."
       },
-      "etlPipeline": {
-        "title": "Pipeline ETL de Datos",
-        "description": "Pipeline ETL escalable que procesa terabytes de datos diariamente. Construido con Apache Airflow para orquestación, Python para transformaciones y Docker para contenedorización."
+      "chatbotCNRT": {
+        "title": "Agente de IA y Chatbot para la CNRT",
+        "description": "Diseño e implementación de un sistema de chatbot inteligente basado en Inteligencia Artificial Generativa para la Comisión Nacional de Regulación del Transporte (CNRT)."
       },
-      "mlClassifier": {
-        "title": "Clasificador de Texto con ML",
-        "description": "Sistema de clasificación de texto con aprendizaje automático utilizando scikit-learn y técnicas de procesamiento de lenguaje natural. Alcanzó un 94% de precisión en los conjuntos de prueba."
+      "iterolingua": {
+        "title": "IteroLingua",
+        "description": "IteroLingua es una aplicación de tarjetas de memoria con repetición espaciada para estudiantes de idiomas. Añade palabras, obtén definiciones generadas por IA a través de Google Gemini y repásalas según un programa SM-2 que optimiza la retención."
       }
     }
   },
@@ -45,16 +45,12 @@
     "title": "Experiencia",
     "list": {
       "job1": {
-        "role": "Analista de Datos Senior",
-        "description": "Lideré iniciativas de datos en toda la organización, construyendo dashboards automatizados y modelos predictivos que informaron decisiones clave del negocio. Gestioné un equipo de tres analistas junior."
+        "role": "Ingeniero IA Voluntario",
+        "description": "Diseñé e implementé un sistema de chatbot inteligente para la CNRT (Comisión Nacional de Regulación del Transporte). Me encargué del desarrollo backend y de la arquitectura de agentes basados en LLMs, liderando el proceso de ingesta de complejas normas regulatorias mediante técnicas de RAG para garantizar respuestas precisas y contextuales. Con prompt engineering, logré optimizar la toma de decisiones del asistente virtual. El resultado fue el despliegue exitoso de una solución multicanal integrada tanto en Telegram como en plataformas web mediante web components, logrando llevar el sistema hasta su fase de validación técnica. "
       },
       "job2": {
         "role": "Analista de Datos",
-        "description": "Desarrollé procesos ETL e informes interactivos para stakeholders. Migré sistemas de reportes heredados a herramientas de BI modernas, reduciendo el tiempo de generación de informes en un 60%."
-      },
-      "job3": {
-        "role": "Analista de Datos Junior",
-        "description": "Asistí en la recolección, limpieza y visualización de datos para revisiones trimestrales de negocio. Construí herramientas automatizadas de reportes en Excel que redujeron el procesamiento manual en un 40%."
+        "description": "Transformo datos complejos en decisiones estratégicas. Mi enfoque abarca todo el ciclo de vida del dato: desde la extracción y manipulación avanzada mediante SQL y Python, hasta la limpieza y modelado de bases de datos corporativas. Utilizo Looker Studio para crear tableros de control intuitivos que permiten a los clientes visualizar tendencias clave y optimizar sus operaciones con insights precisos y en tiempo real."
       }
     }
   },
@@ -62,20 +58,24 @@
     "title": "Línea de Tiempo",
     "items": {
       "item1": {
-        "title": "Lideré migración de plataforma de datos",
-        "description": "Encabecé la migración de la plataforma de análisis empresarial a AWS, mejorando el rendimiento de consultas 3x."
+        "title": "Ingeniero en Sistemas de Información",
+        "description": "Culminé mis estudios de ingeniería alcanzando el mejor promedio de la institución con 9.33. Mi proyecto final de graduación fue TrashUp, una plataforma móvil de reciclaje inteligente que utiliza Redes Neuronales Convolucionales (CNN) para clasificar residuos en tiempo real e incorpora dinámicas de gamificación para promover la conciencia ambiental."
       },
       "item2": {
-        "title": "Graduado con honores",
-        "description": "Completé la Licenciatura en Ingeniería en Sistemas de Información con una tesis sobre análisis predictivo para inteligencia de negocios."
+        "title": "Entrevista en La Gaceta",
+        "description": "Seleccionado por La Gaceta —el medio de comunicación local más influyente— para una entrevista especial como uno de los mejores estudiantes de la provincia, en reconocimiento al mérito académico y por haber alcanzado el primer puesto de mi promoción universitaria."
       },
       "item3": {
-        "title": "Primera pasantía en la industria",
-        "description": "Me uní a DataStart como pasante de análisis de datos, trabajando en segmentación de clientes y modelos de predicción de abandono."
+        "title": "Mejor promedio y abanderado en UTN FRT",
+        "description": "Con un promedio general de 9.20/10, ocupando el primer puesto en la Universidad Tecnológica Nacional - Facultad Regional Tucumán. Seleccionado como Abanderado, la máxima distinción universitaria al mérito académico y liderazgo. Este logro refleja mi compromiso con la excelencia, una meticulosa atención al detalle y una sólida mentalidad analítica; cualidades que ahora aprovecho para transformar datos brutos en insights de negocio de alto impacto."
       },
       "item4": {
-        "title": "Comencé la universidad",
-        "description": "Inicié estudios en Ingeniería en Sistemas de Información. Fundé el club de ciencia de datos de la universidad."
+        "title": "Expositor en CONAISII",
+        "description": "CONAISII es una prestigiosa conferencia que reúne proyectos innovadores de estudiantes de todo Argentina. Mi equipo y yo fuimos seleccionados entre los mejores seis proyectos estudiantiles para exponer en el evento. Presentamos una investigación operativa aplicada a la planificación y gestión de recursos de servidores en la inscripción de estudiantes a materias universitarias. Nuestros hallazgos tienen aplicaciones potenciales para mejorar la eficiencia de los sistemas administrativos universitarios."
+      },
+      "item5": {
+        "title": "Inicié mi estudios universitarios",
+        "description": "Inicié mi trayectoria en ingeniería en sistemas en UTN FRT, enfocándome desde entonces en crear soluciones tecnológicas eficientes e innovadoras."
       }
     }
   },
