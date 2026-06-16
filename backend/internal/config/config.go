@@ -22,7 +22,7 @@ type Config struct {
 func Load() *Config {
 	return &Config{
 		Port:              getEnv("PORT", "8080"),
-		DatabaseURL:       getEnv("DATABASE_URL", "postgres://localhost:5432/lucianopulido?sslmode=disable"),
+		DatabaseURL:       getEnv("DATABASE_URL", "postgres://localhost:5432/lucianopulido"),
 		CookieSecure:      getEnvBool("COOKIE_SECURE", false),
 		SessionDurationH:  getEnvInt("SESSION_DURATION_HOURS", 24),
 		BcryptCost:        getEnvInt("BCRYPT_COST", 12),
