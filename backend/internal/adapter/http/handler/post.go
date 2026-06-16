@@ -1,10 +1,11 @@
 package handler
 
 import (
+	"crypto/sha256"
+	"encoding/base64"
 	"encoding/json"
 	"net"
 	"net/http"
-	"strings"
 
 	"github.com/PulidoLuciano/LucianoPulido.git/internal/domain"
 	"github.com/PulidoLuciano/LucianoPulido.git/internal/usecase"
@@ -72,6 +73,7 @@ func (h *PostHandler) GetPostBySlug(w http.ResponseWriter, r *http.Request) {
 }
 
 func (h *PostHandler) CreatePost(w http.ResponseWriter, r *http.Request) {
+	r.Body = http.MaxBytesReader(nil, r.Body, 1<<20)
 	var input usecase.CreatePostInput
 	if err := json.NewDecoder(r.Body).Decode(&input); err != nil {
 		http.Error(w, `{"error":"invalid request body"}`, http.StatusBadRequest)
@@ -94,6 +96,7 @@ func (h *PostHandler) UpdatePost(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	r.Body = http.MaxBytesReader(nil, r.Body, 1<<20)
 	var input usecase.CreatePostInput
 	if err := json.NewDecoder(r.Body).Decode(&input); err != nil {
 		http.Error(w, `{"error":"invalid request body"}`, http.StatusBadRequest)
@@ -133,6 +136,8 @@ func mapErrorStatus(err error) int {
 		return http.StatusBadRequest
 	case err == domain.ErrConflict:
 		return http.StatusConflict
+	case err == domain.ErrAccountLocked:
+		return http.StatusTooManyRequests
 	default:
 		return http.StatusInternalServerError
 	}
@@ -145,25 +150,6 @@ func extractVisitorInfo(r *http.Request) (countryCode, city, visitorHash string)
 }
 
 func hashIP(ip string) string {
-	// Simple deterministic hash for anonymous visitor tracking
-	h := 0
-	for _, c := range ip {
-		h = 31*h + int(c)
-	}
-	if h < 0 {
-		h = -h
-	}
-	return strings.Repeat("0", 8-len(intToStr(h))) + intToStr(h)
-}
-
-func intToStr(n int) string {
-	if n == 0 {
-		return "0"
-	}
-	s := ""
-	for n > 0 {
-		s = string(rune('0'+n%10)) + s
-		n /= 10
-	}
-	return s
+	sum := sha256.Sum256([]byte(ip))
+	return base64.RawURLEncoding.EncodeToString(sum[:16])
 }

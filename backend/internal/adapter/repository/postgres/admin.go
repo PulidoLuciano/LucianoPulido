@@ -36,7 +36,7 @@ func (r *AuthRepo) GetAdminByEmail(ctx context.Context, email string) (*domain.A
 	return &admin, nil
 }
 
-func (r *AuthRepo) CreateSession(ctx context.Context, adminID int64) (*domain.Session, error) {
+func (r *AuthRepo) CreateSession(ctx context.Context, adminID int64, durationHours int) (*domain.Session, error) {
 	token, err := usecase.GenerateSecureToken()
 	if err != nil {
 		return nil, err
@@ -46,7 +46,7 @@ func (r *AuthRepo) CreateSession(ctx context.Context, adminID int64) (*domain.Se
 		Token:     token,
 		AdminID:   adminID,
 		CreatedAt: time.Now(),
-		ExpiresAt: time.Now().Add(24 * time.Hour),
+		ExpiresAt: time.Now().Add(time.Duration(durationHours) * time.Hour),
 	}
 
 	_, err = r.db.ExecContext(ctx,
@@ -82,4 +82,44 @@ func (r *AuthRepo) DeleteSession(ctx context.Context, token string) error {
 		token,
 	)
 	return err
+}
+
+func (r *AuthRepo) DeleteSessionsByAdmin(ctx context.Context, adminID int64) error {
+	_, err := r.db.ExecContext(ctx,
+		`DELETE FROM admin_sessions WHERE admin_id = $1`,
+		adminID,
+	)
+	return err
+}
+
+func (r *AuthRepo) RecordLoginAttempt(ctx context.Context, email string) error {
+	_, err := r.db.ExecContext(ctx,
+		`INSERT INTO login_attempts (email) VALUES ($1)`,
+		email,
+	)
+	return err
+}
+
+func (r *AuthRepo) IsAccountLocked(ctx context.Context, email string, maxAttempts int, lockoutMin int) (bool, error) {
+	var count int
+	cutoff := time.Now().Add(-time.Duration(lockoutMin) * time.Minute)
+	err := r.db.QueryRowContext(ctx,
+		`SELECT COUNT(*) FROM login_attempts
+		 WHERE email = $1 AND attempted_at > $2`,
+		email, cutoff,
+	).Scan(&count)
+	if err != nil {
+		return false, err
+	}
+	return count >= maxAttempts, nil
+}
+
+func (r *AuthRepo) DeleteExpiredSessions(ctx context.Context) (int64, error) {
+	result, err := r.db.ExecContext(ctx,
+		`DELETE FROM admin_sessions WHERE expires_at < NOW()`,
+	)
+	if err != nil {
+		return 0, err
+	}
+	return result.RowsAffected()
 }

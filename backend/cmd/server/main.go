@@ -1,11 +1,13 @@
 package main
 
 import (
+	"context"
 	"database/sql"
 	"fmt"
 	"log/slog"
 	"net/http"
 	"os"
+	"time"
 
 	_ "github.com/lib/pq"
 
@@ -42,15 +44,28 @@ func main() {
 	postPublicUC := usecase.NewPostPublicUseCase(postRepo, metricsRepo, categoryRepo)
 	postAdminUC := usecase.NewPostAdminUseCase(postRepo)
 	metricsUC := usecase.NewMetricsUseCase(metricsRepo)
-	authUC := usecase.NewAuthUseCase(authRepo)
+	authUC := usecase.NewAuthUseCase(authRepo, cfg.BcryptCost, cfg.LoginMaxAttempts, cfg.LoginLockoutMin, cfg.SessionDurationH)
 
 	// Handlers (adapters)
 	postHandler := handler.NewPostHandler(postPublicUC, postAdminUC)
 	metricsHandler := handler.NewMetricsHandler(metricsUC)
-	authHandler := handler.NewAuthHandler(authUC)
+	authHandler := handler.NewAuthHandler(authUC, cfg.SessionDurationH, cfg.CookieSecure, logger)
 
 	// Router
-	router := httpadapter.NewRouter(postHandler, metricsHandler, authHandler, authUC)
+	router := httpadapter.NewRouter(postHandler, metricsHandler, authHandler, authUC, cfg, logger)
+
+	// Periodic session cleanup
+	go func() {
+		for {
+			time.Sleep(1 * time.Hour)
+			n, err := authRepo.DeleteExpiredSessions(context.Background())
+			if err != nil {
+				logger.Error("session cleanup failed", "error", err)
+			} else if n > 0 {
+				logger.Info("session cleanup completed", "deleted", n)
+			}
+		}
+	}()
 
 	addr := fmt.Sprintf(":%s", cfg.Port)
 	logger.Info("server starting", "addr", addr)

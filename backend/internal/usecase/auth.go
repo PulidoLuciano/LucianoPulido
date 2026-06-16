@@ -12,11 +12,21 @@ import (
 )
 
 type AuthUseCase struct {
-	authRepo port.AuthRepository
+	authRepo     port.AuthRepository
+	bcryptCost   int
+	maxAttempts  int
+	lockoutMin   int
+	sessionHours int
 }
 
-func NewAuthUseCase(ar port.AuthRepository) *AuthUseCase {
-	return &AuthUseCase{authRepo: ar}
+func NewAuthUseCase(ar port.AuthRepository, bcryptCost, maxAttempts, lockoutMin, sessionHours int) *AuthUseCase {
+	return &AuthUseCase{
+		authRepo:     ar,
+		bcryptCost:   bcryptCost,
+		maxAttempts:  maxAttempts,
+		lockoutMin:   lockoutMin,
+		sessionHours: sessionHours,
+	}
 }
 
 type LoginInput struct {
@@ -33,21 +43,41 @@ func (uc *AuthUseCase) Login(ctx context.Context, input LoginInput) (*LoginOutpu
 		return nil, domain.ErrInvalidInput
 	}
 
+	locked, err := uc.authRepo.IsAccountLocked(ctx, input.Email, uc.maxAttempts, uc.lockoutMin)
+	if err != nil {
+		return nil, err
+	}
+	if locked {
+		return nil, domain.ErrAccountLocked
+	}
+
 	admin, err := uc.authRepo.GetAdminByEmail(ctx, input.Email)
 	if err != nil {
+		_ = uc.authRepo.RecordLoginAttempt(ctx, input.Email)
 		return nil, domain.ErrUnauthorized
 	}
 
 	if err := bcrypt.CompareHashAndPassword([]byte(admin.PasswordHash), []byte(input.Password)); err != nil {
+		_ = uc.authRepo.RecordLoginAttempt(ctx, input.Email)
 		return nil, domain.ErrUnauthorized
 	}
 
-	session, err := uc.authRepo.CreateSession(ctx, admin.ID)
+	_ = uc.authRepo.DeleteSessionsByAdmin(ctx, admin.ID)
+
+	session, err := uc.authRepo.CreateSession(ctx, admin.ID, uc.sessionHours)
 	if err != nil {
 		return nil, err
 	}
 
 	return &LoginOutput{SessionToken: session.Token}, nil
+}
+
+func (uc *AuthUseCase) HashPassword(password string) (string, error) {
+	hash, err := bcrypt.GenerateFromPassword([]byte(password), uc.bcryptCost)
+	if err != nil {
+		return "", err
+	}
+	return string(hash), nil
 }
 
 func (uc *AuthUseCase) Logout(ctx context.Context, token string) error {

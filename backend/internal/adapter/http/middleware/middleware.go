@@ -2,22 +2,26 @@ package middleware
 
 import (
 	"context"
+	"log/slog"
 	"net/http"
+	"slices"
 
 	"github.com/PulidoLuciano/LucianoPulido.git/internal/usecase"
 )
 
-func AuthRequired(authUC *usecase.AuthUseCase) func(http.Handler) http.Handler {
+func AuthRequired(authUC *usecase.AuthUseCase, logger *slog.Logger) func(http.Handler) http.Handler {
 	return func(next http.Handler) http.Handler {
 		return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 			cookie, err := r.Cookie("session_token")
 			if err != nil {
+				logger.Warn("auth required: no session cookie", "path", r.URL.Path)
 				http.Error(w, `{"error":"unauthorized"}`, http.StatusUnauthorized)
 				return
 			}
 
 			session, err := authUC.ValidateSession(r.Context(), cookie.Value)
 			if err != nil {
+				logger.Warn("auth required: invalid session", "path", r.URL.Path)
 				http.Error(w, `{"error":"unauthorized"}`, http.StatusUnauthorized)
 				return
 			}
@@ -28,31 +32,44 @@ func AuthRequired(authUC *usecase.AuthUseCase) func(http.Handler) http.Handler {
 	}
 }
 
-func CORS(next http.Handler) http.Handler {
-	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		origin := r.Header.Get("Origin")
-		if origin != "" {
-			w.Header().Set("Access-Control-Allow-Origin", origin)
-			w.Header().Set("Access-Control-Allow-Credentials", "true")
-		}
-		w.Header().Set("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS")
-		w.Header().Set("Access-Control-Allow-Headers", "Content-Type, Authorization")
+func CORS(allowedOrigins []string) func(http.Handler) http.Handler {
+	return func(next http.Handler) http.Handler {
+		return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+			origin := r.Header.Get("Origin")
+			if origin != "" {
+				if slices.Contains(allowedOrigins, origin) {
+					w.Header().Set("Access-Control-Allow-Origin", origin)
+					w.Header().Set("Access-Control-Allow-Credentials", "true")
+				} else {
+					w.Header().Set("Access-Control-Allow-Origin", allowedOrigins[0])
+				}
+			}
+			w.Header().Set("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS")
+			w.Header().Set("Access-Control-Allow-Headers", "Content-Type, X-CSRF-Token")
 
-		if r.Method == http.MethodOptions {
-			w.WriteHeader(http.StatusNoContent)
-			return
-		}
+			if r.Method == http.MethodOptions {
+				w.WriteHeader(http.StatusNoContent)
+				return
+			}
 
-		next.ServeHTTP(w, r)
-	})
+			next.ServeHTTP(w, r)
+		})
+	}
 }
 
-func Logger(next http.Handler) http.Handler {
-	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		wrapped := &responseWriter{ResponseWriter: w, statusCode: http.StatusOK}
-		next.ServeHTTP(wrapped, r)
-		// Structured logging via slog could be added here
-	})
+func Logger(logger *slog.Logger) func(http.Handler) http.Handler {
+	return func(next http.Handler) http.Handler {
+		return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+			wrapped := &responseWriter{ResponseWriter: w, statusCode: http.StatusOK}
+			next.ServeHTTP(wrapped, r)
+			logger.Info("request",
+				"method", r.Method,
+				"path", r.URL.Path,
+				"status", wrapped.statusCode,
+				"remote_addr", r.RemoteAddr,
+			)
+		})
+	}
 }
 
 type responseWriter struct {
