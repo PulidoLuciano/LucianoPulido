@@ -14,6 +14,7 @@ func NewRouter(
 	postHandler *handler.PostHandler,
 	metricsHandler *handler.MetricsHandler,
 	authHandler *handler.AuthHandler,
+	categoryHandler *handler.CategoryHandler,
 	authUC *usecase.AuthUseCase,
 	cfg *config.Config,
 	logger *slog.Logger,
@@ -42,6 +43,17 @@ func NewRouter(
 
 	mux.Handle("/api/admin/posts", middleware.AuthRequired(authUC, logger)(protected))
 	mux.Handle("/api/admin/posts/", middleware.AuthRequired(authUC, logger)(protected))
+
+	// Protected admin category endpoints
+	adminCategories := http.NewServeMux()
+	adminCategories.HandleFunc("GET /api/admin/categories", categoryHandler.ListCategories)
+	adminCategories.HandleFunc("GET /api/admin/categories/{id}", categoryHandler.GetCategory)
+	adminCategories.HandleFunc("POST /api/admin/categories", categoryHandler.CreateCategory)
+	adminCategories.HandleFunc("PUT /api/admin/categories/{id}", categoryHandler.UpdateCategory)
+	adminCategories.HandleFunc("DELETE /api/admin/categories/{id}", categoryHandler.DeleteCategory)
+
+	mux.Handle("/api/admin/categories", middleware.AuthRequired(authUC, logger)(adminCategories))
+	mux.Handle("/api/admin/categories/", middleware.AuthRequired(authUC, logger)(adminCategories))
 
 	// Apply global middleware
 	var h http.Handler = mux

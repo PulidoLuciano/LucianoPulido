@@ -43,16 +43,18 @@ func main() {
 	// Use cases
 	postPublicUC := usecase.NewPostPublicUseCase(postRepo, metricsRepo, categoryRepo)
 	postAdminUC := usecase.NewPostAdminUseCase(postRepo)
+	categoryAdminUC := usecase.NewCategoryAdminUseCase(categoryRepo)
 	metricsUC := usecase.NewMetricsUseCase(metricsRepo)
 	authUC := usecase.NewAuthUseCase(authRepo, cfg.BcryptCost, cfg.LoginMaxAttempts, cfg.LoginLockoutMin, cfg.SessionDurationH)
 
 	// Handlers (adapters)
 	postHandler := handler.NewPostHandler(postPublicUC, postAdminUC)
+	categoryHandler := handler.NewCategoryHandler(categoryAdminUC)
 	metricsHandler := handler.NewMetricsHandler(metricsUC)
 	authHandler := handler.NewAuthHandler(authUC, cfg.SessionDurationH, cfg.CookieSecure, logger)
 
 	// Router
-	router := httpadapter.NewRouter(postHandler, metricsHandler, authHandler, authUC, cfg, logger)
+	router := httpadapter.NewRouter(postHandler, metricsHandler, authHandler, categoryHandler, authUC, cfg, logger)
 
 	// Periodic session cleanup
 	go func() {
