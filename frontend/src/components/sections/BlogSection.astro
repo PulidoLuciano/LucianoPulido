@@ -1,0 +1,68 @@
+---
+import type { PaginatedPosts, CategorySummary } from "../../lib/api";
+import SectionWrapper from "../SectionWrapper.astro";
+import CategoryChip from "../CategoryChip.astro";
+import PostCard from "../PostCard.astro";
+import Pagination from "../Pagination.astro";
+
+interface Props {
+	data: PaginatedPosts | null;
+	categories: CategorySummary[];
+	activeCategory?: string;
+	locale: string;
+	t: (key: string) => string;
+}
+
+const { data, categories, activeCategory, locale, t } = Astro.props;
+---
+
+<SectionWrapper>
+	<h1 class="text-3xl md:text-4xl font-bold text-green-dark mb-2">
+		{t("blog.title")}
+	</h1>
+	<p class="text-green-dark/60 mb-8">
+		{t("blog.description")}
+	</p>
+
+	<div class="flex flex-wrap gap-2 mb-8">
+		<a
+			href={`/${locale}/blogs`}
+			class={`px-3 py-1 text-sm font-medium rounded-full transition-colors border ${
+				!activeCategory
+					? "bg-green-dark text-white-warm border-green-dark"
+					: "bg-white-warm text-green-dark border-green-light/30 hover:border-green-light hover:bg-green-light/10"
+			}`}
+		>
+			{t("blog.allCategories")}
+		</a>
+		{categories.map((cat) => (
+			<CategoryChip
+				slug={cat.slug}
+				name={cat.name}
+				active={activeCategory === cat.slug}
+				locale={locale}
+			/>
+		))}
+	</div>
+
+	{
+		!data || data.posts.length === 0 ? (
+			<p class="text-green-dark/50 text-center py-12">{t("blog.noPosts")}</p>
+		) : (
+			<>
+				<div class="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+					{data.posts.map((post) => (
+						<PostCard post={post} locale={locale} />
+					))}
+				</div>
+				<Pagination
+					page={data.page}
+					totalPages={data.total_pages}
+					locale={locale}
+					t={t}
+					category={activeCategory}
+				/>
+			</>
+		)
+	}
+</SectionWrapper>

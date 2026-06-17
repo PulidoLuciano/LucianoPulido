@@ -1,0 +1,42 @@
+---
+import type { PostSummary } from "../lib/api";
+import CategoryChip from "./CategoryChip.astro";
+
+interface Props {
+	post: PostSummary;
+	locale: string;
+}
+
+const { post, locale } = Astro.props;
+
+const date = new Date(post.created_at).toLocaleDateString(
+	locale === "es" ? "es-AR" : "en-US",
+	{ year: "numeric", month: "long", day: "numeric" },
+);
+
+const hasCategories = (post.categories ?? []).length > 0;
+---
+
+<a
+	href={`/${locale}/blogs/${post.slug}`}
+	class="block group bg-white-warm border border-green-light/20 rounded-xl overflow-hidden hover:border-orange-light transition-colors"
+>
+	{post.image_url && (
+		<img
+			src={post.image_url}
+			alt={post.title}
+			class="w-full h-48 object-cover block"
+			loading="lazy"
+		/>
+	)}
+	<div class="p-6 flex flex-col gap-3">
+		<h3 class="text-xl font-semibold text-green-dark group-hover:text-orange-dark transition-colors">
+			{post.title}
+		</h3>
+		<div class="flex items-center gap-4 text-sm text-green-dark/60">
+			<time datetime={post.created_at}>{date}</time>
+			<span>&middot;</span>
+			<span>{post.read_time_minutes} min read</span>
+		</div>
+	</div>
+</a>

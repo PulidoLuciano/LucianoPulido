@@ -24,6 +24,7 @@ func NewRouter(
 	// Public endpoints
 	mux.HandleFunc("GET /api/posts", postHandler.GetPosts)
 	mux.HandleFunc("GET /api/posts/{slug}", postHandler.GetPostBySlug)
+	mux.HandleFunc("GET /api/categories", categoryHandler.ListCategoriesPublic)
 	mux.HandleFunc("POST /api/posts/metrics/view", metricsHandler.InitializePostView)
 	mux.HandleFunc("POST /api/posts/metrics/update", metricsHandler.UpdatePostMetrics)
 

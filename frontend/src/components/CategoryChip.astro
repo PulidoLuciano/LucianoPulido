@@ -1,0 +1,21 @@
+---
+interface Props {
+	slug: string;
+	name: string;
+	active?: boolean;
+	locale: string;
+}
+
+const { slug, name, active = false, locale } = Astro.props;
+
+const baseClasses = "px-3 py-1 text-sm font-medium rounded-full transition-colors border";
+const activeClasses = "bg-green-dark text-white-warm border-green-dark";
+const inactiveClasses = "bg-white-warm text-green-dark border-green-light/30 hover:border-green-light hover:bg-green-light/10";
+---
+
+<a
+	href={active ? `/${locale}/blogs` : `/${locale}/blogs?category=${slug}`}
+	class={`${baseClasses} ${active ? activeClasses : inactiveClasses}`}
+>
+	{name}
+</a>

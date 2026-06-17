@@ -48,6 +48,33 @@ func (r *CategoryRepo) ListByPostID(ctx context.Context, postID int64, lang stri
 	return categories, rows.Err()
 }
 
+func (r *CategoryRepo) ListAll(ctx context.Context, lang string) ([]domain.CategoryWithName, error) {
+	query := `
+		SELECT c.id, c.slug, ct.name
+		FROM categories c
+		JOIN category_translations ct ON ct.category_id = c.id
+		WHERE ct.language_code = $1
+		ORDER BY c.id
+	`
+
+	rows, err := r.db.QueryContext(ctx, query, lang)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+
+	var categories []domain.CategoryWithName
+	for rows.Next() {
+		var cat domain.CategoryWithName
+		if err := rows.Scan(&cat.ID, &cat.Slug, &cat.Name); err != nil {
+			return nil, err
+		}
+		categories = append(categories, cat)
+	}
+
+	return categories, rows.Err()
+}
+
 func (r *CategoryRepo) List(ctx context.Context) ([]domain.Category, []domain.CategoryTranslation, error) {
 	query := `
 		SELECT c.id, c.slug, c.created_at, ct.id, ct.category_id, ct.language_code, ct.name

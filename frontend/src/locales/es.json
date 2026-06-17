@@ -84,6 +84,24 @@
     "description": "Siempre estoy abierto a discutir nuevos proyectos, oportunidades o colaboraciones. ¡No dudes en contactarme!",
     "cta": "Envíame un correo"
   },
+  "blog": {
+    "title": "Blog",
+    "description": "Reflexiones sobre ingeniería de software, análisis de datos y tecnología.",
+    "noPosts": "No se encontraron publicaciones.",
+    "allCategories": "Todas"
+  },
+  "pagination": {
+    "previous": "Anterior",
+    "next": "Siguiente",
+    "pageInfo": "Página {page} de {total}"
+  },
+  "categories": {
+    "goBackend": "Go Backend",
+    "frontend": "Frontend",
+    "aiMl": "IA & ML",
+    "devops": "DevOps",
+    "career": "Carrera"
+  },
   "footer": {
     "rights": "Todos los derechos reservados.",
     "builtWith": "Construido con Astro y Tailwind CSS"

@@ -84,6 +84,24 @@
     "description": "I'm always open to discussing new projects, opportunities, or collaborations. Feel free to reach out!",
     "cta": "Send me an email"
   },
+  "blog": {
+    "title": "Blog",
+    "description": "Thoughts on software engineering, data analysis, and technology.",
+    "noPosts": "No posts found.",
+    "allCategories": "All"
+  },
+  "pagination": {
+    "previous": "Previous",
+    "next": "Next",
+    "pageInfo": "Page {page} of {total}"
+  },
+  "categories": {
+    "goBackend": "Go Backend",
+    "frontend": "Frontend",
+    "aiMl": "AI & ML",
+    "devops": "DevOps",
+    "career": "Career"
+  },
   "footer": {
     "rights": "All rights reserved.",
     "builtWith": "Built with Astro & Tailwind CSS"

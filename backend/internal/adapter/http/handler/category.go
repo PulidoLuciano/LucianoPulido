@@ -8,11 +8,28 @@ import (
 )
 
 type CategoryHandler struct {
-	adminUC *usecase.CategoryAdminUseCase
+	adminUC  *usecase.CategoryAdminUseCase
+	publicUC *usecase.CategoryPublicUseCase
 }
 
-func NewCategoryHandler(adminUC *usecase.CategoryAdminUseCase) *CategoryHandler {
-	return &CategoryHandler{adminUC: adminUC}
+func NewCategoryHandler(adminUC *usecase.CategoryAdminUseCase, publicUC *usecase.CategoryPublicUseCase) *CategoryHandler {
+	return &CategoryHandler{adminUC: adminUC, publicUC: publicUC}
+}
+
+func (h *CategoryHandler) ListCategoriesPublic(w http.ResponseWriter, r *http.Request) {
+	lang := r.URL.Query().Get("lang")
+	if lang == "" {
+		http.Error(w, `{"error":"lang query parameter is required"}`, http.StatusBadRequest)
+		return
+	}
+
+	categories, err := h.publicUC.ListCategories(r.Context(), lang)
+	if err != nil {
+		writeError(w, mapErrorStatus(err))
+		return
+	}
+
+	writeJSON(w, http.StatusOK, categories)
 }
 
 func (h *CategoryHandler) ListCategories(w http.ResponseWriter, r *http.Request) {

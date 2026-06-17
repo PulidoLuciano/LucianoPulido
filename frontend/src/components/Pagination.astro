@@ -1,0 +1,50 @@
+---
+interface Props {
+	page: number;
+	totalPages: number;
+	locale: string;
+	t: (key: string) => string;
+	category?: string;
+}
+
+const { page, totalPages, locale, t, category } = Astro.props;
+
+const buildUrl = (p: number) => {
+	const params = new URLSearchParams();
+	params.set("page", String(p));
+	if (category) params.set("category", category);
+	return `/${locale}/blogs?${params}`;
+};
+---
+
+{totalPages > 1 && (
+	<nav class="flex items-center justify-between pt-8">
+		{
+			page > 1 ? (
+				<a href={buildUrl(page - 1)} class="px-4 py-2 text-sm font-medium rounded-lg border border-green-light/30 text-green-dark hover:bg-green-light/10 transition-colors">
+					&larr; {t("pagination.previous")}
+				</a>
+			) : (
+				<span class="px-4 py-2 text-sm font-medium rounded-lg border border-green-light/10 text-green-dark/30 cursor-not-allowed">
+					&larr; {t("pagination.previous")}
+				</span>
+			)
+		}
+
+		<span class="text-sm text-green-dark/60">
+			{t("pagination.pageInfo").replace("{page}", String(page)).replace("{total}", String(totalPages))}
+		</span>
+
+		{
+			page < totalPages ? (
+				<a href={buildUrl(page + 1)} class="px-4 py-2 text-sm font-medium rounded-lg border border-green-light/30 text-green-dark hover:bg-green-light/10 transition-colors">
+					{t("pagination.next")} &rarr;
+				</a>
+			) : (
+				<span class="px-4 py-2 text-sm font-medium rounded-lg border border-green-light/10 text-green-dark/30 cursor-not-allowed">
+					{t("pagination.next")} &rarr;
+				</span>
+			)
+		}
+	</nav>
+)}

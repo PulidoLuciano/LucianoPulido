@@ -21,7 +21,7 @@ import (
 func TestCategoryHandler_ListCategories(t *testing.T) {
 	mockRepo := new(testutil.MockCategoryRepository)
 	uc := usecase.NewCategoryAdminUseCase(mockRepo)
-	h := handler.NewCategoryHandler(uc)
+	h := handler.NewCategoryHandler(uc, usecase.NewCategoryPublicUseCase(mockRepo))
 
 	mockRepo.On("List", mock.Anything).Return(
 		[]domain.Category{
@@ -52,7 +52,7 @@ func TestCategoryHandler_ListCategories(t *testing.T) {
 func TestCategoryHandler_GetCategory(t *testing.T) {
 	mockRepo := new(testutil.MockCategoryRepository)
 	uc := usecase.NewCategoryAdminUseCase(mockRepo)
-	h := handler.NewCategoryHandler(uc)
+	h := handler.NewCategoryHandler(uc, usecase.NewCategoryPublicUseCase(mockRepo))
 
 	t.Run("returns 200 for existing category", func(t *testing.T) {
 		mockRepo.On("GetByID", mock.Anything, int64(1)).Return(
@@ -79,7 +79,7 @@ func TestCategoryHandler_GetCategory(t *testing.T) {
 	t.Run("returns 404 for missing category", func(t *testing.T) {
 		mockRepo := new(testutil.MockCategoryRepository)
 		uc := usecase.NewCategoryAdminUseCase(mockRepo)
-		h := handler.NewCategoryHandler(uc)
+		h := handler.NewCategoryHandler(uc, usecase.NewCategoryPublicUseCase(mockRepo))
 
 		mockRepo.On("GetByID", mock.Anything, int64(999)).Return(
 			(*domain.Category)(nil),
@@ -98,7 +98,8 @@ func TestCategoryHandler_GetCategory(t *testing.T) {
 	})
 
 	t.Run("returns 400 for invalid id", func(t *testing.T) {
-		h := handler.NewCategoryHandler(usecase.NewCategoryAdminUseCase(new(testutil.MockCategoryRepository)))
+		mockRepo := new(testutil.MockCategoryRepository)
+		h := handler.NewCategoryHandler(usecase.NewCategoryAdminUseCase(mockRepo), usecase.NewCategoryPublicUseCase(mockRepo))
 
 		req := httptest.NewRequest("GET", "/api/admin/categories/abc", nil)
 		req.SetPathValue("id", "abc")
@@ -113,7 +114,7 @@ func TestCategoryHandler_GetCategory(t *testing.T) {
 func TestCategoryHandler_CreateCategory(t *testing.T) {
 	mockRepo := new(testutil.MockCategoryRepository)
 	uc := usecase.NewCategoryAdminUseCase(mockRepo)
-	h := handler.NewCategoryHandler(uc)
+	h := handler.NewCategoryHandler(uc, usecase.NewCategoryPublicUseCase(mockRepo))
 
 	t.Run("returns 201 on success", func(t *testing.T) {
 		mockRepo.On("Create", mock.Anything, mock.Anything, mock.Anything).
@@ -135,7 +136,7 @@ func TestCategoryHandler_CreateCategory(t *testing.T) {
 	t.Run("returns 400 for empty slug", func(t *testing.T) {
 		mockRepo := new(testutil.MockCategoryRepository)
 		uc := usecase.NewCategoryAdminUseCase(mockRepo)
-		h := handler.NewCategoryHandler(uc)
+		h := handler.NewCategoryHandler(uc, usecase.NewCategoryPublicUseCase(mockRepo))
 
 		body := bytes.NewBufferString(`{"slug":"","translations":{"en":{"name":"Test"}}}`)
 		req := httptest.NewRequest("POST", "/api/admin/categories", body)
@@ -147,7 +148,8 @@ func TestCategoryHandler_CreateCategory(t *testing.T) {
 	})
 
 	t.Run("returns 400 for invalid JSON", func(t *testing.T) {
-		h := handler.NewCategoryHandler(usecase.NewCategoryAdminUseCase(new(testutil.MockCategoryRepository)))
+		mockRepo := new(testutil.MockCategoryRepository)
+		h := handler.NewCategoryHandler(usecase.NewCategoryAdminUseCase(mockRepo), usecase.NewCategoryPublicUseCase(mockRepo))
 
 		body := bytes.NewBufferString(`not json`)
 		req := httptest.NewRequest("POST", "/api/admin/categories", body)
@@ -161,7 +163,7 @@ func TestCategoryHandler_CreateCategory(t *testing.T) {
 	t.Run("returns 409 for duplicate slug", func(t *testing.T) {
 		mockRepo := new(testutil.MockCategoryRepository)
 		uc := usecase.NewCategoryAdminUseCase(mockRepo)
-		h := handler.NewCategoryHandler(uc)
+		h := handler.NewCategoryHandler(uc, usecase.NewCategoryPublicUseCase(mockRepo))
 
 		mockRepo.On("Create", mock.Anything, mock.Anything, mock.Anything).
 			Return((*domain.Category)(nil), domain.ErrConflict)
@@ -181,7 +183,7 @@ func TestCategoryHandler_UpdateCategory(t *testing.T) {
 	t.Run("returns 200 on success", func(t *testing.T) {
 		mockRepo := new(testutil.MockCategoryRepository)
 		uc := usecase.NewCategoryAdminUseCase(mockRepo)
-		h := handler.NewCategoryHandler(uc)
+		h := handler.NewCategoryHandler(uc, usecase.NewCategoryPublicUseCase(mockRepo))
 
 		mockRepo.On("Update", mock.Anything, mock.Anything, mock.Anything).Return(nil)
 
@@ -197,7 +199,8 @@ func TestCategoryHandler_UpdateCategory(t *testing.T) {
 	})
 
 	t.Run("returns 400 for invalid id", func(t *testing.T) {
-		h := handler.NewCategoryHandler(usecase.NewCategoryAdminUseCase(new(testutil.MockCategoryRepository)))
+		mockRepo := new(testutil.MockCategoryRepository)
+		h := handler.NewCategoryHandler(usecase.NewCategoryAdminUseCase(mockRepo), usecase.NewCategoryPublicUseCase(mockRepo))
 
 		body := bytes.NewBufferString(`{"slug":"test","translations":{"en":{"name":"Test"}}}`)
 		req := httptest.NewRequest("PUT", "/api/admin/categories/abc", body)
@@ -210,7 +213,8 @@ func TestCategoryHandler_UpdateCategory(t *testing.T) {
 	})
 
 	t.Run("returns 400 for empty slug", func(t *testing.T) {
-		h := handler.NewCategoryHandler(usecase.NewCategoryAdminUseCase(new(testutil.MockCategoryRepository)))
+		mockRepo := new(testutil.MockCategoryRepository)
+		h := handler.NewCategoryHandler(usecase.NewCategoryAdminUseCase(mockRepo), usecase.NewCategoryPublicUseCase(mockRepo))
 
 		body := bytes.NewBufferString(`{"slug":"","translations":{"en":{"name":"Test"}}}`)
 		req := httptest.NewRequest("PUT", "/api/admin/categories/1", body)
@@ -225,7 +229,7 @@ func TestCategoryHandler_UpdateCategory(t *testing.T) {
 	t.Run("returns 409 for duplicate slug", func(t *testing.T) {
 		mockRepo := new(testutil.MockCategoryRepository)
 		uc := usecase.NewCategoryAdminUseCase(mockRepo)
-		h := handler.NewCategoryHandler(uc)
+		h := handler.NewCategoryHandler(uc, usecase.NewCategoryPublicUseCase(mockRepo))
 
 		mockRepo.On("Update", mock.Anything, mock.Anything, mock.Anything).
 			Return(domain.ErrConflict)
@@ -246,7 +250,7 @@ func TestCategoryHandler_DeleteCategory(t *testing.T) {
 	t.Run("returns 204 on success", func(t *testing.T) {
 		mockRepo := new(testutil.MockCategoryRepository)
 		uc := usecase.NewCategoryAdminUseCase(mockRepo)
-		h := handler.NewCategoryHandler(uc)
+		h := handler.NewCategoryHandler(uc, usecase.NewCategoryPublicUseCase(mockRepo))
 
 		mockRepo.On("Delete", mock.Anything, int64(1)).Return(nil)
 
@@ -263,7 +267,7 @@ func TestCategoryHandler_DeleteCategory(t *testing.T) {
 	t.Run("returns 404 when not found", func(t *testing.T) {
 		mockRepo := new(testutil.MockCategoryRepository)
 		uc := usecase.NewCategoryAdminUseCase(mockRepo)
-		h := handler.NewCategoryHandler(uc)
+		h := handler.NewCategoryHandler(uc, usecase.NewCategoryPublicUseCase(mockRepo))
 
 		mockRepo.On("Delete", mock.Anything, int64(999)).Return(domain.ErrNotFound)
 
@@ -278,7 +282,8 @@ func TestCategoryHandler_DeleteCategory(t *testing.T) {
 	})
 
 	t.Run("returns 400 for invalid id", func(t *testing.T) {
-		h := handler.NewCategoryHandler(usecase.NewCategoryAdminUseCase(new(testutil.MockCategoryRepository)))
+		mockRepo := new(testutil.MockCategoryRepository)
+		h := handler.NewCategoryHandler(usecase.NewCategoryAdminUseCase(mockRepo), usecase.NewCategoryPublicUseCase(mockRepo))
 
 		req := httptest.NewRequest("DELETE", "/api/admin/categories/abc", nil)
 		req.SetPathValue("id", "abc")

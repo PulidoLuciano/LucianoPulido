@@ -44,12 +44,13 @@ func main() {
 	postPublicUC := usecase.NewPostPublicUseCase(postRepo, metricsRepo, categoryRepo)
 	postAdminUC := usecase.NewPostAdminUseCase(postRepo)
 	categoryAdminUC := usecase.NewCategoryAdminUseCase(categoryRepo)
+	categoryPublicUC := usecase.NewCategoryPublicUseCase(categoryRepo)
 	metricsUC := usecase.NewMetricsUseCase(metricsRepo)
 	authUC := usecase.NewAuthUseCase(authRepo, cfg.BcryptCost, cfg.LoginMaxAttempts, cfg.LoginLockoutMin, cfg.SessionDurationH)
 
 	// Handlers (adapters)
 	postHandler := handler.NewPostHandler(postPublicUC, postAdminUC)
-	categoryHandler := handler.NewCategoryHandler(categoryAdminUC)
+	categoryHandler := handler.NewCategoryHandler(categoryAdminUC, categoryPublicUC)
 	metricsHandler := handler.NewMetricsHandler(metricsUC)
 	authHandler := handler.NewAuthHandler(authUC, cfg.SessionDurationH, cfg.CookieSecure, logger)
 

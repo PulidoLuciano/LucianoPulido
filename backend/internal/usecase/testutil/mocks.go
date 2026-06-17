@@ -19,6 +19,11 @@ func (m *MockCategoryRepository) ListByPostID(ctx context.Context, postID int64,
 	return args.Get(0).([]domain.CategoryWithName), args.Error(1)
 }
 
+func (m *MockCategoryRepository) ListAll(ctx context.Context, lang string) ([]domain.CategoryWithName, error) {
+	args := m.Called(ctx, lang)
+	return args.Get(0).([]domain.CategoryWithName), args.Error(1)
+}
+
 func (m *MockCategoryRepository) List(ctx context.Context) ([]domain.Category, []domain.CategoryTranslation, error) {
 	args := m.Called(ctx)
 	return args.Get(0).([]domain.Category), args.Get(1).([]domain.CategoryTranslation), args.Error(2)
