@@ -29,9 +29,9 @@ paths:
     get:
       tags:
         - Posts
-      summary: Retrieve a filtered list of blog posts
+      summary: Retrieve a paginated, filtered list of blog posts
       operationId: GetPosts
-      description: Returns a collection of metadata-only post records localized to the requested language.
+      description: Returns a paginated collection of metadata-only post records localized to the requested language.
       parameters:
         - name: lang
           in: query
@@ -47,15 +47,29 @@ paths:
           required: false
           schema:
             type: string
+        - name: page
+          in: query
+          description: Page number (1-indexed)
+          required: false
+          schema:
+            type: integer
+            minimum: 1
+            default: 1
+        - name: per_page
+          in: query
+          description: Number of items per page
+          required: false
+          schema:
+            type: integer
+            minimum: 1
+            default: 10
       responses:
         "200":
-          description: A successful array response of localized posts metadata
+          description: A successful paginated response of localized posts metadata
           content:
             application/json:
               schema:
-                type: array
-                items:
-                  $ref: "#/components/schemas/PostSummary"
+                $ref: "#/components/schemas/PaginatedPosts"
 
   /posts/{slug}:
     get:
@@ -471,6 +485,27 @@ components:
           type: string
           format: date-time
           example: "2026-06-13T16:25:00Z"
+
+    PaginatedPosts:
+      type: object
+      properties:
+        posts:
+          type: array
+          items:
+            $ref: "#/components/schemas/PostSummary"
+        page:
+          type: integer
+          example: 1
+        per_page:
+          type: integer
+          example: 10
+        total:
+          type: integer
+          format: int64
+          example: 42
+        total_pages:
+          type: integer
+          example: 5
 
     PostDetail:
       type: object

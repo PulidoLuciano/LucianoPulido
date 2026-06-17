@@ -4,6 +4,7 @@ import (
 	"context"
 	"database/sql"
 	"errors"
+	"fmt"
 
 	"github.com/PulidoLuciano/LucianoPulido.git/internal/domain"
 	"github.com/PulidoLuciano/LucianoPulido.git/internal/port"
@@ -19,10 +20,11 @@ func NewPostRepo(db *sql.DB) *PostRepo {
 	return &PostRepo{db: db}
 }
 
-func (r *PostRepo) List(ctx context.Context, lang string, categorySlug string) ([]domain.PostWithTranslation, error) {
+func (r *PostRepo) List(ctx context.Context, lang string, categorySlug string, page int, perPage int) ([]domain.PostWithTranslation, int64, error) {
 	query := `
 		SELECT p.id, p.slug, p.image_url, p.is_public, p.created_at,
-		       pt.id, pt.language_code, pt.title, pt.content
+		       pt.id, pt.language_code, pt.title, pt.content,
+		       COUNT(*) OVER() AS total_count
 		FROM posts p
 		JOIN post_translations pt ON pt.post_id = p.id
 		WHERE pt.language_code = $1 AND p.is_public = true
@@ -40,26 +42,34 @@ func (r *PostRepo) List(ctx context.Context, lang string, categorySlug string) (
 
 	query += ` ORDER BY p.created_at DESC`
 
+	offset := (page - 1) * perPage
+	limitIdx := len(args) + 1
+	offsetIdx := len(args) + 2
+	query += fmt.Sprintf(` LIMIT $%d OFFSET $%d`, limitIdx, offsetIdx)
+	args = append(args, perPage, offset)
+
 	rows, err := r.db.QueryContext(ctx, query, args...)
 	if err != nil {
-		return nil, err
+		return nil, 0, err
 	}
 	defer rows.Close()
 
+	var totalCount int64
 	var posts []domain.PostWithTranslation
 	for rows.Next() {
 		var p domain.PostWithTranslation
 		if err := rows.Scan(
 			&p.Post.ID, &p.Post.Slug, &p.Post.ImageURL, &p.Post.IsPublic, &p.Post.CreatedAt,
 			&p.Translation.ID, &p.Translation.LanguageCode, &p.Translation.Title, &p.Translation.Content,
+			&totalCount,
 		); err != nil {
-			return nil, err
+			return nil, 0, err
 		}
 		p.Translation.PostID = p.Post.ID
 		posts = append(posts, p)
 	}
 
-	return posts, rows.Err()
+	return posts, totalCount, rows.Err()
 }
 
 func (r *PostRepo) GetBySlug(ctx context.Context, slug string, lang string) (*domain.PostWithTranslation, error) {

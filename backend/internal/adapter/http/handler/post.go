@@ -6,6 +6,7 @@ import (
 	"encoding/json"
 	"net"
 	"net/http"
+	"strconv"
 
 	"github.com/PulidoLuciano/LucianoPulido.git/internal/domain"
 	"github.com/PulidoLuciano/LucianoPulido.git/internal/usecase"
@@ -32,18 +33,34 @@ func (h *PostHandler) GetPosts(w http.ResponseWriter, r *http.Request) {
 		categorySlug = &cat
 	}
 
+	page := 1
+	if p := r.URL.Query().Get("page"); p != "" {
+		if parsed, err := strconv.Atoi(p); err == nil && parsed > 0 {
+			page = parsed
+		}
+	}
+
+	perPage := 10
+	if pp := r.URL.Query().Get("per_page"); pp != "" {
+		if parsed, err := strconv.Atoi(pp); err == nil && parsed > 0 {
+			perPage = parsed
+		}
+	}
+
 	input := usecase.GetPostsInput{
 		Lang:         lang,
 		CategorySlug: categorySlug,
+		Page:         page,
+		PerPage:      perPage,
 	}
 
-	posts, err := h.publicUC.GetPosts(r.Context(), input)
+	output, err := h.publicUC.GetPosts(r.Context(), input)
 	if err != nil {
 		writeError(w, mapErrorStatus(err))
 		return
 	}
 
-	writeJSON(w, http.StatusOK, posts)
+	writeJSON(w, http.StatusOK, output)
 }
 
 func (h *PostHandler) GetPostBySlug(w http.ResponseWriter, r *http.Request) {

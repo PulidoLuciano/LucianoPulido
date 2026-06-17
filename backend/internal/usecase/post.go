@@ -44,16 +44,18 @@ type PostDetailItem struct {
 	CreatedAt       time.Time                 `json:"created_at"`
 }
 
-func (uc *PostPublicUseCase) GetPosts(ctx context.Context, input GetPostsInput) ([]PostSummaryItem, error) {
+func (uc *PostPublicUseCase) GetPosts(ctx context.Context, input GetPostsInput) (*GetPostsOutput, error) {
 	catSlug := ""
 	if input.CategorySlug != nil {
 		catSlug = *input.CategorySlug
 	}
 
-	posts, err := uc.postRepo.List(ctx, input.Lang, catSlug)
+	posts, total, err := uc.postRepo.List(ctx, input.Lang, catSlug, input.Page, input.PerPage)
 	if err != nil {
 		return nil, err
 	}
+
+	totalPages := int(math.Ceil(float64(total) / float64(input.PerPage)))
 
 	result := make([]PostSummaryItem, 0, len(posts))
 	for _, p := range posts {
@@ -73,7 +75,13 @@ func (uc *PostPublicUseCase) GetPosts(ctx context.Context, input GetPostsInput) 
 		})
 	}
 
-	return result, nil
+	return &GetPostsOutput{
+		Posts:      result,
+		Page:       input.Page,
+		PerPage:    input.PerPage,
+		Total:      total,
+		TotalPages: totalPages,
+	}, nil
 }
 
 func (uc *PostPublicUseCase) GetPostBySlug(ctx context.Context, input GetPostBySlugInput) (*PostDetailItem, error) {
@@ -113,6 +121,16 @@ func (uc *PostPublicUseCase) GetPostBySlug(ctx context.Context, input GetPostByS
 type GetPostsInput struct {
 	Lang         string
 	CategorySlug *string
+	Page         int
+	PerPage      int
+}
+
+type GetPostsOutput struct {
+	Posts      []PostSummaryItem `json:"posts"`
+	Page       int               `json:"page"`
+	PerPage    int               `json:"per_page"`
+	Total      int64             `json:"total"`
+	TotalPages int               `json:"total_pages"`
 }
 
 type GetPostBySlugInput struct {
