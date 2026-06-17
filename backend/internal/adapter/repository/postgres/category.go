@@ -5,6 +5,8 @@ import (
 	"database/sql"
 	"errors"
 
+	"github.com/lib/pq"
+
 	"github.com/PulidoLuciano/LucianoPulido.git/internal/domain"
 	"github.com/PulidoLuciano/LucianoPulido.git/internal/port"
 )
@@ -156,6 +158,10 @@ func (r *CategoryRepo) Create(ctx context.Context, category *domain.Category, tr
 		category.Slug,
 	).Scan(&category.ID, &category.CreatedAt)
 	if err != nil {
+		var pqErr *pq.Error
+		if errors.As(err, &pqErr) && pqErr.Code == "23505" {
+			return nil, domain.ErrConflict
+		}
 		return nil, err
 	}
 
@@ -189,6 +195,10 @@ func (r *CategoryRepo) Update(ctx context.Context, category *domain.Category, tr
 		category.Slug, category.ID,
 	)
 	if err != nil {
+		var pqErr *pq.Error
+		if errors.As(err, &pqErr) && pqErr.Code == "23505" {
+			return domain.ErrConflict
+		}
 		return err
 	}
 
