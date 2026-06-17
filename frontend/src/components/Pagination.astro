@@ -13,7 +13,7 @@ const buildUrl = (p: number) => {
 	const params = new URLSearchParams();
 	params.set("page", String(p));
 	if (category) params.set("category", category);
-	return `/${locale}/blogs?${params}`;
+	return `/${locale}/blog?${params}`;
 };
 ---
 

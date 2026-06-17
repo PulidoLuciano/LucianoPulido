@@ -14,7 +14,7 @@ const inactiveClasses = "bg-white-warm text-green-dark border-green-light/30 hov
 ---
 
 <a
-	href={active ? `/${locale}/blogs` : `/${locale}/blogs?category=${slug}`}
+	href={active ? `/${locale}/blog` : `/${locale}/blog?category=${slug}`}
 	class={`${baseClasses} ${active ? activeClasses : inactiveClasses}`}
 >
 	{name}
