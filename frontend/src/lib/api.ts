@@ -51,6 +51,39 @@ export async function fetchPosts(
 	}
 }
 
+export interface PostDetail {
+	id: number;
+	slug: string;
+	title: string;
+	content: string;
+	image_url: string | null;
+	read_time_minutes: number;
+	total_views: number;
+	view_id: number;
+	categories: CategorySummary[];
+	created_at: string;
+}
+
+export async function fetchPost(
+	locale: string,
+	slug: string,
+): Promise<PostDetail | null> {
+	const params = new URLSearchParams();
+	params.set("lang", locale);
+
+	try {
+		const res = await fetch(`${API_URL}/api/posts/${slug}?${params}`);
+		if (!res.ok) {
+			console.error("fetchPost failed:", res.status);
+			return null;
+		}
+		return await res.json();
+	} catch (err) {
+		console.error("fetchPost error:", err);
+		return null;
+	}
+}
+
 export async function fetchCategories(locale: string): Promise<CategorySummary[] | null> {
 	const params = new URLSearchParams();
 	params.set("lang", locale);

@@ -102,6 +102,14 @@
     "devops": "DevOps",
     "career": "Carrera"
   },
+  "post": {
+    "backToBlog": "← Volver al blog",
+    "minRead": "min de lectura",
+    "views": "vistas",
+    "notFound": "Publicación no encontrada.",
+    "publishedOn": "Publicado el",
+    "relatedPosts": "Publicaciones relacionadas"
+  },
   "footer": {
     "rights": "Todos los derechos reservados.",
     "builtWith": "Construido con Astro y Tailwind CSS"

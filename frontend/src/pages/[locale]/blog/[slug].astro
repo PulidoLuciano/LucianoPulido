@@ -1,0 +1,110 @@
+---
+export const prerender = false;
+
+import { marked } from "marked";
+import { Image } from "astro:assets";
+import { useTranslations } from "../../../locales/utils";
+import { fetchPost, fetchPosts } from "../../../lib/api";
+import BaseLayout from "../../../layouts/BaseLayout.astro";
+import CategoryChip from "../../../components/CategoryChip.astro";
+import PostCard from "../../../components/PostCard.astro";
+
+const locale = Astro.currentLocale ?? "en";
+const t = useTranslations(locale);
+const { slug } = Astro.params;
+
+const post = slug ? await fetchPost(locale, slug) : null;
+
+const firstCategorySlug = post?.categories?.[0]?.slug;
+const relatedData = firstCategorySlug
+	? await fetchPosts(locale, 1, 6, firstCategorySlug)
+	: null;
+const relatedPosts = relatedData?.posts?.filter((p) => p.slug !== slug) ?? [];
+
+const formattedDate = post
+	? new Date(post.created_at).toLocaleDateString(locale === "es" ? "es-AR" : "en-US", {
+			year: "numeric",
+			month: "long",
+			day: "numeric",
+		})
+	: "";
+
+const htmlContent = post ? marked.parse(post.content) : "";
+---
+
+<BaseLayout>
+	{
+		!post ? (
+			<div class="pt-24 pb-16 text-center max-w-6xl mx-auto px-4" role="alert">
+				<h1 class="text-4xl font-bold text-green-dark mb-4">404</h1>
+				<p class="text-green-dark/70 mb-8">{t("post.notFound")}</p>
+				<a
+					href={`/${locale}/blog`}
+					class="inline-block px-6 py-3 bg-green-dark text-white-warm rounded-full font-medium hover:bg-green-dark/90 transition-colors"
+				>
+					{t("post.backToBlog")}
+				</a>
+			</div>
+		) : (
+			<article class="pt-24 pb-16 max-w-6xl mx-auto px-4">
+				<a
+					href={`/${locale}/blog`}
+					class="inline-block text-green-dark hover:text-orange-dark transition-colors mb-8 text-sm font-medium"
+				>
+			{t("post.backToBlog")}
+			</a>
+
+			{
+				post.image_url && (
+					<Image
+						src={post.image_url}
+						alt={post.title}
+						width={1200}
+						height={630}
+						class="w-full h-auto max-h-96 object-cover rounded-xl mb-8"
+					/>
+				)
+			}
+
+			<header class="mb-8">
+					<h1 class="text-3xl md:text-4xl font-bold text-green-dark mb-4">{post.title}</h1>
+
+					<div class="flex flex-wrap items-center gap-4 text-sm text-green-dark/60">
+						<time datetime={post.created_at}>{formattedDate}</time>
+						<span aria-hidden="true">&middot;</span>
+				<span>{post.read_time_minutes} {t("post.minRead")}</span>
+				</div>
+
+					{
+						post.categories.length > 0 && (
+							<div class="flex flex-wrap gap-2 mt-4">
+								{post.categories.map((cat) => (
+									<CategoryChip slug={cat.slug} name={cat.name} locale={locale} />
+								))}
+							</div>
+						)
+					}
+				</header>
+
+			<div class="prose max-w-none">
+				<Fragment set:html={htmlContent} />
+			</div>
+
+			{
+				relatedPosts.length > 0 && (
+					<section class="mt-16 pt-12 border-t border-green-light/20">
+						<h2 class="text-2xl font-bold text-green-dark mb-6">
+							{t("post.relatedPosts")}
+						</h2>
+						<div class="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+							{relatedPosts.map((p) => (
+								<PostCard post={p} locale={locale} />
+							))}
+						</div>
+					</section>
+				)
+			}
+			</article>
+		)
+	}
+</BaseLayout>

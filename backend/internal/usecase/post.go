@@ -22,26 +22,33 @@ func NewPostPublicUseCase(pr port.PostRepository, mr port.MetricsRepository, cr 
 	return &PostPublicUseCase{postRepo: pr, metricsRepo: mr, categoryRepo: cr}
 }
 
+type CategorySummaryOutput struct {
+	ID   int64  `json:"id"`
+	Slug string `json:"slug"`
+	Name string `json:"name"`
+}
+
 type PostSummaryItem struct {
-	ID              int64                     `json:"id"`
-	Slug            string                    `json:"slug"`
-	Title           string                    `json:"title"`
-	ImageURL        *string                   `json:"image_url"`
-	ReadTimeMinutes int                       `json:"read_time_minutes"`
-	Categories      []domain.CategoryWithName `json:"categories"`
-	CreatedAt       time.Time                 `json:"created_at"`
+	ID              int64                   `json:"id"`
+	Slug            string                  `json:"slug"`
+	Title           string                  `json:"title"`
+	ImageURL        *string                 `json:"image_url"`
+	ReadTimeMinutes int                     `json:"read_time_minutes"`
+	Categories      []CategorySummaryOutput `json:"categories"`
+	CreatedAt       time.Time               `json:"created_at"`
 }
 
 type PostDetailItem struct {
-	ID              int64                     `json:"id"`
-	Slug            string                    `json:"slug"`
-	Title           string                    `json:"title"`
-	Content         string                    `json:"content"`
-	ReadTimeMinutes int                       `json:"read_time_minutes"`
-	TotalViews      int64                     `json:"total_views"`
-	ViewID          int64                     `json:"view_id"`
-	Categories      []domain.CategoryWithName `json:"categories"`
-	CreatedAt       time.Time                 `json:"created_at"`
+	ID              int64                   `json:"id"`
+	Slug            string                  `json:"slug"`
+	Title           string                  `json:"title"`
+	Content         string                  `json:"content"`
+	ImageURL        *string                 `json:"image_url"`
+	ReadTimeMinutes int                     `json:"read_time_minutes"`
+	TotalViews      int64                   `json:"total_views"`
+	ViewID          int64                   `json:"view_id"`
+	Categories      []CategorySummaryOutput `json:"categories"`
+	CreatedAt       time.Time               `json:"created_at"`
 }
 
 func (uc *PostPublicUseCase) GetPosts(ctx context.Context, input GetPostsInput) (*GetPostsOutput, error) {
@@ -59,9 +66,18 @@ func (uc *PostPublicUseCase) GetPosts(ctx context.Context, input GetPostsInput) 
 
 	result := make([]PostSummaryItem, 0, len(posts))
 	for _, p := range posts {
-		categories, err := uc.categoryRepo.ListByPostID(ctx, p.Post.ID, input.Lang)
+		domainCategories, err := uc.categoryRepo.ListByPostID(ctx, p.Post.ID, input.Lang)
 		if err != nil {
-			categories = []domain.CategoryWithName{}
+			domainCategories = []domain.CategoryWithName{}
+		}
+
+		categories := make([]CategorySummaryOutput, 0, len(domainCategories))
+		for _, dc := range domainCategories {
+			categories = append(categories, CategorySummaryOutput{
+				ID:   dc.ID,
+				Slug: dc.Slug,
+				Name: dc.Name,
+			})
 		}
 
 		result = append(result, PostSummaryItem{
@@ -90,9 +106,18 @@ func (uc *PostPublicUseCase) GetPostBySlug(ctx context.Context, input GetPostByS
 		return nil, err
 	}
 
-	categories, err := uc.categoryRepo.ListByPostID(ctx, post.Post.ID, input.Lang)
+	domainCategories, err := uc.categoryRepo.ListByPostID(ctx, post.Post.ID, input.Lang)
 	if err != nil {
-		categories = []domain.CategoryWithName{}
+		domainCategories = []domain.CategoryWithName{}
+	}
+
+	categories := make([]CategorySummaryOutput, 0, len(domainCategories))
+	for _, dc := range domainCategories {
+		categories = append(categories, CategorySummaryOutput{
+			ID:   dc.ID,
+			Slug: dc.Slug,
+			Name: dc.Name,
+		})
 	}
 
 	totalViews, err := uc.metricsRepo.GetTotalViews(ctx, post.Post.ID)
@@ -110,6 +135,7 @@ func (uc *PostPublicUseCase) GetPostBySlug(ctx context.Context, input GetPostByS
 		Slug:            post.Post.Slug,
 		Title:           post.Translation.Title,
 		Content:         post.Translation.Content,
+		ImageURL:        post.Post.ImageURL,
 		ReadTimeMinutes: calculateReadTime(post.Translation.Content),
 		TotalViews:      totalViews,
 		ViewID:          viewID,
