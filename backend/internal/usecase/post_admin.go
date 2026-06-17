@@ -2,7 +2,6 @@ package usecase
 
 import (
 	"context"
-	"errors"
 	"time"
 
 	"github.com/PulidoLuciano/LucianoPulido.git/internal/domain"
@@ -18,15 +17,15 @@ func NewPostAdminUseCase(pr port.PostRepository) *PostAdminUseCase {
 }
 
 type CreatePostInput struct {
-	Slug         string
-	ImageURL     *string
-	CategoryIDs  []int64
-	Translations map[string]PostTranslationInput
+	Slug         string                          `json:"slug"`
+	ImageURL     *string                         `json:"image_url,omitempty"`
+	CategoryIDs  []int64                         `json:"category_ids"`
+	Translations map[string]PostTranslationInput `json:"translations"`
 }
 
 type PostTranslationInput struct {
-	Title   string
-	Content string
+	Title   string `json:"title"`
+	Content string `json:"content"`
 }
 
 type CreatePostOutput struct {
@@ -39,7 +38,7 @@ func (uc *PostAdminUseCase) CreatePost(ctx context.Context, input CreatePostInpu
 		return nil, domain.ErrInvalidInput
 	}
 	if len(input.Translations) == 0 {
-		return nil, errors.New("at least one translation is required")
+		return nil, domain.ErrInvalidInput
 	}
 
 	now := time.Now()

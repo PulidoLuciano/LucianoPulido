@@ -6,6 +6,8 @@ import (
 	"errors"
 	"fmt"
 
+	"github.com/lib/pq"
+
 	"github.com/PulidoLuciano/LucianoPulido.git/internal/domain"
 	"github.com/PulidoLuciano/LucianoPulido.git/internal/port"
 )
@@ -109,6 +111,10 @@ func (r *PostRepo) Create(ctx context.Context, post *domain.Post, translations [
 		post.Slug, post.ImageURL, post.IsPublic,
 	).Scan(&post.ID, &post.CreatedAt)
 	if err != nil {
+		var pqErr *pq.Error
+		if errors.As(err, &pqErr) && pqErr.Code == "23505" {
+			return nil, domain.ErrConflict
+		}
 		return nil, err
 	}
 
@@ -152,6 +158,10 @@ func (r *PostRepo) Update(ctx context.Context, post *domain.Post, translations [
 		post.Slug, post.ImageURL, post.ID,
 	)
 	if err != nil {
+		var pqErr *pq.Error
+		if errors.As(err, &pqErr) && pqErr.Code == "23505" {
+			return domain.ErrConflict
+		}
 		return err
 	}
 
