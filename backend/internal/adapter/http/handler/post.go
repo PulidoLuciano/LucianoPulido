@@ -63,6 +63,42 @@ func (h *PostHandler) GetPosts(w http.ResponseWriter, r *http.Request) {
 	writeJSON(w, http.StatusOK, output)
 }
 
+func (h *PostHandler) GetAdminPosts(w http.ResponseWriter, r *http.Request) {
+	lang := r.URL.Query().Get("lang")
+	if lang == "" {
+		http.Error(w, `{"error":"lang query parameter is required"}`, http.StatusBadRequest)
+		return
+	}
+
+	page := 1
+	if p := r.URL.Query().Get("page"); p != "" {
+		if parsed, err := strconv.Atoi(p); err == nil && parsed > 0 {
+			page = parsed
+		}
+	}
+
+	perPage := 10
+	if pp := r.URL.Query().Get("per_page"); pp != "" {
+		if parsed, err := strconv.Atoi(pp); err == nil && parsed > 0 {
+			perPage = parsed
+		}
+	}
+
+	input := usecase.AdminGetPostsInput{
+		Lang:    lang,
+		Page:    page,
+		PerPage: perPage,
+	}
+
+	output, err := h.adminUC.GetPosts(r.Context(), input)
+	if err != nil {
+		writeError(w, mapErrorStatus(err))
+		return
+	}
+
+	writeJSON(w, http.StatusOK, output)
+}
+
 func (h *PostHandler) GetPostBySlug(w http.ResponseWriter, r *http.Request) {
 	slug := r.PathValue("slug")
 	lang := r.URL.Query().Get("lang")
@@ -81,6 +117,22 @@ func (h *PostHandler) GetPostBySlug(w http.ResponseWriter, r *http.Request) {
 	}
 
 	post, err := h.publicUC.GetPostBySlug(r.Context(), input)
+	if err != nil {
+		writeError(w, mapErrorStatus(err))
+		return
+	}
+
+	writeJSON(w, http.StatusOK, post)
+}
+
+func (h *PostHandler) GetAdminPost(w http.ResponseWriter, r *http.Request) {
+	id, err := parseIDParam(r, "id")
+	if err != nil {
+		http.Error(w, `{"error":"invalid post id"}`, http.StatusBadRequest)
+		return
+	}
+
+	post, err := h.adminUC.GetPost(r.Context(), id)
 	if err != nil {
 		writeError(w, mapErrorStatus(err))
 		return

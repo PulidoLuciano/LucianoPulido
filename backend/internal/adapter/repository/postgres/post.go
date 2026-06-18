@@ -74,6 +74,58 @@ func (r *PostRepo) List(ctx context.Context, lang string, categorySlug string, p
 	return posts, totalCount, rows.Err()
 }
 
+func (r *PostRepo) ListAll(ctx context.Context, lang string, categorySlug string, page int, perPage int) ([]domain.PostWithTranslation, int64, error) {
+	query := `
+		SELECT p.id, p.slug, p.image_url, p.is_public, p.created_at,
+		       pt.id, pt.language_code, pt.title, pt.content,
+		       COUNT(*) OVER() AS total_count
+		FROM posts p
+		JOIN post_translations pt ON pt.post_id = p.id
+		WHERE pt.language_code = $1
+	`
+	args := []interface{}{lang}
+
+	if categorySlug != "" {
+		query += ` AND p.id IN (
+			SELECT pc.post_id FROM post_categories pc
+			JOIN categories c ON c.id = pc.category_id
+			WHERE c.slug = $2
+		)`
+		args = append(args, categorySlug)
+	}
+
+	query += ` ORDER BY p.created_at DESC`
+
+	offset := (page - 1) * perPage
+	limitIdx := len(args) + 1
+	offsetIdx := len(args) + 2
+	query += fmt.Sprintf(` LIMIT $%d OFFSET $%d`, limitIdx, offsetIdx)
+	args = append(args, perPage, offset)
+
+	rows, err := r.db.QueryContext(ctx, query, args...)
+	if err != nil {
+		return nil, 0, err
+	}
+	defer rows.Close()
+
+	var totalCount int64
+	var posts []domain.PostWithTranslation
+	for rows.Next() {
+		var p domain.PostWithTranslation
+		if err := rows.Scan(
+			&p.Post.ID, &p.Post.Slug, &p.Post.ImageURL, &p.Post.IsPublic, &p.Post.CreatedAt,
+			&p.Translation.ID, &p.Translation.LanguageCode, &p.Translation.Title, &p.Translation.Content,
+			&totalCount,
+		); err != nil {
+			return nil, 0, err
+		}
+		p.Translation.PostID = p.Post.ID
+		posts = append(posts, p)
+	}
+
+	return posts, totalCount, rows.Err()
+}
+
 func (r *PostRepo) GetBySlug(ctx context.Context, slug string, lang string) (*domain.PostWithTranslation, error) {
 	query := `
 		SELECT p.id, p.slug, p.image_url, p.is_public, p.created_at,
@@ -97,6 +149,64 @@ func (r *PostRepo) GetBySlug(ctx context.Context, slug string, lang string) (*do
 	p.Translation.PostID = p.Post.ID
 
 	return &p, nil
+}
+
+func (r *PostRepo) GetByID(ctx context.Context, id int64) (*domain.Post, []domain.PostTranslation, []int64, error) {
+	postQuery := `
+		SELECT id, slug, image_url, is_public, created_at
+		FROM posts WHERE id = $1
+	`
+	var post domain.Post
+	err := r.db.QueryRowContext(ctx, postQuery, id).Scan(
+		&post.ID, &post.Slug, &post.ImageURL, &post.IsPublic, &post.CreatedAt,
+	)
+	if errors.Is(err, sql.ErrNoRows) {
+		return nil, nil, nil, domain.ErrNotFound
+	}
+	if err != nil {
+		return nil, nil, nil, err
+	}
+
+	trRows, err := r.db.QueryContext(ctx,
+		`SELECT id, post_id, language_code, title, content
+		 FROM post_translations WHERE post_id = $1`, id)
+	if err != nil {
+		return nil, nil, nil, err
+	}
+	defer trRows.Close()
+
+	var translations []domain.PostTranslation
+	for trRows.Next() {
+		var t domain.PostTranslation
+		if err := trRows.Scan(&t.ID, &t.PostID, &t.LanguageCode, &t.Title, &t.Content); err != nil {
+			return nil, nil, nil, err
+		}
+		translations = append(translations, t)
+	}
+	if err := trRows.Err(); err != nil {
+		return nil, nil, nil, err
+	}
+
+	catRows, err := r.db.QueryContext(ctx,
+		`SELECT category_id FROM post_categories WHERE post_id = $1`, id)
+	if err != nil {
+		return nil, nil, nil, err
+	}
+	defer catRows.Close()
+
+	var categoryIDs []int64
+	for catRows.Next() {
+		var catID int64
+		if err := catRows.Scan(&catID); err != nil {
+			return nil, nil, nil, err
+		}
+		categoryIDs = append(categoryIDs, catID)
+	}
+	if err := catRows.Err(); err != nil {
+		return nil, nil, nil, err
+	}
+
+	return &post, translations, categoryIDs, nil
 }
 
 func (r *PostRepo) Create(ctx context.Context, post *domain.Post, translations []domain.PostTranslation, categoryIDs []int64) (*domain.Post, error) {
@@ -154,8 +264,8 @@ func (r *PostRepo) Update(ctx context.Context, post *domain.Post, translations [
 	defer tx.Rollback()
 
 	_, err = tx.ExecContext(ctx,
-		`UPDATE posts SET slug = $1, image_url = $2 WHERE id = $3`,
-		post.Slug, post.ImageURL, post.ID,
+		`UPDATE posts SET slug = $1, image_url = $2, is_public = $3 WHERE id = $4`,
+		post.Slug, post.ImageURL, post.IsPublic, post.ID,
 	)
 	if err != nil {
 		var pqErr *pq.Error

@@ -1,0 +1,235 @@
+---
+export const prerender = false;
+
+import AdminLayout from "../../../layouts/AdminLayout.astro";
+
+const API_URL = process.env.API_URL || "http://localhost:8080";
+const cookieHeader = Astro.request.headers.get("cookie") || "";
+const locale = Astro.currentLocale ?? "en";
+const adminHeaders: Record<string, string> = {
+	"Content-Type": "application/json",
+};
+if (cookieHeader) {
+	adminHeaders["Cookie"] = cookieHeader;
+}
+
+if (Astro.request.method === "POST") {
+	try {
+		const formData = await Astro.request.formData();
+		const postId = formData.get("post_id")?.toString();
+		if (postId) {
+			const res = await fetch(`${API_URL}/api/admin/posts/${postId}`, {
+				method: "DELETE",
+				headers: adminHeaders,
+			});
+			if (res.status === 401) {
+				return Astro.redirect(`/${locale}/admin/login`);
+			}
+		}
+	} catch (_) {}
+	return Astro.redirect(`/${locale}/admin` + (Astro.url.search || ""));
+}
+
+interface Post {
+	id: number;
+	slug: string;
+	title: string;
+	image_url: string | null;
+	is_public: boolean;
+	read_time_minutes: number;
+	categories: { id: number; slug: string; name: string }[];
+	created_at: string;
+}
+
+interface PageData {
+	posts: Post[];
+	page: number;
+	per_page: number;
+	total: number;
+	total_pages: number;
+}
+
+let data: PageData | null = null;
+let authError = false;
+let fetchError = false;
+let connectionError = false;
+
+const page = Math.max(1, parseInt(Astro.url.searchParams.get("page") || "1") || 1);
+const perPage = 20;
+const lang = "en";
+
+try {
+	const params = new URLSearchParams();
+	params.set("lang", lang);
+	params.set("page", String(page));
+	params.set("per_page", String(perPage));
+
+	const fetchUrl = `${API_URL}/api/admin/posts?${params}`;
+	const res = await fetch(fetchUrl, {
+		headers: adminHeaders,
+	});
+
+	if (res.status === 401) {
+		authError = true;
+	} else if (!res.ok) {
+		console.error(`Admin fetch failed: ${res.status} ${res.statusText} for ${fetchUrl}`);
+		fetchError = true;
+	} else {
+		data = await res.json();
+	}
+} catch (err) {
+	console.error("Admin fetch error:", err);
+	connectionError = true;
+}
+
+if (authError) {
+	return Astro.redirect(`/${locale}/admin/login`);
+}
+
+const formatDate = (dateStr: string) => {
+	const d = new Date(dateStr);
+	return d.toLocaleDateString("en-US", { year: "numeric", month: "short", day: "numeric" });
+};
+
+const pageUrl = (p: number) => `/${locale}/admin?page=${p}`;
+---
+
+<AdminLayout title="Dashboard" locale={locale}>
+	<div class="flex items-center justify-between mb-6">
+		<h1 class="text-2xl font-bold">Posts</h1>
+		<a
+			href={`/${locale}/admin/posts/new`}
+			class="bg-green-dark text-white-warm px-4 py-2 rounded-md font-medium hover:bg-green-light transition-colors"
+		>
+			+ New Post
+		</a>
+	</div>
+
+	{
+		connectionError && (
+			<div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mb-6">
+				Cannot connect to the backend server at {API_URL}. Make sure the server is running.
+			</div>
+		)
+	}
+
+	{
+		!connectionError && fetchError && (
+			<div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mb-6">
+				Failed to load posts. Please try again.
+			</div>
+		)
+	}
+
+	{
+		data && data.posts.length === 0 && (
+			<div class="text-center text-green-dark/50 py-12">
+				<p class="text-lg">No posts yet.</p>
+				<p class="mt-1">
+					<a href={`/${locale}/admin/posts/new`} class="text-green-dark underline hover:text-green-light">
+						Create your first post
+					</a>
+				</p>
+			</div>
+		)
+	}
+
+	{
+		data && data.posts.length > 0 && (
+			<>
+				<div class="bg-white-warm border border-green-light/20 rounded-lg overflow-hidden">
+					<table class="w-full text-sm">
+						<thead class="border-b border-green-light/20 bg-green-light/10">
+							<tr>
+								<th class="text-left px-4 py-3 font-medium">Title</th>
+								<th class="text-left px-4 py-3 font-medium hidden md:table-cell">Slug</th>
+								<th class="text-left px-4 py-3 font-medium">Status</th>
+								<th class="text-left px-4 py-3 font-medium hidden lg:table-cell">Created</th>
+								<th class="text-right px-4 py-3 font-medium">Actions</th>
+							</tr>
+						</thead>
+						<tbody>
+							{data.posts.map((post) => (
+								<tr class="border-b border-green-light/10 last:border-b-0">
+									<td class="px-4 py-3">
+										<div class="font-medium truncate max-w-48">{post.title}</div>
+									</td>
+									<td class="px-4 py-3 hidden md:table-cell text-green-dark/50 truncate max-w-32">
+										{post.slug}
+									</td>
+									<td class="px-4 py-3">
+										{
+											post.is_public ? (
+												<span class="inline-block bg-green-dark text-white-warm text-xs px-2 py-0.5 rounded-full">
+													Published
+												</span>
+											) : (
+												<span class="inline-block bg-orange-light text-green-dark text-xs px-2 py-0.5 rounded-full">
+													Draft
+												</span>
+											)
+										}
+									</td>
+									<td class="px-4 py-3 hidden lg:table-cell text-green-dark/60 text-xs">
+										{formatDate(post.created_at)}
+									</td>
+									<td class="px-4 py-3 text-right">
+										<div class="flex items-center justify-end gap-2">
+											<a
+												href={`/${locale}/admin/posts/${post.id}/edit`}
+												class="text-sm text-green-dark hover:text-green-light transition-colors underline"
+											>
+												Edit
+											</a>
+											<form method="POST" onsubmit="return confirm('Delete this post?')" class="inline">
+												<input type="hidden" name="post_id" value={post.id} />
+												<button
+													type="submit"
+													class="text-sm text-red-600 hover:text-red-800 transition-colors underline cursor-pointer"
+												>
+													Delete
+												</button>
+											</form>
+										</div>
+									</td>
+								</tr>
+							))}
+						</tbody>
+					</table>
+				</div>
+
+				{data.total_pages > 1 && (
+					<nav class="flex items-center justify-between pt-6">
+						{
+							data.page > 1 ? (
+								<a href={pageUrl(data.page - 1)} class="px-4 py-2 text-sm font-medium rounded-lg border border-green-light/30 text-green-dark hover:bg-green-light/10 transition-colors">
+									&larr; Previous
+								</a>
+							) : (
+								<span class="px-4 py-2 text-sm font-medium rounded-lg border border-green-light/10 text-green-dark/30 cursor-not-allowed">
+									&larr; Previous
+								</span>
+							)
+						}
+
+						<span class="text-sm text-green-dark/60">
+							Page {data.page} of {data.total_pages}
+						</span>
+
+						{
+							data.page < data.total_pages ? (
+								<a href={pageUrl(data.page + 1)} class="px-4 py-2 text-sm font-medium rounded-lg border border-green-light/30 text-green-dark hover:bg-green-light/10 transition-colors">
+									Next &rarr;
+								</a>
+							) : (
+								<span class="px-4 py-2 text-sm font-medium rounded-lg border border-green-light/10 text-green-dark/30 cursor-not-allowed">
+									Next &rarr;
+								</span>
+							)
+						}
+					</nav>
+				)}
+			</>
+		)
+	}
+</AdminLayout>

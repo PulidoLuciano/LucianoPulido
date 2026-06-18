@@ -60,9 +60,19 @@ func (m *MockPostRepository) List(ctx context.Context, lang string, categorySlug
 	return args.Get(0).([]domain.PostWithTranslation), args.Get(1).(int64), args.Error(2)
 }
 
+func (m *MockPostRepository) ListAll(ctx context.Context, lang string, categorySlug string, page int, perPage int) ([]domain.PostWithTranslation, int64, error) {
+	args := m.Called(ctx, lang, categorySlug, page, perPage)
+	return args.Get(0).([]domain.PostWithTranslation), args.Get(1).(int64), args.Error(2)
+}
+
 func (m *MockPostRepository) GetBySlug(ctx context.Context, slug string, lang string) (*domain.PostWithTranslation, error) {
 	args := m.Called(ctx, slug, lang)
 	return args.Get(0).(*domain.PostWithTranslation), args.Error(1)
+}
+
+func (m *MockPostRepository) GetByID(ctx context.Context, id int64) (*domain.Post, []domain.PostTranslation, []int64, error) {
+	args := m.Called(ctx, id)
+	return args.Get(0).(*domain.Post), args.Get(1).([]domain.PostTranslation), args.Get(2).([]int64), args.Error(3)
 }
 
 func (m *MockPostRepository) Create(ctx context.Context, post *domain.Post, translations []domain.PostTranslation, categoryIDs []int64) (*domain.Post, error) {

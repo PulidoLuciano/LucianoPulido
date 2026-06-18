@@ -8,7 +8,9 @@ import (
 
 type PostRepository interface {
 	List(ctx context.Context, lang string, categorySlug string, page int, perPage int) ([]domain.PostWithTranslation, int64, error)
+	ListAll(ctx context.Context, lang string, categorySlug string, page int, perPage int) ([]domain.PostWithTranslation, int64, error)
 	GetBySlug(ctx context.Context, slug string, lang string) (*domain.PostWithTranslation, error)
+	GetByID(ctx context.Context, id int64) (*domain.Post, []domain.PostTranslation, []int64, error)
 	Create(ctx context.Context, post *domain.Post, translations []domain.PostTranslation, categoryIDs []int64) (*domain.Post, error)
 	Update(ctx context.Context, post *domain.Post, translations []domain.PostTranslation, categoryIDs []int64) error
 	Delete(ctx context.Context, id int64) error

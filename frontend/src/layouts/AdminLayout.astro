@@ -1,0 +1,45 @@
+---
+import "../styles/global.css";
+
+interface Props {
+	title: string;
+	locale: string;
+}
+
+const { title, locale } = Astro.props;
+---
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="icon" href="/favicon.ico" />
+    <meta name="viewport" content="width=device-width" />
+    <title>{title} — Admin</title>
+  </head>
+  <body class="bg-white-warm text-green-dark min-h-screen flex flex-col">
+    <header class="bg-green-dark text-white-warm">
+      <div class="max-w-6xl mx-auto px-6 py-4 flex items-center justify-between">
+        <a href={`/${locale}/admin`} class="font-bold text-lg tracking-wide">Admin</a>
+        <nav class="flex items-center gap-6">
+          <a href={`/${locale}/admin`} class="hover:text-orange-light transition-colors">Dashboard</a>
+          <button id="logout-btn" class="hover:text-orange-light transition-colors cursor-pointer">
+            Logout
+          </button>
+        </nav>
+      </div>
+    </header>
+    <main class="flex-1 max-w-6xl mx-auto px-6 py-8 w-full">
+      <slot />
+    </main>
+    <script>
+      document.getElementById("logout-btn")?.addEventListener("click", async () => {
+        const { logoutAdmin } = await import("../lib/api");
+        const ok = await logoutAdmin();
+        if (ok) {
+          window.location.href = "/en/admin/login";
+        }
+      });
+    </script>
+  </body>
+</html>

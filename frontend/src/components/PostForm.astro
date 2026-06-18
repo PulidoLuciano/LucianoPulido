@@ -1,0 +1,164 @@
+---
+interface Category {
+	id: number;
+	slug: string;
+	name: string;
+}
+
+interface TranslationData {
+	title: string;
+	content: string;
+}
+
+interface PostData {
+	slug: string;
+	image_url: string | null;
+	is_public: boolean;
+	category_ids: number[];
+	translations: Record<string, TranslationData>;
+}
+
+interface Props {
+	mode: "create" | "edit";
+	locale: string;
+	categories: Category[];
+	postData?: PostData;
+}
+
+const { mode, locale, categories, postData } = Astro.props;
+const isEdit = mode === "edit";
+const defaultTrans = { title: "", content: "" };
+const en = postData?.translations?.en ?? defaultTrans;
+const es = postData?.translations?.es ?? defaultTrans;
+const selectedIds = postData?.category_ids ?? [];
+---
+
+<form method="POST" class="flex flex-col gap-8">
+	<section>
+		<h2 class="text-lg font-bold mb-4">General</h2>
+		<div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+			<div>
+				<label for="slug" class="block text-sm font-medium mb-1">Slug</label>
+				<input
+					id="slug"
+					name="slug"
+					type="text"
+					required
+					value={postData?.slug ?? ""}
+					class="w-full border border-green-light/30 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-green-light"
+				/>
+			</div>
+
+			<div>
+				<label for="image_url" class="block text-sm font-medium mb-1">Image URL</label>
+				<input
+					id="image_url"
+					name="image_url"
+					type="text"
+					value={postData?.image_url ?? ""}
+					class="w-full border border-green-light/30 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-green-light"
+				/>
+			</div>
+		</div>
+
+		<div class="mt-3">
+			<label class="inline-flex items-center gap-2 cursor-pointer">
+				<input
+					type="checkbox"
+					name="is_public"
+					value="true"
+					checked={postData?.is_public}
+					class="w-4 h-4 accent-green-dark"
+				/>
+				<span class="text-sm font-medium">Published</span>
+			</label>
+		</div>
+	</section>
+
+	<section>
+		<h2 class="text-lg font-bold mb-4">Categories</h2>
+		{categories.length === 0 && (
+			<p class="text-sm text-green-dark/50">No categories available.</p>
+		)}
+		<div class="flex flex-wrap gap-2">
+			{categories.map((cat) => (
+				<label class="inline-flex items-center gap-1.5 px-3 py-1.5 border border-green-light/30 rounded-md cursor-pointer hover:bg-green-light/10 transition-colors has-checked:bg-green-dark has-checked:text-white-warm has-checked:border-green-dark">
+					<input
+						type="checkbox"
+						name="category_ids"
+						value={cat.id}
+						checked={selectedIds.includes(cat.id)}
+						class="w-3.5 h-3.5 accent-current"
+					/>
+					<span class="text-sm">{cat.name}</span>
+				</label>
+			))}
+		</div>
+	</section>
+
+	<section>
+		<h2 class="text-lg font-bold mb-4">English Translation</h2>
+		<div class="flex flex-col gap-3">
+			<div>
+				<label for="en-title" class="block text-sm font-medium mb-1">Title (EN)</label>
+				<input
+					id="en-title"
+					name="en_title"
+					type="text"
+					required
+					value={en.title}
+					class="w-full border border-green-light/30 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-green-light"
+				/>
+			</div>
+			<div>
+				<label for="en-content" class="block text-sm font-medium mb-1">Content (EN) — Markdown</label>
+				<textarea
+					id="en-content"
+					name="en_content"
+					required
+					rows={16}
+					class="w-full border border-green-light/30 rounded-md px-3 py-2 font-mono text-sm focus:outline-none focus:ring-2 focus:ring-green-light"
+				>{en.content}</textarea>
+			</div>
+		</div>
+	</section>
+
+	<section>
+		<h2 class="text-lg font-bold mb-4">Spanish Translation</h2>
+		<div class="flex flex-col gap-3">
+			<div>
+				<label for="es-title" class="block text-sm font-medium mb-1">Title (ES)</label>
+				<input
+					id="es-title"
+					name="es_title"
+					type="text"
+					required
+					value={es.title}
+					class="w-full border border-green-light/30 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-green-light"
+				/>
+			</div>
+			<div>
+				<label for="es-content" class="block text-sm font-medium mb-1">Content (ES) — Markdown</label>
+				<textarea
+					id="es-content"
+					name="es_content"
+					required
+					rows={16}
+					class="w-full border border-green-light/30 rounded-md px-3 py-2 font-mono text-sm focus:outline-none focus:ring-2 focus:ring-green-light"
+				>{es.content}</textarea>
+			</div>
+		</div>
+	</section>
+
+	<div class="flex items-center gap-4 pt-4">
+		<button
+			type="submit"
+			class="bg-green-dark text-white-warm px-6 py-2 rounded-md font-medium hover:bg-green-light transition-colors cursor-pointer"
+		>
+			{isEdit ? "Update Post" : "Create Post"}
+		</button>
+		<a href={`/${locale}/admin`} class="text-sm text-green-dark underline hover:text-green-light">
+			Cancel
+		</a>
+	</div>
+</form>

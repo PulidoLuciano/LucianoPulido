@@ -1,0 +1,80 @@
+---
+export function getStaticPaths() {
+	return [{ params: { locale: "en" } }];
+}
+
+import "../../../styles/global.css";
+---
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta name="viewport" content="width=device-width" />
+    <title>Login — Admin</title>
+  </head>
+  <body class="bg-green-dark min-h-screen flex items-center justify-center px-4">
+    <div class="w-full max-w-sm">
+      <h1 class="text-white-warm text-2xl font-bold text-center mb-8">Admin Login</h1>
+
+      <form id="login-form" class="bg-white-warm rounded-lg p-6 shadow-lg flex flex-col gap-4">
+        <div>
+          <label for="email" class="block text-sm font-medium mb-1">Email</label>
+          <input
+            id="email"
+            name="email"
+            type="email"
+            autocomplete="email"
+            required
+            class="w-full border border-green-light/30 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-green-light"
+          />
+        </div>
+
+        <div>
+          <label for="password" class="block text-sm font-medium mb-1">Password</label>
+          <input
+            id="password"
+            name="password"
+            type="password"
+            autocomplete="current-password"
+            required
+            class="w-full border border-green-light/30 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-green-light"
+          />
+        </div>
+
+        <p id="error-msg" class="text-red-600 text-sm hidden"></p>
+
+        <button
+          type="submit"
+          class="bg-green-dark text-white-warm py-2 rounded-md font-medium hover:bg-green-light transition-colors cursor-pointer"
+        >
+          Sign in
+        </button>
+      </form>
+    </div>
+
+    <script>
+      const form = document.getElementById("login-form") as HTMLFormElement;
+      const errorMsg = document.getElementById("error-msg") as HTMLParagraphElement;
+
+      form.addEventListener("submit", async (e) => {
+        e.preventDefault();
+
+        const email = (document.getElementById("email") as HTMLInputElement).value;
+        const password = (document.getElementById("password") as HTMLInputElement).value;
+
+        errorMsg.classList.add("hidden");
+
+        const { loginAdmin } = await import("../../../lib/api");
+        const ok = await loginAdmin(email, password);
+
+        if (ok) {
+          window.location.href = "/en/admin";
+        } else {
+          errorMsg.textContent = "Invalid credentials. Please try again.";
+          errorMsg.classList.remove("hidden");
+        }
+      });
+    </script>
+  </body>
+</html>

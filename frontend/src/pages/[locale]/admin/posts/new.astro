@@ -1,0 +1,115 @@
+---
+export const prerender = false;
+
+import AdminLayout from "../../../../layouts/AdminLayout.astro";
+import PostForm from "../../../../components/PostForm.astro";
+
+const API_URL = process.env.API_URL || "http://localhost:8080";
+const locale = Astro.currentLocale ?? "en";
+const cookieHeader = Astro.request.headers.get("cookie") || "";
+const adminHeaders: Record<string, string> = {
+	"Content-Type": "application/json",
+};
+if (cookieHeader) {
+	adminHeaders["Cookie"] = cookieHeader;
+}
+
+interface RawCategory {
+	id: number;
+	slug: string;
+	translations: Record<string, { name: string }>;
+}
+
+interface Category {
+	id: number;
+	slug: string;
+	name: string;
+}
+
+if (Astro.request.method === "POST") {
+	try {
+		const formData = await Astro.request.formData();
+
+		const slug = formData.get("slug")?.toString() || "";
+		const imageUrl = formData.get("image_url")?.toString() || null;
+		const isPublic = formData.get("is_public") === "true";
+
+		const catIdsRaw = formData.getAll("category_ids").map((v) => parseInt(v.toString()));
+		const categoryIds = catIdsRaw.filter((n) => !isNaN(n));
+
+		const enTitle = formData.get("en_title")?.toString() || "";
+		const enContent = formData.get("en_content")?.toString() || "";
+		const esTitle = formData.get("es_title")?.toString() || "";
+		const esContent = formData.get("es_content")?.toString() || "";
+
+		if (!slug || !enTitle || !esTitle) {
+			console.error("Missing required fields");
+		} else {
+			const body = JSON.stringify({
+				slug,
+				image_url: imageUrl || null,
+				is_public: isPublic,
+				category_ids: categoryIds,
+				translations: {
+					en: { title: enTitle, content: enContent },
+					es: { title: esTitle, content: esContent },
+				},
+			});
+
+			const res = await fetch(`${API_URL}/api/admin/posts`, {
+				method: "POST",
+				headers: adminHeaders,
+				body,
+			});
+
+			if (res.status === 401) {
+				return Astro.redirect(`/${locale}/admin/login`);
+			}
+
+			if (res.ok) {
+				return Astro.redirect(`/${locale}/admin`);
+			}
+		}
+	} catch (_) {}
+}
+
+let categories: Category[] = [];
+let fetchError = false;
+
+try {
+	const params = new URLSearchParams();
+	params.set("lang", "en");
+	const res = await fetch(`${API_URL}/api/admin/categories?${params}`, {
+		headers: adminHeaders,
+	});
+	if (res.status === 401) {
+		return Astro.redirect(`/${locale}/admin/login`);
+	}
+	if (res.ok) {
+		const rawCategories: RawCategory[] = await res.json();
+		categories = rawCategories.map((c) => ({
+			id: c.id,
+			slug: c.slug,
+			name: c.translations?.en?.name || c.translations?.es?.name || c.slug,
+		}));
+	} else {
+		fetchError = true;
+	}
+} catch (_) {
+	fetchError = true;
+}
+---
+
+<AdminLayout title="New Post" locale={locale}>
+	<h1 class="text-2xl font-bold mb-6">New Post</h1>
+
+	{
+		fetchError && (
+			<div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mb-6">
+				Failed to load categories. Please try again.
+			</div>
+		)
+	}
+
+	<PostForm mode="create" locale={locale} categories={categories} />
+</AdminLayout>

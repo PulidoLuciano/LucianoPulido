@@ -38,6 +38,8 @@ func NewRouter(
 
 	// Protected admin post endpoints
 	protected := http.NewServeMux()
+	protected.HandleFunc("GET /api/admin/posts/{id}", postHandler.GetAdminPost)
+	protected.HandleFunc("GET /api/admin/posts", postHandler.GetAdminPosts)
 	protected.HandleFunc("POST /api/admin/posts", postHandler.CreatePost)
 	protected.HandleFunc("PUT /api/admin/posts/{id}", postHandler.UpdatePost)
 	protected.HandleFunc("DELETE /api/admin/posts/{id}", postHandler.DeletePost)
