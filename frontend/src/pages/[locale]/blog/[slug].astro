@@ -2,6 +2,7 @@
 export const prerender = false;
 
 import { marked } from "marked";
+import "../../../lib/marked-math";
 import { Image } from "astro:assets";
 import { useTranslations } from "../../../locales/utils";
 import { fetchPost, fetchPosts } from "../../../lib/api";
@@ -153,6 +154,14 @@ const htmlContent = post ? marked.parse(post.content) : "";
 				})();
 			</script>
 			</article>
-		)
-	}
-</BaseLayout>
+ 		)
+ 	}
+ </BaseLayout>
+ 
+ <style is:global>
+ 	.prose img {
+ 		display: block;
+ 		margin-left: auto;
+ 		margin-right: auto;
+ 	}
+ </style>
