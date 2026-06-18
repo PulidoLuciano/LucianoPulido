@@ -46,7 +46,7 @@ const htmlContent = post ? marked.parse(post.content) : "";
 				</a>
 			</div>
 		) : (
-			<article class="pt-24 pb-16 max-w-6xl mx-auto px-4">
+			<article class="pt-24 pb-16 max-w-6xl mx-auto px-4" data-view-id={post.view_id}>
 				<a
 					href={`/${locale}/blog`}
 					class="inline-block text-green-dark hover:text-orange-dark transition-colors mb-8 text-sm font-medium"
@@ -104,6 +104,54 @@ const htmlContent = post ? marked.parse(post.content) : "";
 					</section>
 				)
 			}
+			<script>
+				(function() {
+					const article = document.querySelector('article[data-view-id]');
+					if (!article) return;
+					const viewId = Number(article.dataset.viewId);
+					if (!viewId) return;
+
+					const apiUrl = import.meta.env.PUBLIC_API_URL || 'http://localhost:8080';
+					let startTime = Date.now();
+					let maxScrollPercent = 0;
+					let sent = false;
+
+					function calcScrollPercent() {
+						const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+						if (docHeight <= 0) return 100;
+						return Math.min(100, Math.round((window.scrollY / docHeight) * 100));
+					}
+
+					function sendMetrics() {
+						if (sent) return;
+						sent = true;
+
+						const durationSeconds = Math.round((Date.now() - startTime) / 1000);
+						maxScrollPercent = Math.max(maxScrollPercent, calcScrollPercent());
+
+						const body = JSON.stringify({
+							view_id: viewId,
+							duration_seconds: durationSeconds,
+							max_scroll_percentage: maxScrollPercent,
+						});
+
+						navigator.sendBeacon(
+							apiUrl + '/api/posts/metrics/update',
+							new Blob([body], { type: 'application/json' }),
+						);
+					}
+
+					window.addEventListener('scroll', function() {
+						maxScrollPercent = Math.max(maxScrollPercent, calcScrollPercent());
+					}, { passive: true });
+
+					document.addEventListener('visibilitychange', function() {
+						if (document.visibilityState === 'hidden') sendMetrics();
+					});
+
+					window.addEventListener('beforeunload', sendMetrics);
+				})();
+			</script>
 			</article>
 		)
 	}

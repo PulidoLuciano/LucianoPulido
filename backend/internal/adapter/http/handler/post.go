@@ -8,17 +8,19 @@ import (
 	"net/http"
 	"strconv"
 
+	"github.com/PulidoLuciano/LucianoPulido.git/internal/adapter/geolocation"
 	"github.com/PulidoLuciano/LucianoPulido.git/internal/domain"
 	"github.com/PulidoLuciano/LucianoPulido.git/internal/usecase"
 )
 
 type PostHandler struct {
-	publicUC *usecase.PostPublicUseCase
-	adminUC  *usecase.PostAdminUseCase
+	publicUC    *usecase.PostPublicUseCase
+	adminUC     *usecase.PostAdminUseCase
+	geoResolver *geolocation.Resolver
 }
 
-func NewPostHandler(publicUC *usecase.PostPublicUseCase, adminUC *usecase.PostAdminUseCase) *PostHandler {
-	return &PostHandler{publicUC: publicUC, adminUC: adminUC}
+func NewPostHandler(publicUC *usecase.PostPublicUseCase, adminUC *usecase.PostAdminUseCase, geoResolver *geolocation.Resolver) *PostHandler {
+	return &PostHandler{publicUC: publicUC, adminUC: adminUC, geoResolver: geoResolver}
 }
 
 func (h *PostHandler) GetPosts(w http.ResponseWriter, r *http.Request) {
@@ -107,7 +109,7 @@ func (h *PostHandler) GetPostBySlug(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	countryCode, city, visitorHash := extractVisitorInfo(r)
+	countryCode, city, visitorHash := h.extractVisitorInfo(r)
 	input := usecase.GetPostBySlugInput{
 		Slug:        slug,
 		Lang:        lang,
@@ -212,10 +214,11 @@ func mapErrorStatus(err error) int {
 	}
 }
 
-func extractVisitorInfo(r *http.Request) (countryCode, city, visitorHash string) {
+func (h *PostHandler) extractVisitorInfo(r *http.Request) (countryCode, city, visitorHash string) {
 	ipStr, _, _ := net.SplitHostPort(r.RemoteAddr)
+	countryCode, city = h.geoResolver.Resolve(ipStr)
 	visitorHash = hashIP(ipStr)
-	return "", "", visitorHash
+	return
 }
 
 func hashIP(ip string) string {

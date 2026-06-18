@@ -4,6 +4,7 @@ go 1.25.0
 
 require (
 	github.com/lib/pq v1.12.3
+	github.com/oschwald/maxminddb-golang v1.13.1
 	github.com/stretchr/testify v1.11.1
 	golang.org/x/crypto v0.53.0
 	golang.org/x/term v0.44.0

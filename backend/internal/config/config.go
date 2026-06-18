@@ -17,6 +17,7 @@ type Config struct {
 	RateLimitWindowS  int
 	LoginMaxAttempts  int
 	LoginLockoutMin   int
+	MaxMindDBPath     string
 }
 
 func Load() *Config {
@@ -31,6 +32,7 @@ func Load() *Config {
 		RateLimitWindowS:  getEnvInt("RATE_LIMIT_WINDOW_SECONDS", 60),
 		LoginMaxAttempts:  getEnvInt("LOGIN_MAX_ATTEMPTS", 5),
 		LoginLockoutMin:   getEnvInt("LOGIN_LOCKOUT_MINUTES", 15),
+		MaxMindDBPath:     getEnv("MAXMIND_DB_PATH", "./GeoLite2-City.mmdb"),
 	}
 }
 

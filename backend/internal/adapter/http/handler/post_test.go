@@ -21,7 +21,7 @@ func TestPostHandler_CreatePost(t *testing.T) {
 	t.Run("returns 201 on success", func(t *testing.T) {
 		mockRepo := new(testutil.MockPostRepository)
 		uc := usecase.NewPostAdminUseCase(mockRepo)
-		h := handler.NewPostHandler(nil, uc)
+		h := handler.NewPostHandler(nil, uc, nil)
 
 		mockRepo.On("Create", mock.Anything, mock.Anything, mock.Anything, mock.Anything).
 			Return(&domain.Post{ID: 1, Slug: "new-post"}, nil)
@@ -40,7 +40,7 @@ func TestPostHandler_CreatePost(t *testing.T) {
 	})
 
 	t.Run("returns 400 for empty slug", func(t *testing.T) {
-		h := handler.NewPostHandler(nil, usecase.NewPostAdminUseCase(new(testutil.MockPostRepository)))
+		h := handler.NewPostHandler(nil, usecase.NewPostAdminUseCase(new(testutil.MockPostRepository)), nil)
 
 		body := bytes.NewBufferString(`{"slug":"","translations":{"en":{"title":"Test","content":"Test"}}}`)
 		req := httptest.NewRequest("POST", "/api/admin/posts", body)
@@ -52,7 +52,7 @@ func TestPostHandler_CreatePost(t *testing.T) {
 	})
 
 	t.Run("returns 400 for empty translations", func(t *testing.T) {
-		h := handler.NewPostHandler(nil, usecase.NewPostAdminUseCase(new(testutil.MockPostRepository)))
+		h := handler.NewPostHandler(nil, usecase.NewPostAdminUseCase(new(testutil.MockPostRepository)), nil)
 
 		body := bytes.NewBufferString(`{"slug":"test","translations":{}}`)
 		req := httptest.NewRequest("POST", "/api/admin/posts", body)
@@ -64,7 +64,7 @@ func TestPostHandler_CreatePost(t *testing.T) {
 	})
 
 	t.Run("returns 400 for invalid JSON", func(t *testing.T) {
-		h := handler.NewPostHandler(nil, usecase.NewPostAdminUseCase(new(testutil.MockPostRepository)))
+		h := handler.NewPostHandler(nil, usecase.NewPostAdminUseCase(new(testutil.MockPostRepository)), nil)
 
 		body := bytes.NewBufferString(`not json`)
 		req := httptest.NewRequest("POST", "/api/admin/posts", body)
@@ -78,7 +78,7 @@ func TestPostHandler_CreatePost(t *testing.T) {
 	t.Run("returns 409 for duplicate slug", func(t *testing.T) {
 		mockRepo := new(testutil.MockPostRepository)
 		uc := usecase.NewPostAdminUseCase(mockRepo)
-		h := handler.NewPostHandler(nil, uc)
+		h := handler.NewPostHandler(nil, uc, nil)
 
 		mockRepo.On("Create", mock.Anything, mock.Anything, mock.Anything, mock.Anything).
 			Return((*domain.Post)(nil), domain.ErrConflict)
@@ -98,7 +98,7 @@ func TestPostHandler_UpdatePost(t *testing.T) {
 	t.Run("returns 200 on success", func(t *testing.T) {
 		mockRepo := new(testutil.MockPostRepository)
 		uc := usecase.NewPostAdminUseCase(mockRepo)
-		h := handler.NewPostHandler(nil, uc)
+		h := handler.NewPostHandler(nil, uc, nil)
 
 		mockRepo.On("Update", mock.Anything, mock.Anything, mock.Anything, mock.Anything).Return(nil)
 
@@ -114,7 +114,7 @@ func TestPostHandler_UpdatePost(t *testing.T) {
 	})
 
 	t.Run("returns 400 for invalid id", func(t *testing.T) {
-		h := handler.NewPostHandler(nil, usecase.NewPostAdminUseCase(new(testutil.MockPostRepository)))
+		h := handler.NewPostHandler(nil, usecase.NewPostAdminUseCase(new(testutil.MockPostRepository)), nil)
 
 		body := bytes.NewBufferString(`{"slug":"test","translations":{"en":{"title":"Test","content":"Test"}}}`)
 		req := httptest.NewRequest("PUT", "/api/admin/posts/abc", body)
@@ -129,7 +129,7 @@ func TestPostHandler_UpdatePost(t *testing.T) {
 	t.Run("returns 409 for duplicate slug", func(t *testing.T) {
 		mockRepo := new(testutil.MockPostRepository)
 		uc := usecase.NewPostAdminUseCase(mockRepo)
-		h := handler.NewPostHandler(nil, uc)
+		h := handler.NewPostHandler(nil, uc, nil)
 
 		mockRepo.On("Update", mock.Anything, mock.Anything, mock.Anything, mock.Anything).
 			Return(domain.ErrConflict)
@@ -150,7 +150,7 @@ func TestPostHandler_DeletePost(t *testing.T) {
 	t.Run("returns 204 on success", func(t *testing.T) {
 		mockRepo := new(testutil.MockPostRepository)
 		uc := usecase.NewPostAdminUseCase(mockRepo)
-		h := handler.NewPostHandler(nil, uc)
+		h := handler.NewPostHandler(nil, uc, nil)
 
 		mockRepo.On("Delete", mock.Anything, int64(1)).Return(nil)
 
@@ -165,7 +165,7 @@ func TestPostHandler_DeletePost(t *testing.T) {
 	})
 
 	t.Run("returns 400 for invalid id", func(t *testing.T) {
-		h := handler.NewPostHandler(nil, usecase.NewPostAdminUseCase(new(testutil.MockPostRepository)))
+		h := handler.NewPostHandler(nil, usecase.NewPostAdminUseCase(new(testutil.MockPostRepository)), nil)
 
 		req := httptest.NewRequest("DELETE", "/api/admin/posts/abc", nil)
 		req.SetPathValue("id", "abc")
@@ -179,7 +179,7 @@ func TestPostHandler_DeletePost(t *testing.T) {
 	t.Run("returns 404 when not found", func(t *testing.T) {
 		mockRepo := new(testutil.MockPostRepository)
 		uc := usecase.NewPostAdminUseCase(mockRepo)
-		h := handler.NewPostHandler(nil, uc)
+		h := handler.NewPostHandler(nil, uc, nil)
 
 		mockRepo.On("Delete", mock.Anything, int64(999)).Return(domain.ErrNotFound)
 

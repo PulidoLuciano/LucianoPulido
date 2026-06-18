@@ -11,6 +11,7 @@ import (
 
 	_ "github.com/lib/pq"
 
+	"github.com/PulidoLuciano/LucianoPulido.git/internal/adapter/geolocation"
 	httpadapter "github.com/PulidoLuciano/LucianoPulido.git/internal/adapter/http"
 	"github.com/PulidoLuciano/LucianoPulido.git/internal/adapter/http/handler"
 	"github.com/PulidoLuciano/LucianoPulido.git/internal/adapter/repository/postgres"
@@ -40,6 +41,15 @@ func main() {
 	metricsRepo := postgres.NewMetricsRepo(db)
 	authRepo := postgres.NewAuthRepo(db)
 
+	// Geolocation
+	geoResolver, err := geolocation.NewResolver(cfg.MaxMindDBPath)
+	if err != nil {
+		logger.Warn("geolocation resolver unavailable, requests will lack country/city data", "path", cfg.MaxMindDBPath, "error", err)
+	}
+	if geoResolver != nil {
+		defer geoResolver.Close()
+	}
+
 	// Use cases
 	postPublicUC := usecase.NewPostPublicUseCase(postRepo, metricsRepo, categoryRepo)
 	postAdminUC := usecase.NewPostAdminUseCase(postRepo)
@@ -49,9 +59,9 @@ func main() {
 	authUC := usecase.NewAuthUseCase(authRepo, cfg.BcryptCost, cfg.LoginMaxAttempts, cfg.LoginLockoutMin, cfg.SessionDurationH)
 
 	// Handlers (adapters)
-	postHandler := handler.NewPostHandler(postPublicUC, postAdminUC)
+	postHandler := handler.NewPostHandler(postPublicUC, postAdminUC, geoResolver)
 	categoryHandler := handler.NewCategoryHandler(categoryAdminUC, categoryPublicUC)
-	metricsHandler := handler.NewMetricsHandler(metricsUC)
+	metricsHandler := handler.NewMetricsHandler(metricsUC, geoResolver)
 	authHandler := handler.NewAuthHandler(authUC, cfg.SessionDurationH, cfg.CookieSecure, logger)
 
 	// Router
